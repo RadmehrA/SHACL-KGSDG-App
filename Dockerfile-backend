@@ -1,0 +1,27 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Install system dependencies required by FastAPI and MongoDB client
+RUN apt-get update && apt-get install -y \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1
+
+# Copy the requirements.txt file to the container
+COPY ./backend/requirements.txt /app/requirements.txt
+
+# Install any dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the backend code into the container
+COPY ./backend /app
+
+# Expose the FastAPI backend port
+EXPOSE 8000
+
+# Command to run the FastAPI app with uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

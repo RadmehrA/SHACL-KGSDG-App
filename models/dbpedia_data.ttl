@@ -1,0 +1,6 @@
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+
+dbr:Paris dbo:country dbr:France .
+dbr:Berlin dbo:country dbr:Germany .
+dbr:Rome dbo:country dbr:Italy .
