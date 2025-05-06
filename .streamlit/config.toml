@@ -1,0 +1,7 @@
+[theme]
+base="light"  # or "dark" or "system"
+primaryColor="#ff4b4b"  # Button and primary color
+backgroundColor="#f0f2f6"  # Page background color
+secondaryBackgroundColor="#e0e4e8"  # Sidebar and widget background
+textColor="#000000"  # Text color
+font="monospace"  # Other options: "sans serif", "serif"
