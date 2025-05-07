@@ -1,4 +1,4 @@
-
+![App Screenshot](image.jpg)
 # 🧪 Synthetic RDF Data Generator (SRDF-GEN)
 
 An application for generating synthetic RDF data using SHACL schemas and W3C standards. 
