@@ -66,8 +66,8 @@ This will:
 - Set up MongoDB with a local volume `mongo-data`
 
 🌐 **Access the App**
-- Backend (FastAPI): [http://localhost:8000](http://localhost:8000)
-- Frontend (Streamlit): [http://localhost:8501](http://localhost:8501)
+- Backend (FastAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+- Frontend (Streamlit): [http://localhost:8501/docs](http://localhost:8501/docs)
 
 Use Visual Studio Code to:
 
@@ -76,7 +76,7 @@ Use Visual Studio Code to:
 
 # 🚀 How to Use the App
 
-1. **Open the Streamlit frontend** in your browser at [http://localhost:8501](http://localhost:8501).
+1. **Open the Streamlit frontend** in your browser at [http://localhost:8501/docs](http://localhost:8501/docs).
 2. **Upload your SHACL .ttl file**:
    - On the left-hand side of the app, in the **Settings** section, you will find an option to **Upload SHACL File**.
    - Upload the desired SHACL .ttl file to the app.
