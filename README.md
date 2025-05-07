@@ -77,7 +77,3 @@ Open and edit the codebase easily
 
 Launch Docker containers with the Docker extension (optional but helpful)
 
-vbnet
-Copy
-Edit
-
