@@ -210,6 +210,49 @@ This section provides the complete steps for deploying the app, as well as detai
 
 
 
+# 🚀 How to Use the App
+
+1. **Open the Streamlit frontend** in your browser at [http://localhost:8501](http://localhost:8501).
+
+2. **Upload your SHACL .ttl file**:
+   - On the left-hand side of the app, in the **Settings** section, you will find an option to **Upload SHACL File**.
+   - Upload the desired SHACL .ttl file to the app.
+
+3. **Tree View of Target Classes and Properties**:
+   - Once the SHACL file is uploaded, the app will display a tree-based representation of the available target classes and their associated properties.
+
+4. **Configure Property Settings**:
+   - For each property, you can define the model to use:
+     - By default, the model is set to **LLM**.
+     - If you want to choose a different model (such as **GAN** or **VAE**), a **dropdown list** will appear where you can select the desired model.
+     - The list will also include models you pre-trained in the deployment step.
+     - If you're unsure which model to use, you can select the **All** option, which assigns the closest model to the property.
+
+5. **Choose Data Distribution**:
+   - You can select the **data distribution** type for each property. Available options include:
+     - **Uniform**
+     - **Normal**
+     - **Skewed**
+   - Then, input the **number of samples** you want to generate. 
+     - If you have a **premium GPT account**, the number of samples can be unlimited. 
+     - For free accounts, there is a limitation on the number of samples.
+
+6. **Generate Synthetic Data**:
+   - After configuring the settings for each property, click on the **Generate synthetic data (batch request)** button.
+   - The app will start generating the RDF data and show the **progress** of the data generation process.
+
+7. **Preview the Generated Data**:
+   - Once the data is generated, you will see a **preview** of the synthetic RDF data.
+
+8. **Interactive Chat for Model Refinement**:
+   - If you're not satisfied with the results, use the **interactive chat box** on the left-hand side to interact with the LLM model.
+   - Provide instructions to improve the data generation, and regenerate the data based on your new instructions.
+
+9. **Download the Generated Data**:
+   - Once you're happy with the generated data, you can **download** it in one of the following formats:
+     - `.json`
+     - `.json-ld`
+     - `.ttl`
 
 
 
