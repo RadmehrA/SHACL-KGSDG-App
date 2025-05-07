@@ -28,3 +28,56 @@ The system supports three generative models—**LLM**, **GAN**, and **VAE**—to
 - **Docker** – Containerized deployment
 - **SHACL** – Schema constraint definitions
 - **GPT API** – Used by the LLM model for generating RDF triples
+
+
+# 🚀 How to Deploy
+
+You can deploy the app locally using **Docker Compose**, which will spin up:
+
+- **FastAPI backend**
+- **Streamlit frontend**
+- **MongoDB database**
+
+## ✅ Prerequisites
+
+Make sure you have the following installed:
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Visual Studio Code](https://code.visualstudio.com/) (recommended for easy setup and file navigation)
+
+> **Important:** MongoDB and Docker must be running before building the project.
+
+## 📦 Steps
+
+```bash
+# Clone the repository
+git clone https://github.com/RadmehrA/SHACL-KGSDG-App.git
+cd SHACL-KGSDG-App
+
+# Start MongoDB and all services via Docker
+docker-compose up --build
+
+This will:
+
+Build the FastAPI and Streamlit services from the local Dockerfile
+
+Mount ./models/saved_models and ./uploaded into the backend container
+
+Set up MongoDB with a local volume mongo-data
+
+🌐 Access the App
+Backend (FastAPI): http://localhost:8000
+
+Frontend (Streamlit): http://localhost:8501
+
+Use Visual Studio Code to:
+
+Open and edit the codebase easily
+
+Launch Docker containers with the Docker extension (optional but helpful)
+
+vbnet
+Copy
+Edit
+
