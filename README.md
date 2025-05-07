@@ -86,7 +86,7 @@ Use Visual Studio Code to:
    - For each property, you can define the model to use:
      - By default, the model is set to **LLM**.
      - If you want to choose a different model (such as **GAN** or **VAE**), a **dropdown list** will appear where you can select the desired model.
-     - The list will also include models you pre-trained in the deployment step.
+     - The list will also include models you pre-trained in the GAN and VAE Models step exolained in the next section.
      - If you're unsure which model to use, you can select the **All** option, which assigns the closest model to the property.
 5. **Choose Data Distribution**:
    - You can select the **data distribution** type for each property. Available options include:
