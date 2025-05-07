@@ -1,10 +1,10 @@
 ![App Screenshot](image.jpg)
-# 🧪 Synthetic RDF Data Generator (SRDF-GEN)
+# ✤Synthetic RDF Data Generator (SRDF-GEN)
 
 An application for generating synthetic RDF data using SHACL schemas and W3C standards. 
 The system supports three generative models—**LLM**, **GAN**, and **VAE**—to produce high-quality RDF triples based on user-defined shapes and distributions.
 
-## 🌐 Key Features
+## ✤Key Features
 
 - Upload SHACL `.ttl` files to define your data schema
 - Tree-based visualization of target classes and properties
@@ -20,7 +20,7 @@ The system supports three generative models—**LLM**, **GAN**, and **VAE**—to
 - No training data required from the user
 - Easily extensible to support other knowledge bases like Wikidata
 
-## 🛠️ Technologies Used
+## ✤Technologies Used
 
 - **FastAPI** – Backend API
 - **Streamlit** – Web UI for interactive input and output
@@ -30,7 +30,7 @@ The system supports three generative models—**LLM**, **GAN**, and **VAE**—to
 - **SHACL** – Schema constraint definitions
 - **GPT API** – Used by the LLM model for generating RDF triples
 
-# 🚀 How to Deploy
+# ✤How to Deploy
 
 You can deploy the app locally using **Docker Compose**, which will spin up:
 
@@ -38,7 +38,7 @@ You can deploy the app locally using **Docker Compose**, which will spin up:
 - **Streamlit frontend**
 - **MongoDB database**
 
-## ✅ Prerequisites
+## ☑︎ Prerequisites
 
 Make sure you have the following installed:
 
@@ -48,7 +48,7 @@ Make sure you have the following installed:
 
 > **Important:** MongoDB and Docker must be running before building the project.
 
-## 📦 Steps
+## ✤Steps
 
 ```bash
 # Clone the repository
@@ -65,7 +65,7 @@ This will:
 - Mount `./models/saved_models` and `./uploaded` into the backend container
 - Set up MongoDB with a local volume `mongo-data`
 
-🌐 **Access the App**
+** ✤Access the App**
 - Backend (FastAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
 - Frontend (Streamlit): [http://localhost:8501/docs](http://localhost:8501/docs)
 
@@ -74,7 +74,7 @@ Use Visual Studio Code to:
 - Open and edit the codebase easily
 - Launch Docker containers with the Docker extension (optional but helpful)
 
-# 🚀 How to Use the App
+# ✤How to Use the App
 
 1. **Open the Streamlit frontend** in your browser at [http://localhost:8501/docs](http://localhost:8501/docs).
 2. **Upload your SHACL .ttl file**:
@@ -110,9 +110,9 @@ Use Visual Studio Code to:
      - `.json-ld`
      - `.ttl`
 
-## 💻 How to Use the Models
+## ✤How to Use the Models
 
-### LLM (Large Language Model)
+### ✤LLM (Large Language Model)
 
 To use the LLM, you need to provide an API key from a GPT provider. For example, you can create an account on Groq Console and generate an API key from Groq API Keys.
 
@@ -121,7 +121,7 @@ To use the LLM, you need to provide an API key from a GPT provider. For example,
 
 > **Note**: To unlock the full capabilities of GPT and generate unlimited data, you need a premium account. However, the free tier is sufficient for testing, though there may be limitations on the number of samples generated.
 
-### GAN and VAE Models
+### ✤GAN and VAE Models
 
 The GAN and VAE models are domain-independent. Pretrained models are already available in the repository for testing purposes.
 
