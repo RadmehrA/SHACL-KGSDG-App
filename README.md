@@ -145,4 +145,4 @@ The same approach can be used for the GAN model at this URL: [http://localhost:8
 
 Once the models are trained and saved, restart the Docker containers. The models will be automatically loaded in the next app run.
 
-> In the next section, you will find an explanation of how to use the pretrained models.
+> In the How to Use the App section, you can find an explanation of how to use the pretrained models.
