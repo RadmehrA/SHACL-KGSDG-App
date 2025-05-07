@@ -1,5 +1,5 @@
 ![App Screenshot](image.jpg)
-# ✼Synthetic RDF Data Generator (SRDF-GEN)
+# ✤Synthetic RDF Data Generator (SRDF-GEN)
 
 An application for generating synthetic RDF data using SHACL schemas and W3C standards. 
 The system supports three generative models—**LLM**, **GAN**, and **VAE**—to produce high-quality RDF triples based on user-defined shapes and distributions.
