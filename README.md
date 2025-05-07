@@ -1,43 +1,44 @@
 
 # 🧪 Synthetic RDF Data Generator (SRDF-GEN)
 
-An application designed for generating synthetic RDF data based on SHACL schemas and W3C standards. The system supports three powerful generative models—**LLM**, **GAN**, and **VAE**—to create high-quality RDF triples based on user-defined shapes and distributions.
+An application for generating synthetic RDF data using SHACL schemas and W3C standards. 
+The system supports three generative models—**LLM**, **GAN**, and **VAE**—to produce high-quality RDF triples based on user-defined shapes and distributions.
 
 ## 🌐 Key Features
 
-- **SHACL File Upload**: Upload SHACL `.ttl` files to define your data schema.
-- **Tree-based Visualization**: Visualize the target classes and properties of your schema in a tree structure.
-- **Per-property Customization**:
-  - Choose a generative model: `LLM`, `GAN`, or `VAE`.
-  - Select data distribution type.
-  - Set the number of samples to generate.
-- **Data Download**: Download the generated data in multiple formats:
+- Upload SHACL `.ttl` files to define your data schema
+- Tree-based visualization of target classes and properties
+- Per-property selection of:
+  - Generative model: `LLM`, `GAN`, or `VAE`
+  - Data distribution
+  - Number of samples to generate
+- Download generated data in:
   - `.ttl` (Turtle)
   - `.json`
   - `.json-ld`
-- **Pretrained Models**: Uses pretrained GAN and VAE models trained on [DBpedia Core Triples](https://databus.dbpedia.org/dbpedia/collections/latest-core).
-- **No Training Data Required**: No need to provide training data, the models are pre-trained.
-- **Extensibility**: Easily extendable to support other knowledge bases like Wikidata.
+- Uses **pretrained GAN/VAE models** trained on [DBpedia Core Triples](https://databus.dbpedia.org/dbpedia/collections/latest-core)
+- No training data required from the user
+- Easily extensible to support other knowledge bases like Wikidata
 
 ## 🛠️ Technologies Used
 
-- **FastAPI**: Backend API
-- **Streamlit**: Web UI for interactive input and output
-- **PyTorch / TensorFlow**: For VAE and GAN model inference
-- **SPARQLWrapper**, **rdflib**, **PySHACL**: For RDF manipulation and validation
-- **Docker**: Containerized deployment
-- **SHACL**: Schema constraint definitions
-- **GPT API**: Used by the LLM model for generating RDF triples
+- **FastAPI** – Backend API
+- **Streamlit** – Web UI for interactive input and output
+- **PyTorch / TensorFlow** – For VAE and GAN model inference
+- **SPARQLWrapper**, **rdflib**, **PySHACL** – For RDF manipulation and validation
+- **Docker** – Containerized deployment
+- **SHACL** – Schema constraint definitions
+- **GPT API** – Used by the LLM model for generating RDF triples
 
-## 🚀 How to Deploy
+# 🚀 How to Deploy
 
-You can deploy the app locally using **Docker Compose**. This will start the following services:
+You can deploy the app locally using **Docker Compose**, which will spin up:
 
 - **FastAPI backend**
 - **Streamlit frontend**
 - **MongoDB database**
 
-### ✅ Prerequisites
+## ✅ Prerequisites
 
 Make sure you have the following installed:
 
@@ -45,9 +46,9 @@ Make sure you have the following installed:
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Visual Studio Code](https://code.visualstudio.com/) (recommended for easy setup and file navigation)
 
-> **Important:** Ensure MongoDB and Docker are running before building the project.
+> **Important:** MongoDB and Docker must be running before building the project.
 
-### 📦 Steps
+## 📦 Steps
 
 ```bash
 # Clone the repository
@@ -60,102 +61,88 @@ docker-compose up --build
 
 This will:
 
-- Build the FastAPI and Streamlit services from the local Dockerfile.
-- Mount `./models/saved_models` and `./uploaded` directories into the backend container.
-- Set up MongoDB with a local volume (`mongo-data`).
+- Build the FastAPI and Streamlit services from the local Dockerfile
+- Mount `./models/saved_models` and `./uploaded` into the backend container
+- Set up MongoDB with a local volume `mongo-data`
 
-### 🌐 Access the App
+🌐 **Access the App**
 - Backend (FastAPI): [http://localhost:8000](http://localhost:8000)
 - Frontend (Streamlit): [http://localhost:8501](http://localhost:8501)
 
-You can use **Visual Studio Code** to:
+Use Visual Studio Code to:
 
-- Open and edit the codebase easily.
-- Launch Docker containers with the Docker extension (optional but helpful).
+- Open and edit the codebase easily
+- Launch Docker containers with the Docker extension (optional but helpful)
+
+# 🚀 How to Use the App
+
+1. **Open the Streamlit frontend** in your browser at [http://localhost:8501](http://localhost:8501).
+2. **Upload your SHACL .ttl file**:
+   - On the left-hand side of the app, in the **Settings** section, you will find an option to **Upload SHACL File**.
+   - Upload the desired SHACL .ttl file to the app.
+3. **Tree View of Target Classes and Properties**:
+   - Once the SHACL file is uploaded, the app will display a tree-based representation of the available target classes and their associated properties.
+4. **Configure Property Settings**:
+   - For each property, you can define the model to use:
+     - By default, the model is set to **LLM**.
+     - If you want to choose a different model (such as **GAN** or **VAE**), a **dropdown list** will appear where you can select the desired model.
+     - The list will also include models you pre-trained in the deployment step.
+     - If you're unsure which model to use, you can select the **All** option, which assigns the closest model to the property.
+5. **Choose Data Distribution**:
+   - You can select the **data distribution** type for each property. Available options include:
+     - **Uniform**
+     - **Normal**
+     - **Skewed**
+   - Then, input the **number of samples** you want to generate. 
+     - If you have a **premium GPT account**, the number of samples can be unlimited. 
+     - For free accounts, there is a limitation on the number of samples.
+6. **Generate Synthetic Data**:
+   - After configuring the settings for each property, click on the **Generate synthetic data (batch request)** button.
+   - The app will start generating the RDF data and show the **progress** of the data generation process.
+7. **Preview the Generated Data**:
+   - Once the data is generated, you will see a **preview** of the synthetic RDF data.
+8. **Interactive Chat for Model Refinement**:
+   - If you're not satisfied with the results, use the **interactive chat box** on the left-hand side to interact with the LLM model.
+   - Provide instructions to improve the data generation, and regenerate the data based on your new instructions.
+9. **Download the Generated Data**:
+   - Once you're happy with the generated data, you can **download** it in one of the following formats:
+     - `.json`
+     - `.json-ld`
+     - `.ttl`
 
 ## 💻 How to Use the Models
 
 ### LLM (Large Language Model)
 
-To use the LLM model, you need an API key from a GPT provider, such as Groq.
+To use the LLM, you need to provide an API key from a GPT provider. For example, you can create an account on Groq Console and generate an API key from Groq API Keys.
 
-1. Create an account on Groq and obtain an API key.
-2. Input the API key into the `.env` file located in the project directory.
+- Create an account and get your API key.
+- Input the API key in the .env file located in the project directory.
 
-> **Note**: You need a premium GPT account to unlock full capabilities and generate unlimited data. The free tier is suitable for testing, though it may have sample generation limitations.
+> **Note**: To unlock the full capabilities of GPT and generate unlimited data, you need a premium account. However, the free tier is sufficient for testing, though there may be limitations on the number of samples generated.
 
 ### GAN and VAE Models
 
-The GAN and VAE models are domain-independent and come with pretrained models for general use. To train the models on domain-specific data:
+The GAN and VAE models are domain-independent. Pretrained models are already available in the repository for testing purposes.
 
-1. **Download Domain-Specific Triples**:
-   - [DBpedia Latest Core](https://databus.dbpedia.org/dbpedia/collections/latest-core)
-   - [Wikidata Database Dump](https://www.wikidata.org/wiki/Wikidata:Database_download)
+In case you want to extend or customize the app for your research domain or production environment, you can generate more pretrained models. After running the app, you need to access the backend APIs at [http://localhost:8000/docs](http://localhost:8000/docs) and use the `/upload_and_train_gan/` and `/upload_and_train_vae/` endpoints to train and save the models in the repository.
 
-2. **Upload and Train the Models**:
-   - Access the backend API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
-   - Use the `/upload_and_train_gan/` and `/upload_and_train_vae/` endpoints to upload training data (`.ttl` files) and train the models.
+Based on the domain of SHACL properties you want to generate data for, you can download domain-specific triples from these sources:
 
-> **Important**: Once training is complete, restart the Docker containers. The models will be automatically loaded in the next app run.
+- [DBpedia Latest Core](https://databus.dbpedia.org/dbpedia/collections/latest-core)
+- [Wikidata Database Dump](https://www.wikidata.org/wiki/Wikidata:Database_download)
 
-## 🔧 Local Development Setup
+Once you've downloaded the `.ttl` files, upload them to the app for training the models:
 
-If you prefer running the app locally without Docker, follow these steps:
+- For VAE, open the following URL in your browser: [http://localhost:8000/docs#/default/upload_and_train_vae_upload_and_train_vae_post](http://localhost:8000/docs#/default/upload_and_train_vae_upload_and_train_vae_post)
+  - Click on the **Try it out** button on the top right.
+  - In the file section, choose the `.ttl` file you downloaded.
+  - In the **epochs** section, define the number of triples you want the model to train on.
+  - In the **model_name** section, choose a name for your specific model.
+  - Click **Execute**. The app will start training the model. If the model is trained and stored successfully, you will see a notification in the **Responses** section.
 
-### 1. Set Up a Virtual Environment
+The same approach can be used for the GAN model at this URL: [http://localhost:8000/docs#/default/upload_ttl_upload_and_train_gan__post](http://localhost:8000/docs#/default/upload_ttl_upload_and_train_gan__post)
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+Once the models are trained and saved, restart the Docker containers. The models will be automatically loaded in the next app run.
 
-### 2. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Run the Backend
-
-```bash
-uvicorn main:app --reload
-```
-
-### 4. Run the Frontend
-
-```bash
-streamlit run frontend/app.py
-```
-
-## 🚀 How to Use the App
-
-1. **Open the Streamlit frontend**: Access it via [http://localhost:8501](http://localhost:8501).
-   
-2. **Upload SHACL `.ttl` File**:
-   - In the **Settings** section, find the option to **Upload SHACL File**.
-   - Select and upload your SHACL `.ttl` file.
-
-3. **Tree View of Target Classes and Properties**:
-   - The app will display a tree view of the target classes and their associated properties.
-
-4. **Configure Property Settings**:
-   - For each property, choose the generative model:
-     - **LLM**, **GAN**, or **VAE** (with pre-trained options available).
-     - Select a data distribution type: **Uniform**, **Normal**, or **Skewed**.
-     - Set the **number of samples** you want to generate.
-
-5. **Generate Synthetic Data**:
-   - After configuring the settings, click **Generate Synthetic Data (Batch Request)**.
-   - The app will show the progress of the data generation.
-
-6. **Preview the Generated Data**:
-   - Once generated, you can preview the synthetic RDF data.
-
-7. **Interactive Chat for Refining Models**:
-   - If necessary, use the **interactive chat box** to refine the model and regenerate data based on new instructions.
-
-8. **Download the Generated Data**:
-   - Download the generated data in one of the following formats:
-     - `.ttl`
-     - `.json`
-     - `.json-ld`
+> In the next section, you will find an explanation of how to use the pretrained models.
