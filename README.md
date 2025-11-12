@@ -54,6 +54,8 @@ GANs architecture:
 ![GANs Architecture](gan.png)
 VAEs architecture:
 ![VAEs Architecture](vae.png)
+Distribution Module Architecture architecture:
+![VAEs Architecture](distribution_module.png)
 ---
 
 ## Features
