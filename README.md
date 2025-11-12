@@ -46,8 +46,14 @@ Core Components:
 ![SRDF-GEN Architecture](architecture.png)
 
 SRDF-GEN backend engine diagram:
-![SRDF-GEN Architecture](engine-architecture.png)
+![SRDF-GEN backend engine Architecture](engine-architecture.png)
 
+LLM architecture:
+![LLM Architecture](llm.png)
+GANs architecture:
+![GANs Architecture](gan.png)
+VAEs architecture:
+![VAEs Architecture](vae.png)
 ---
 
 ## Features
