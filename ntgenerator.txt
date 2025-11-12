@@ -1,0 +1,83 @@
+from rdflib import Literal, URIRef, BNode
+import re
+
+def parse_object(obj_str):
+    """Parses RDF object."""
+    obj_str = obj_str.strip()
+
+    # Literal with datatype
+    if obj_str.startswith('"') and '^^<' in obj_str:
+        match = re.match(r'"(.*)"\^\^<(.+)>', obj_str)
+        if match:
+            value, datatype = match.groups()
+            return Literal(value, datatype=URIRef(datatype))
+
+    # Language-tagged literal
+    elif obj_str.startswith('"') and '@' in obj_str:
+        match = re.match(r'"(.*)"@([a-zA-Z\-]+)', obj_str)
+        if match:
+            value, lang = match.groups()
+            return Literal(value, lang=lang)
+
+    # Simple literal
+    elif obj_str.startswith('"') and obj_str.endswith('"'):
+        return Literal(obj_str[1:-1])
+
+    # URI
+    elif obj_str.startswith('<') and obj_str.endswith('>'):
+        return URIRef(obj_str[1:-1])
+
+    # Blank node
+    elif obj_str.startswith('_:'):
+        return BNode(obj_str[2:])
+
+    raise ValueError(f"Unsupported object format: {obj_str}")
+
+def replace_last_segment(uri, new_segment):
+    """Replace the last segment after '/' or '#' in the URI with new_segment."""
+    if '#' in uri:
+        base, _ = uri.rsplit('#', 1)
+        return f"{base}#{new_segment}"
+    else:
+        base, _ = uri.rsplit('/', 1)
+        return f"{base}/{new_segment}"
+
+def modify_nt_file(input_path, output_path):
+    with open(input_path, 'r', encoding='utf-8') as infile, \
+         open(output_path, 'w', encoding='utf-8') as outfile:
+
+        for line in infile:
+            line = line.strip()
+            if not line or not line.endswith('.'):
+                outfile.write(line + '\n')
+                continue
+
+            parts = line[:-1].strip().split(' ', 2)  # remove trailing '.' then split
+            if len(parts) != 3:
+                outfile.write(line + '\n')
+                continue
+
+            subj = parts[0]
+            pred = parts[1]
+            obj = parts[2]
+
+            # Replace last segment of subject URI if applicable
+            if subj.startswith('<') and subj.endswith('>'):
+                subj_uri = subj[1:-1]
+                new_subj = f"<{replace_last_segment(subj_uri, 'person')}>"
+            else:
+                new_subj = subj
+
+            # Replace last segment of predicate URI if applicable
+            if pred.startswith('<') and pred.endswith('>'):
+                pred_uri = pred[1:-1]
+                new_pred = f"<{replace_last_segment(pred_uri, 'hasDisease')}>"
+            else:
+                new_pred = pred
+
+            # Write the modified triple, keeping object as is
+            new_line = f"{new_subj} {new_pred} {obj} .\n"
+            outfile.write(new_line)
+
+# Example usage:
+modify_nt_file('owl_type=parsed_sorted.nt', 'output.nt')

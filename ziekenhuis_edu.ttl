@@ -1,0 +1,44 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.org/> .
+
+# Shape for a Person
+ex:PersonShape a sh:NodeShape ;
+    sh:targetClass ex:Person ;
+    sh:property [
+        sh:path ex:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ex:hasAge ;
+        sh:datatype xsd:int ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ex:hasMaritalStatus ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ex:hasEducation ;
+        sh:datatype xsd:string ;  # Assuming the education level is a string (e.g., "Bachelor's", "Master's", "PhD")
+        sh:minCount 1 ;           # At least one education level should be specified
+        sh:maxCount 1 ;           # Only one education level is allowed (if you want to allow multiple, remove this line)
+    ] .
+
+# Shape for an Address
+ex:AddressShape a sh:NodeShape ;
+    sh:targetClass ex:Address ;
+    sh:property [
+        sh:path ex:hasStreet ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ex:hasPostalCode ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] .

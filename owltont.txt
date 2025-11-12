@@ -1,0 +1,8 @@
+from rdflib import Graph
+
+# Load OWL file
+g = Graph()
+g.parse("EDAM.owl", format="xml")  # OWL is XML-based
+
+# Serialize to N-Triples
+g.serialize(destination="EDAM.nt", format="nt")

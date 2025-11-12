@@ -1,0 +1,221 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.org/> .
+@prefix dist: <http://example.org/distribution#> .
+
+# Person Shape
+ex:PersonShape a sh:NodeShape ;
+    sh:targetClass ex:Person ;
+
+    sh:property [
+        sh:path ex:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        dist:distribution "categorical" ;
+        dist:categories (
+            [ dist:value "Alice" ; dist:probability "0.3" ]
+            [ dist:value "Bob" ; dist:probability "0.3" ]
+            [ dist:value "Charlie" ; dist:probability "0.4" ]
+        ) ;
+    ] ;
+
+    sh:property [
+        sh:path ex:hasDateOfBirth ;
+        sh:datatype xsd:date ;
+        sh:minCount 1 ;
+        dist:distribution "uniform" ;
+        dist:startDate "1960-01-01"^^xsd:date ;
+        dist:endDate "2010-12-31"^^xsd:date ;
+    ] ;
+
+    sh:property [
+        sh:path ex:hasAddress ;
+        sh:node ex:AddressShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        dist:distribution "node" ;
+    ] ;
+
+    sh:property [
+        sh:path ex:knowsLanguage ;
+        sh:node ex:LanguageShape ;
+        sh:minCount 1 ;
+        sh:maxCount 3 ;
+        dist:distribution "categorical" ;
+    ] ;
+
+    sh:property [
+        sh:path ex:hasDoctor ;
+        sh:node ex:DoctorShape ;
+        sh:minCount 1 ;
+        dist:distribution "node" ;
+    ] ;
+
+    sh:property [
+        sh:path ex:hasParent ;
+        sh:node ex:PersonShape ;
+        sh:maxCount 2 ;
+        dist:distribution "node" ;
+    ] ;
+
+    sh:property [
+        sh:path ex:hasInsurance ;
+        sh:node ex:InsuranceShape ;
+        sh:minCount 1 ;
+        dist:distribution "node" ;
+    ] ;
+
+    sh:property [
+        sh:path ex:hasSymptoms ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 5 ;
+        dist:distribution "categorical" ;
+        dist:categories (
+            [ dist:value "Fever" ; dist:probability "0.3" ]
+            [ dist:value "Cough" ; dist:probability "0.4" ]
+            [ dist:value "Fatigue" ; dist:probability "0.2" ]
+            [ dist:value "Headache" ; dist:probability "0.1" ]
+        ) ;
+    ] ;
+
+    sh:property [
+        sh:path ex:hasDiagnosisDate ;
+        sh:datatype xsd:dateTime ;
+        sh:maxCount 1 ;
+        dist:distribution "normal" ;
+        dist:mean "2022-01-01T12:00:00"^^xsd:dateTime ;
+        dist:stddev "30"^^xsd:float ;  # days
+    ] ;
+
+    sh:property [
+        sh:path ex:hasProfileURL ;
+        sh:datatype xsd:anyURI ;
+        sh:maxCount 1 ;
+        dist:distribution "template" ;
+        dist:template "https://example.org/profile/{uuid}" ;
+    ] .
+
+# Address Shape
+ex:AddressShape a sh:NodeShape ;
+    sh:targetClass ex:Address ;
+    sh:property [
+        sh:path ex:hasStreet ;
+        sh:datatype xsd:string ;
+        dist:distribution "categorical" ;
+        dist:categories (
+            [ dist:value "Main St" ; dist:probability "0.4" ]
+            [ dist:value "High St" ; dist:probability "0.3" ]
+            [ dist:value "Broadway" ; dist:probability "0.3" ]
+        ) ;
+    ] ;
+    sh:property [
+        sh:path ex:hasPostalCode ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[0-9]{5}$" ;
+        dist:distribution "regex" ;
+        dist:pattern "^[0-9]{5}$" ;
+    ] ;
+    sh:property [
+        sh:path ex:hasCity ;
+        sh:datatype xsd:string ;
+        dist:distribution "categorical" ;
+        dist:categories (
+            [ dist:value "New York" ; dist:probability "0.4" ]
+            [ dist:value "Berlin" ; dist:probability "0.3" ]
+            [ dist:value "Tokyo" ; dist:probability "0.3" ]
+        ) ;
+    ] ;
+    sh:property [
+        sh:path ex:hasCountry ;
+        sh:in ("USA" "Germany" "India" "Japan") ;
+        dist:distribution "categorical" ;
+    ] .
+
+# Doctor Shape
+ex:DoctorShape a sh:NodeShape ;
+    sh:targetClass ex:Doctor ;
+    sh:property [
+        sh:path ex:hasName ;
+        sh:datatype xsd:string ;
+        dist:distribution "categorical" ;
+    ] ;
+    sh:property [
+        sh:path ex:specializesIn ;
+        sh:datatype xsd:string ;
+        sh:in ("Cardiology" "Neurology" "Oncology" "General") ;
+        dist:distribution "categorical" ;
+    ] ;
+    sh:property [
+        sh:path ex:worksAt ;
+        sh:node ex:HospitalShape ;
+        dist:distribution "node" ;
+    ] .
+
+# Hospital Shape
+ex:HospitalShape a sh:NodeShape ;
+    sh:targetClass ex:Hospital ;
+    sh:property [
+        sh:path ex:hasName ;
+        sh:datatype xsd:string ;
+        dist:distribution "categorical" ;
+    ] ;
+    sh:property [
+        sh:path ex:hasSection ;
+        sh:datatype xsd:string ;
+        sh:maxCount 3 ;
+        dist:distribution "categorical" ;
+    ] ;
+    sh:property [
+        sh:path ex:hasAccreditationLevel ;
+        sh:datatype xsd:string ;
+        sh:in ("A" "B" "C") ;
+        dist:distribution "categorical" ;
+        dist:categories (
+            [ dist:value "A" ; dist:probability "0.6" ]
+            [ dist:value "B" ; dist:probability "0.3" ]
+            [ dist:value "C" ; dist:probability "0.1" ]
+        ) ;
+    ] .
+
+# Insurance Shape
+ex:InsuranceShape a sh:NodeShape ;
+    sh:targetClass ex:Insurance ;
+    sh:property [
+        sh:path ex:hasProvider ;
+        sh:datatype xsd:string ;
+        dist:distribution "categorical" ;
+    ] ;
+    sh:property [
+        sh:path ex:hasCoverageAmount ;
+        sh:datatype xsd:float ;
+        dist:distribution "normal" ;
+        dist:mean "50000"^^xsd:float ;
+        dist:stddev "15000"^^xsd:float ;
+    ] ;
+    sh:property [
+        sh:path ex:isGovernmentFunded ;
+        sh:datatype xsd:boolean ;
+        dist:distribution "bernoulli" ;
+        dist:probabilityTrue "0.3"^^xsd:float ;
+    ] .
+
+# Language Shape
+ex:LanguageShape a sh:NodeShape ;
+    sh:targetClass ex:Language ;
+    sh:property [
+        sh:path ex:languageName ;
+        sh:datatype xsd:string ;
+        sh:in ("English" "Spanish" "German" "Japanese") ;
+        dist:distribution "categorical" ;
+    ] ;
+    sh:property [
+        sh:path ex:spokenIn ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+ 	dist:distribution "normal" ;
+        dist:mean "50000"^^xsd:float ;
+        dist:stddev "15000"^^xsd:float ;
+    ] .
+
+

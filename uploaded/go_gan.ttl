@@ -1,0 +1,343 @@
+_:N2e3c5ab71b594d08bd1d41949d85529e <http://www.w3.org/2002/07/owl#annotatedTarget> "downregulation of cutin biosynthetic process" .
+<http://purl.obolibrary.org/obo/GO_0009107> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N2ab619aa9f2b48f19358fba3c0f2652e <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1905865> .
+_:N23d51b76049044d9921db2d873425379 <http://www.w3.org/2002/07/owl#annotatedTarget> "Reactome:R-HSA-5638209" .
+_:Ne83309062a8e41bbb2ea7271ddc5d1c6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/GO_0005391> .
+_:N035fe45046044b44a7be22f2f99fc876 <http://www.w3.org/2002/07/owl#annotatedTarget> "up-regulation of orcinol synthesis" .
+<http://purl.obolibrary.org/obo/GO_0044800> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<http://purl.obolibrary.org/obo/GO_1990066> <http://purl.obolibrary.org/obo/IAO_0000115> "The process by which excess light energy absorbed by chlorophyll and not used to drive photosynthesis is emitted by nonphotochemical quenching or chlorophyll fluorescence." .
+<http://purl.obolibrary.org/obo/GO_0016647> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "molecular_function" .
+_:N7259230a88ff4927ba3a867136e1f8a0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0006877> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N05caa4e9a22d4d809ac6c24bf238e2ce <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/GO_0030073> .
+<http://purl.obolibrary.org/obo/GO_0038047> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0038047" .
+<http://purl.obolibrary.org/obo/GO_0090711> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:3.1.3.102" .
+_:N6b5138e7158b4c0c8f656f8d48310931 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:TermGenie" .
+<http://purl.obolibrary.org/obo/GO_0071542> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+_:N748a5a3f7a8b4c029082c2992514f54c <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1904453> .
+_:N1455eb379aa044908f7d53fd2a90e030 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_1905196> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://purl.obolibrary.org/obo/GO_0033642> <http://purl.obolibrary.org/obo/IAO_0000233> "https://github.com/geneontology/go-ontology/issues/23625"^^<http://www.w3.org/2001/XMLSchema#anyURI> .
+_:Nd4de6531856f4410bdb789f73189e03e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N0f0e5220b03149599b38d199c903cc57 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nec3e85c9f8f74510a0999aa50ca79c5e <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1990091> .
+<http://purl.obolibrary.org/obo/GO_0052139> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<http://purl.obolibrary.org/obo/GO_0035558> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "phosphatidylinositol 3-kinase cascade involved in insulin receptor signalling" .
+<http://purl.obolibrary.org/obo/GO_0022890> <http://www.geneontology.org/formats/oboInOwl#hasAlternativeId> "GO:0015077" .
+_:Nde0c0b1e4af14db29fcf4910ee7efabd <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/GO_0021714> .
+<http://purl.obolibrary.org/obo/GO_0017141> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Na60c28ee2cfc4ac1a7b73829c3399e90 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:mah" .
+<http://purl.obolibrary.org/obo/GO_0051387> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0051387" .
+_:N329cabd5102c4468a09f2bbadd516d00 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:tb" .
+<http://purl.obolibrary.org/obo/GO_0071414> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0071414" .
+_:N2622ecc1137c410c99eea18f8d84a020 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:pz" .
+_:Nf9e0b98c9fb344019ab459ddcbbc2d20 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> .
+_:Ndbb74402c95c4e79927c26266a5acee4 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0102995> .
+_:N79181e6a93d14b14998d7a46e8198c2a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_1990927> <http://purl.obolibrary.org/obo/IAO_0000115> "The process of secretion by a cell that results in the release of intracellular molecules contained within a lysosome by fusion of the vesicle with the plasma membrane of a cell, induced by a rise in cytosolic calcium-ion levels." .
+_:Nd58443125f8c4ec1b9c22c6aa0a692df <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_1903694> <http://www.geneontology.org/formats/oboInOwl#id> "GO:1903694" .
+_:Nbc98a43c285d4a3d8653e8aaa4ad20c6 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:mtg_mpo" .
+<http://purl.obolibrary.org/obo/GO_1904593> <http://www.w3.org/2000/01/rdf-schema#label> "prostaglandin binding" .
+<http://purl.obolibrary.org/obo/GO_0017048> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://purl.obolibrary.org/obo/GO_0000394> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0008380> .
+<http://purl.obolibrary.org/obo/GO_0071662> <http://purl.obolibrary.org/obo/IAO_0000115> "Any process that stops, prevents, or reduces the frequency, rate, or extent of production of granzyme B." .
+_:N338b11d6db8a45faaadd5ef44a3c5009 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:TermGenie" .
+_:N66c3bd98f68541aeb76f7f9cf0d5fd55 <http://www.w3.org/2002/07/owl#annotatedTarget> "OBSOLETE. Any process that modulates the frequency, rate or extent of transforming growth factor beta3 activation." .
+<http://purl.obolibrary.org/obo/GO_1902110> <http://www.geneontology.org/formats/oboInOwl#id> "GO:1902110" .
+<http://purl.obolibrary.org/obo/GO_0070882> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<http://purl.obolibrary.org/obo/GO_0050021> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "L-arabinono-1,4-lactone lactonohydrolase activity" .
+<http://purl.obolibrary.org/obo/GO_0150079> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0050728> .
+<http://purl.obolibrary.org/obo/GO_1904320> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "upregulation of smooth muscle contraction involved in urination" .
+<http://purl.obolibrary.org/obo/GO_0051726> <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym> "arrest of mitotic cell cycle progression" .
+_:Na694d6a6e99044e6a1f9d736025e8a3f <http://www.w3.org/2002/07/owl#annotatedTarget> "Reactome:R-HSA-1433506" .
+<http://purl.obolibrary.org/obo/GO_0044706> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+<http://purl.obolibrary.org/obo/GO_0045706> <http://purl.obolibrary.org/obo/IAO_0000115> "Any process that activates or increases the frequency, rate or extent of salivary gland determination." .
+<http://purl.obolibrary.org/obo/GO_0004722> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:3.1.3.16" .
+<http://purl.obolibrary.org/obo/GO_0046389> <http://purl.obolibrary.org/obo/IAO_0000115> "The chemical reactions and pathways involving deoxyribose 5-phosphate, the phosphorylated sugar 5-phospho-2-deoxyribose." .
+_:Naaaea795c0ab4c7182d769243d9e62e6 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:mtg_sensu" .
+_:N415444a09ac747bda73886ac13e481ca <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0060751> .
+<http://purl.obolibrary.org/obo/GO_1905753> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "up regulation of argininosuccinate synthetase activity" .
+_:Nb93493f31c3a4791adf05634ad983d4b <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+<http://purl.obolibrary.org/obo/GO_0014049> <http://www.w3.org/2000/01/rdf-schema#label> "positive regulation of glutamate secretion" .
+_:N2b7c71d79b224a4a852b6521ec869fe4 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:bf" .
+_:N5ca113abba3c466e94e5ee2680df3a6e <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002212> .
+_:Na4bfe26ecfd94245ae5095ed50dd16b0 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> .
+_:Naa166e574e054f22affab68c43fc5d7d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_1901361> <http://www.geneontology.org/formats/oboInOwl#id> "GO:1901361" .
+_:N7414c9fe12ba417f90c1a18ff2c13ae3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0070121> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N65935b1508e94623a9a261a234e8e355 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:TermGenie" .
+_:Nf6a462e60e3543d095ce7eade95fcabb <http://www.w3.org/2002/07/owl#annotatedTarget> "downregulation of cellular response to hypoxia" .
+<http://purl.obolibrary.org/obo/GO_0004051> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N35eb0c8f250c46cab7691d47a4a562df <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:mah" .
+_:Nb84aefef01244868a8f7dd4825cb982f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nf51cb8de6adc48139bab9d8ee2156356 <http://www.w3.org/2002/07/owl#annotatedTarget> "The directed import of zinc(2+) from the cytosol, across an organelle membrane, into a mitochondrion." .
+<http://purl.obolibrary.org/obo/GO_0102375> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0102375" .
+_:N9ab5ef791c8c4f4995c0cc37c4350582 <http://www.w3.org/2002/07/owl#annotatedTarget> "Catalysis of the reaction: phenylthioacetohydroximate + UDP-D-glucose = desulfoglucotropeolin + UDP." .
+<http://purl.obolibrary.org/obo/GO_0060900> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0048646> .
+<http://purl.obolibrary.org/obo/GO_0004428> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "inositol/phosphatidylinositol kinase activity" .
+_:N04699195705248b7b941d838083c89f1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N3e317f0fbc1d4b48908c46d49bff9a60 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N8644f99facfe43e182d42dbe91227bf9 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0004549> .
+_:Na8a7c73ff9654d849029eeb185f3c95d <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> .
+_:Na6cb0ff071354ebcb2bf873424343f80 <http://www.w3.org/2002/07/owl#intersectionOf> _:N28b5779c76d3425580f8946828b9a984 .
+<http://purl.obolibrary.org/obo/GO_0003306> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2009-10-22T12:26:07Z" .
+_:Nb8f9767b696d4435acbd1a68a9d84038 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N121735f8c3e24ca2847c6e329ec44aa5 <http://www.w3.org/2000/01/rdf-schema#label> "JAK2 Autophosphorylates in Response to Leptin" .
+<http://purl.obolibrary.org/obo/GO_0030598> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0030598" .
+<http://purl.obolibrary.org/obo/GO_0140972> <http://www.geneontology.org/formats/oboInOwl#created_by> "pg" .
+<http://purl.obolibrary.org/obo/GO_0072076> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nd64bde1d616847e4a45b15c31a819ad5 .
+<http://purl.obolibrary.org/obo/GO_0002426> <http://purl.obolibrary.org/obo/IAO_0000115> "The synthesis and release of immunoglobulin in the mucosal tissue." .
+<http://purl.obolibrary.org/obo/GO_1902255> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "upregulation of intrinsic apoptotic signaling pathway by p53 class mediator" .
+<http://purl.obolibrary.org/obo/GO_0044785> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2013-05-02T13:11:28Z" .
+_:Ne91ed2d194e84d4399c4536e69272a87 <http://www.w3.org/2002/07/owl#annotatedTarget> "OBSOLETE. (Was not defined before being made obsolete)." .
+<http://purl.obolibrary.org/obo/GO_0052698> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0006577> .
+<http://purl.obolibrary.org/obo/GO_1903549> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "up regulation of growth hormone activity" .
+_:Nfbff9379883f455d819f387ac6527dce <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0003986> .
+_:N5f160fd9c362488fba37e3ae94564bd8 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0047598> .
+<http://purl.obolibrary.org/obo/GO_0071503> <http://purl.obolibrary.org/obo/IAO_0000115> "Any process that results in a change in state or activity of a cell or an organism (in terms of movement, secretion, enzyme production, gene expression, etc.) as a result of a heparin stimulus." .
+<http://purl.obolibrary.org/obo/GO_0034775> <http://www.w3.org/2000/01/rdf-schema#comment> "Note that this term is not intended for use in annotating lateral movement within membranes." .
+_:N6b7021d090ec4a4ba7e6d2c02c70a73d <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N3bd301da35fd452b98e931e9d4d89487 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:N53fea637578a40d3b9d490320b33d6d6 .
+<http://purl.obolibrary.org/obo/GO_0005893> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "cellular_component" .
+<http://purl.obolibrary.org/obo/GO_1900185> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_1900183> .
+_:Nf215b1a9ba814a958e499d2ac821cf08 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0007155> .
+<http://purl.obolibrary.org/obo/GO_1904684> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_1905049> .
+<http://purl.obolibrary.org/obo/GO_0015141> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0015141" .
+<http://purl.obolibrary.org/obo/GO_1903966> <http://www.geneontology.org/formats/oboInOwl#created_by> "pr" .
+<http://purl.obolibrary.org/obo/GO_0060537> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0009888> .
+_:N99dfef1520b6466fb770de77d63c9e1d <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+<http://purl.obolibrary.org/obo/GO_0033387> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0033387" .
+_:N2d26d8dcd777467db692b2909cda30f4 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0004360> .
+_:N54695533d4394d55b7ee68b9b8815a1f <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> .
+_:Ne7e36f7400164425a250034f457b8866 <http://www.w3.org/2002/07/owl#annotatedTarget> "Binds to and modulates the activity of a sodium channel." .
+<http://purl.obolibrary.org/obo/GO_0042113> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+_:Naec2da07e68044dd82a28cb10ca38cda <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:4.1.1.8" .
+_:N462f2e333935470d8a41ddbf0ade4e52 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1901988> .
+_:Nc78a7f52774c424f8e8c16c47f6f7c83 <http://www.w3.org/2002/07/owl#annotatedTarget> "retrograde transport vesicle" .
+_:N702c86581b0c48489e45f20294c6426e <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> .
+_:N781028d1ce254e49b90d2e50d309f72a <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_0018428> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0018427> .
+_:Nd355093bcdca4931a4a8a051a1bc3a2d <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1901291> .
+<http://purl.obolibrary.org/obo/GO_0039502> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2011-05-11T04:06:28Z" .
+_:Nfe6f26c6c3b04a47a5e1a94bc40557f7 <http://www.w3.org/2002/07/owl#intersectionOf> _:N0ebe17b967c6481c9dc2764b5ab40a4e .
+_:Nfa2e7f4259fa4479ba4e14bbd4aa03a3 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:1.18.6.1" .
+<http://purl.obolibrary.org/obo/GO_1905590> <http://purl.obolibrary.org/obo/IAO_0000115> "A process that is carried out at the cellular level which results in the assembly, arrangement of constituent parts, or disassembly of a fibronectin fibril." .
+_:N17208c0149ff4eebb11b754234b0ca46 <http://www.w3.org/2002/07/owl#annotatedTarget> "A process that modulates short-term neuronal synaptic plasticity, the ability of neuronal synapses to change in the short-term as circumstances require. Short-term neuronal synaptic plasticity generally involves increasing or decreasing synaptic sensitivity." .
+<http://purl.obolibrary.org/obo/GO_0004108> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "citrate synthetase activity" .
+_:N4c7da9fa407640338f7d5b92f7345045 <http://www.w3.org/2002/07/owl#annotatedTarget> "adipose cell proliferation" .
+_:Na50d25d70a0d4e73814d73b6d2841776 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1902372> .
+_:Nb5dc4ee9c8794c738e5893a55aef32d4 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1904493> .
+_:Nd8904be0f8a74c34a4a501da6282a409 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0120340> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "cellular_component" .
+_:Nedaabbbb0e55410d881590d2b7f72595 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:TermGenie" .
+<http://purl.obolibrary.org/obo/GO_1903125> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N695711652794416e82450968a4fd4ed1 .
+<http://purl.obolibrary.org/obo/GO_0160020> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N8ccb78ada70943d0a2607111614d7278 .
+<http://purl.obolibrary.org/obo/GO_2000949> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_2000948> .
+_:N13a2bb4866464b739d6d8f9ca0445af1 <http://www.w3.org/2002/07/owl#annotatedTarget> "positive regulation of protein localisation to cell tip" .
+_:Na7f3c95549c546ad86ab460bd18f02d5 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_2000526> .
+_:N66ef9c1693d348309117f9d84b76b5bc <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N8d6f33f88d6e4dcba0d04e91baefb0fc <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/GO_0050852> .
+<http://purl.obolibrary.org/obo/GO_0034829> <http://purl.obolibrary.org/obo/IAO_0000233> "https://github.com/geneontology/go-ontology/issues/28261"^^<http://www.w3.org/2001/XMLSchema#anyURI> .
+_:N2e4ba59b84a04779bc5f9a7a05307d2d <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0046429> .
+_:Nfc3d0731e1c94dee8185a05a5593cf76 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:N7e559aa948d24786bfb4f2b5bbad904a .
+_:Nfb4c7857ac4b44ee87624ec2f0dd49d9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<http://purl.obolibrary.org/obo/GO_1904197> <http://www.w3.org/2000/01/rdf-schema#label> "positive regulation of granulosa cell proliferation" .
+_:N886beef518674897bb10625a5d7fd785 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "VZ:1953" .
+<http://purl.obolibrary.org/obo/GO_0002609> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N8434b066163c4b648fea0df3b1f198c9 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0038030> .
+<http://purl.obolibrary.org/obo/GO_1904530> <http://www.geneontology.org/formats/oboInOwl#id> "GO:1904530" .
+<http://purl.obolibrary.org/obo/GO_0000245> <http://purl.obolibrary.org/obo/IAO_0000115> "The aggregation, arrangement and bonding together of a spliceosomal complex, a ribonucleoprotein apparatus that catalyzes nuclear mRNA splicing via transesterification reactions." .
+<http://purl.obolibrary.org/obo/GO_1904272> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2015-05-29T13:39:27Z" .
+<http://purl.obolibrary.org/obo/GO_0015613> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0015613" .
+_:N658c1c7813f04876a70460dcca8e3433 <http://www.w3.org/2002/07/owl#annotatedTarget> "Any process that stops, prevents or reduces the frequency, rate or extent of establishment of the localization of a protein-containing macromolecular complex to a telomere." .
+<http://purl.obolibrary.org/obo/GO_0047696> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "beta-ARK" .
+<http://purl.obolibrary.org/obo/GO_1900976> <http://www.geneontology.org/formats/oboInOwl#created_by> "tt" .
+_:N47cd564143614962b3b2ff2638d2e7ee <http://www.w3.org/2000/01/rdf-schema#label> "AUF1:mRNA complex is destroyed" .
+_:N1a5c7d0c7de84ea38816f086bcb4deff <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Nfbfd4e8d13d3497e8c0072389be2c56c .
+<http://purl.obolibrary.org/obo/GO_0006568> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "Wikipedia:Tryptophan" .
+_:Nd3da1e0c5c7d4d799ed7b62d0be63bbf <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:TermGenie" .
+<http://purl.obolibrary.org/obo/GO_0035288> <http://www.w3.org/2000/01/rdf-schema#comment> "See also the fly_anatomy.ontology term 'procephalic segment ; FBbt:00000007' and its children." .
+_:Nf36f818710494c1dbc15b88045c7448a <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N1914e07286334d0b9368f328451533be <http://www.w3.org/2002/07/owl#annotatedTarget> "Catalysis of the reaction: (2E,6E,10E)-geranylgeraniol + ATP = (2E,6E,10E)-geranylgeranyl phosphate + ADP + H+." .
+<http://purl.obolibrary.org/obo/GO_0035042> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<http://purl.obolibrary.org/obo/GO_0047244> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:2.4.1.187" .
+_:Nc3ed9b70ba83405c9f5d80b862df7de5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:N331f805cbf3d4c73ad1f8a5dc8998244 <http://www.w3.org/2002/07/owl#annotatedTarget> "Any process that results in a change in state or activity of a cell or an organism (in terms of movement, secretion, enzyme production, gene expression, etc.) as a result of a ximelagatran stimulus." .
+<http://purl.obolibrary.org/obo/GO_0031290> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+_:N524d5b8961cd41f4a65fbc23a5fbbb99 <http://www.w3.org/2002/07/owl#annotatedTarget> "negative regulation of type IV fimbriae biogenesis" .
+<http://purl.obolibrary.org/obo/GO_0010134> <http://www.w3.org/2002/07/owl#equivalentClass> _:N65926dbd0e9e43cf981c55ca9dd80170 .
+_:N1101d789075f428fad13776658d53590 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N7a998212b3c24e84bd5f4bb2f1d0d558 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_2000525> <http://www.geneontology.org/formats/oboInOwl#created_by> "ebc" .
+_:N65ee87e0bfb046fdbbf2bfe2bffd29bf <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002211> .
+<http://purl.obolibrary.org/obo/GO_0021537> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+<http://purl.obolibrary.org/obo/GO_0043802> <http://www.w3.org/2000/01/rdf-schema#label> "hydrogenobyrinic acid a,c-diamide synthase (glutamine-hydrolysing) activity" .
+_:Nfc2ceee25d9e4680a3d08bbec3d3b864 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0042574> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://purl.obolibrary.org/obo/GO_0052091> <http://www.w3.org/2000/01/rdf-schema#label> "modulation of nutrient release by host" .
+_:N067a2e0824b74d35a89ef8d0af82e485 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:PARL" .
+<http://purl.obolibrary.org/obo/GO_1900858> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:N23f22e40e01340c38359934b69708b6c <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_1905384> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://purl.obolibrary.org/obo/GO_0001652> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "NIF_Subcellular:sao1217793903" .
+<http://purl.obolibrary.org/obo/GO_1905867> <http://www.geneontology.org/formats/oboInOwl#created_by> "sl" .
+_:N85c9d4a3f0b44975954aa3a27b688e59 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0030397> .
+_:Nd2e058a16bb14f40b36db1edcc8c8756 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0102422> .
+_:N0a19a80995714ad1af76d49ef611914b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0045013> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0045990> .
+_:N8a36bec5205440d88c16faf4798bb984 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N72f139828d10454da24022e43bde2f32 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PMID:15983049" .
+_:N51484e975baa41caa96a1194c91ae556 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0006302> .
+_:N3e5f169d25c3467a80a94e1bce7a0ba8 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_0051245> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/GO_0010185> .
+_:N238b7b66f0364534b71eff9992ef4c61 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/GO_2001095> .
+_:N6686a6d0137f4866bbe7d274f20f1436 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nf8a72b92541e402dadb2bdc2e3facc2d <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:cjm" .
+_:N7680d007c7bf4fe2b93408f83508bee0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N76e696c2b22143fa96242939e0ee3ca4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:N9b6aa219268b4e998b00ada7636f4599 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_0016743> <http://www.w3.org/2000/01/rdf-schema#label> "carboxyl- or carbamoyltransferase activity" .
+_:Nfd045a9775764761918b03b00a085920 <http://www.w3.org/2002/07/owl#annotatedTarget> "Kdo2-lipid A biosynthesis" .
+_:N65c8196de5b8430fa08ab696e2be4137 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N63a2dfbe949947c5a6661ce2310f54c5 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:2.7.1.113" .
+<http://purl.obolibrary.org/obo/GO_0140006> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "molecular_function" .
+_:Nf1be2684d9b6456187909bcd6f261948 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0018713> .
+<http://purl.obolibrary.org/obo/GO_0009376> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "cellular_component" .
+_:N3b487c6a310b488c861aa8a3b49bbee4 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_0001805> <http://www.w3.org/2000/01/rdf-schema#label> "positive regulation of type III hypersensitivity" .
+<http://purl.obolibrary.org/obo/GO_0102806> <http://www.w3.org/2000/01/rdf-schema#label> "obsolete 4-coumaroyl-CoA:cyanidin-3,5-diglucoside-6''-O-acyltransferase activity" .
+_:Nb10250684c11452a9b305aa953c95f71 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0033989> .
+_:N77dd402e2eb14d669f224ba8a814c643 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_1902249> <http://www.w3.org/2000/01/rdf-schema#label> "IMP binding" .
+_:N2177f31bae464632b72c87b1bae9b208 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0045303> .
+_:N9ce650ed9a2640f58e8bab4f07a5fdfc <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N8e1e88b31fb34d76a87022d2aa33105f <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:jid" .
+<http://purl.obolibrary.org/obo/GO_0032830> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0032830" .
+<http://purl.obolibrary.org/obo/GO_0047130> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://purl.obolibrary.org/obo/GO_0050627> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:1.8.1.15" .
+<http://purl.obolibrary.org/obo/GO_1905332> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Na0d3511bee564808a0696d5082a18c80 .
+<http://purl.obolibrary.org/obo/GO_0005695> <http://www.geneontology.org/formats/oboInOwl#consider> <http://purl.obolibrary.org/obo/GO_0005694> .
+<http://purl.obolibrary.org/obo/GO_0035879> <http://purl.obolibrary.org/obo/IAO_0000115> "The directed movement of lactate across a plasma membrane." .
+<http://purl.obolibrary.org/obo/GO_0051236> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0051236" .
+_:N292072f84aa84110a28bbd69c03c3d1f <http://www.w3.org/2002/07/owl#annotatedTarget> "phage genome ejection" .
+_:N395067b3a83748899ebb27d3ab9883ea <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:rb" .
+_:Nd43026bb71704ec29cb10a4110f72ceb <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/GO_0034220> .
+<http://purl.obolibrary.org/obo/GO_0140707> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2021-09-02T06:18:21Z" .
+<http://purl.obolibrary.org/obo/GO_0046082> <http://www.w3.org/2000/01/rdf-schema#comment> "This term was obsoleted because itis redundant with DNA methylation-dependent heterochromatin formation ; GO:0006346 or its children." .
+_:Nad82b81bfbe04677a1e081dd3969cbaf <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/GO_0001836> .
+_:Nac1f4e0a33b4417eb0977dae414a181f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N0c10f2cbef0b4c2c936df365d0174503 <http://www.w3.org/2002/07/owl#annotatedTarget> "downregulation of hydrogen peroxide-mediated cell death" .
+_:Na322b6315ba54c7f98f2d850a04a2313 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:N57f1c4d3c3fc41a8a1bdeb59f03a405f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N29e32876c8104816b4680bd5d74f92a6 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:mah" .
+_:N5f81c8775de24c719136a96298be326b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<http://purl.obolibrary.org/obo/GO_1905366> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "negative regulation of endosome membrane budding" .
+_:N8561d7574b7d44abaf3eef89ed673bd8 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0060532> .
+_:Nbcfd70fb42fd452dbc8bbd26fa7cd3f1 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:Ned0394514238444f89eebe720cc5ac40 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nca165443067f4a099ab69fd380214bc4 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PMID:23885323" .
+_:Nd66c62933ba54033b13967410f957582 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0047001> .
+<http://purl.obolibrary.org/obo/GO_0052508> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+<http://purl.obolibrary.org/obo/GO_0009846> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Ne1e55bdeeeac4a8f95a305171ed19213 .
+_:Ne37ef0d3ebaf47b1b087449e2af6758b <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:TermGenie" .
+_:N0f12451f5da14b8ea767d79be257d948 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N401e90c6072c4b0abf1ee3d635c3cb94 .
+<http://purl.obolibrary.org/obo/GO_0042683> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N397a036c74114711bf042ba682461436 .
+_:Nc4f98010b0ac4e67a01c48a422e917d8 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_0018182> <http://www.w3.org/2000/01/rdf-schema#comment> "This term was obsoleted because it represents a molecular function." .
+_:N604c3e5288c64350bdc6354e88b67732 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1903324> .
+_:Ncb0224b4100045d993830f691e55b156 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N9e5d02c75ef84cdba8a8fc74cfd6bf7b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N0607d37b537c4afd974268b51c94415e <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:go_curators" .
+_:N513dd90179764634a677e9789035df1e <http://www.w3.org/2002/07/owl#annotatedTarget> "positive regulation of UDP-glucuronate beta-D-glucuronosyltransferase (acceptor-unspecific)" .
+_:Nd1026aad584748b5b1c0b875e874044b <http://www.w3.org/2002/07/owl#annotatedTarget> "regulation of C-terminal protein geranylgeranylation" .
+<http://purl.obolibrary.org/obo/GO_0004866> <http://www.w3.org/2000/01/rdf-schema#label> "endopeptidase inhibitor activity" .
+<http://purl.obolibrary.org/obo/GO_0007155> <http://www.geneontology.org/formats/oboInOwl#inSubset> <http://purl.obolibrary.org/obo/go#goslim_candida> .
+<http://purl.obolibrary.org/obo/GO_0000302> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "response to active oxygen species" .
+_:Nd0e85b20e0734b71bdbd998cff4dbf45 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N25fe3f6a6de546e7921e3f5c3af5f548 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Ndaa597a912e34069ab637f50a856940a <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:ai" .
+_:Ne41e702716564d49a61dee510855770a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N43eb159fd1b84a82b8997e10c913d944 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0018553> .
+<http://purl.obolibrary.org/obo/GO_0140725> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2021-11-18T09:03:32Z" .
+<http://purl.obolibrary.org/obo/GO_0033521> <http://purl.obolibrary.org/obo/IAO_0000115> "The chemical reactions and pathways resulting in the formation of phytyl diphosphate, (2E)-3,7,11,15-tetramethylhexadec-2-en-1-yl trihydrogen diphosphate." .
+_:Ncb89d8e3700e4f928384104f434ad8e5 <http://www.w3.org/2000/01/rdf-schema#label> "Elongation of arachidonyl-CoA to docosatetraenoyl-CoA" .
+_:N8272ef88ecd747c1bc182a404257cea9 <http://www.w3.org/2000/01/rdf-schema#label> "CYP17A1 cleaves 17aHPROG to ANDST" .
+<http://purl.obolibrary.org/obo/GO_0033293> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "molecular_function" .
+_:N2de4f568ab11496aa5aabd838fad476a <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N7cd75f1d02664d78b92edfb3881992cf <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:3.1.4.46" .
+_:N7cc75cef232b43aa8e01bc870e8a8acc <http://www.w3.org/2002/07/owl#intersectionOf> _:N50d555ed809c494fa25e6c971a5fd983 .
+_:N1fdcf1e77b474b09ad73e3a564f430fd <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PMID:22751661" .
+<http://purl.obolibrary.org/obo/GO_0051949> <http://purl.obolibrary.org/obo/IAO_0000115> "Any process that stops, prevents, or reduces the frequency, rate or extent of the directed movement of gamma-aminobutyric acid (GABA, 4-aminobutyrate) into a neuron or glial cell." .
+<http://purl.obolibrary.org/obo/GO_0018535> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "nicotine:acceptor 6-oxidoreductase (hydroxylating)" .
+<http://purl.obolibrary.org/obo/GO_1901881> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "up regulation of protein polymer catabolism" .
+<http://purl.obolibrary.org/obo/GO_0034255> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "regulation of urea metabolism" .
+<http://purl.obolibrary.org/obo/GO_0016497> <http://www.geneontology.org/formats/oboInOwl#id> "GO:0016497" .
+_:N3126f29ef67649dd9df4b7548bc92bf2 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:Nc572741b08cc4352951b4f64accc4c04 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> .
+_:N02e464af0a0946fcb5f0a9bfdd855f0e <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym> .
+_:N2f69bd445d4e44339ac78a4a41d65405 <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002213> .
+_:N65f14051b4294b1a8168cc3655935c9c <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/GO_1900881> .
+<http://purl.obolibrary.org/obo/GO_0018683> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "camphor hydroxylase activity" .
+_:N1683216937b7442d83d62f44191e35d2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0045135> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:4.2.2.3" .
+<http://purl.obolibrary.org/obo/GO_0044617> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2012-07-04T01:55:37Z" .
+<http://purl.obolibrary.org/obo/GO_0046058> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "adenosine 3',5'-cyclophosphate metabolic process" .
+_:N7d9956c1b25d475fba4707acf18f249f <http://www.w3.org/2002/07/owl#annotatedTarget> "negative regulation of protein localisation in cell leading edge" .
+_:Nc3df09e4b8234c3fbcbc26e46516c5d6 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:3.2.1.151" .
+_:Nf2441d29f7e6454da92d74f7fef54f6f <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> .
+_:Ne458d6acb85240b1be506c2002defdbe <http://www.w3.org/2002/07/owl#annotatedTarget> "down-regulation of hexokinase type IV (glucokinase) activity" .
+_:N989b7355702e4f6a933c0b3a82667ed9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N6eec908d98584a35bffd3221dec4b793 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0051436> .
+_:Ncc26aa06f4c14ab8be8c74e0134dab3c <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nbc40979f86c945c78f87472638e0e825 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:pj" .
+_:N57ac7742d57846fda86ab3a4eb86eb14 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N3bfaadfa8c734faead01f4720ef54037 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym> .
+<http://purl.obolibrary.org/obo/GO_0070448> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "S-adenosyl-L-methionine:myricetin O-methyltransferase activity" .
+_:N5fc5c9953f694ff0b0d028b2ec47f5e8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0019234> <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive a fast pain stimulus, convert it to a molecular signal, and recognize and characterize the signal. This is a neurological process. Fast pain is often subjectively described as a sharp or stabbing pain; in humans, the signals from a fast pain stimulus are perceived and relayed along myelinated A-delta fibers to the central nervous system, reaching their target in about 0.1 seconds." .
+_:Ncdc3fbaf2c374443a12ccf539005bc78 <http://www.w3.org/2002/07/owl#annotatedTarget> "Catalysis of the reaction: ATP + deoxyribonucleotide(n) + deoxyribonucleotide(m) = AMP + diphosphate + deoxyribonucleotide(n+m)." .
+<http://purl.obolibrary.org/obo/GO_0070708> <http://www.w3.org/2000/01/rdf-schema#label> "RNA cytidine insertion" .
+_:N35a9da4c55f44783ad3482050847f8cf <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N4982a9a3fd3f47dfb5b68755a4053cf9 <http://www.w3.org/2002/07/owl#annotatedTarget> "inhibition of virion attachment, binding of host cell surface receptor" .
+<http://purl.obolibrary.org/obo/GO_0018176> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:N68cd2fbeb8a24bc480582f6d1b05f780 <http://www.w3.org/2002/07/owl#annotatedTarget> "neuron process extension involved in neuron projection guidance" .
+_:Nae57ce839fab45559c104ca5f6295644 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1902800> .
+<http://purl.obolibrary.org/obo/GO_0010304> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+_:N9e486cb03a8b4ff3b450378ed8ac3356 <http://www.w3.org/2002/07/owl#annotatedTarget> "OBSOLETE. The incorporation of iron into an L-cysteinyl diiron subcluster, found in Fe-hydrogenase." .
+<http://purl.obolibrary.org/obo/GO_0002393> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+<http://purl.obolibrary.org/obo/GO_1990088> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2013-05-06T15:07:20Z" .
+_:Nfe30e11a89b440f3a0f4ba37f726932c <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_0014709> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process" .
+<http://purl.obolibrary.org/obo/GO_0043406> <http://www.geneontology.org/formats/oboInOwl#inSubset> <http://purl.obolibrary.org/obo/go#gocheck_obsoletion_candidate> .
+<http://purl.obolibrary.org/obo/GO_1905125> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "up-regulation of glucocerebrosidase activity" .
+_:N1b608cb3719d4e9392755bd2f5d4d20e <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:aruk" .
+<http://purl.obolibrary.org/obo/GO_0047087> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "protopine 6-hydroxylase activity" .
+_:N1d9a0d6ad7a3495cb7cd789132d0fa28 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_1903208> .
+_:Nd8113bcecf28408bb8a9370b349df791 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N5270acb887da415aa7feac0ee0d00c27 <http://www.w3.org/2002/07/owl#annotatedTarget> "up regulation of BMP signaling pathway involved in lateral mesoderm left/right asymmetry determination" .
+_:Nd9bc4aca03d94364aae63bee76d8ff22 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Ndcb514ea2df344a7a9ddb6722fa41b42 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/GO_0006573> <http://purl.obolibrary.org/obo/IAO_0000115> "The chemical reactions and pathways involving valine, 2-amino-3-methylbutanoic acid." .
+_:Nb4d5da3f93ea4225bc759be0980d3d26 <http://www.w3.org/2002/07/owl#annotatedTarget> "A process that is carried out at the cellular level which results in the assembly, arrangement of constituent parts, or disassembly of the membrane surrounding a synaptic vesicle." .
+<http://purl.obolibrary.org/obo/GO_1900870> <http://www.geneontology.org/formats/oboInOwl#creation_date> "2012-06-12T04:44:19Z" .
+_:Nb30f4bdf75b84db6b35d91bdf0cde1fd <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N3d66668932614db1b2c6428109cd86c3 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "GOC:TermGenie" .
+<http://purl.obolibrary.org/obo/GO_1903893> <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym> "positive regulation of ATF6-beta UPR branch" .
+<http://purl.obolibrary.org/obo/GO_0003995> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "molecular_function" .
+_:Nce6275b45b3e4912a1215de89c6bc4d8 <http://www.w3.org/2002/07/owl#annotatedTarget> "Any process that modulates the frequency, rate or extent of orcinol biosynthetic process." .
+_:N5778df999ec34e2293b57122c012860b <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PMID:22761594" .
+<http://purl.obolibrary.org/obo/GO_2000899> <http://www.geneontology.org/formats/oboInOwl#id> "GO:2000899" .
+_:N607d48c034ed49b6b2d00c121dccc42f <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/GO_0007346> .
+<http://purl.obolibrary.org/obo/GO_0035787> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N3af6138dab1d467da9da5887c21f7794 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PMID:25212395" .
+_:N1016a05f15bb4f9a9d2c5f3f4b691d85 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "EC:3.1.25.1" .
+<http://purl.obolibrary.org/obo/GO_0030811> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nc21b1f967d70417589f94acf70477e25 .
+<http://purl.obolibrary.org/obo/GO_1902529> <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym> "negative regulation of M1 linkage" .
+_:N2b4f19c8dd6d4583a4318d6df5a66553 <http://www.w3.org/2002/07/owl#annotatedTarget> "Binding to a type 4 proteinase activated receptor." .
+_:Nca7c0d0151be46e6a913914697d10d97 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/GO_1902949> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "positive regulation of cdk5/p20" .
+<http://purl.obolibrary.org/obo/GO_0106347> <http://www.geneontology.org/formats/oboInOwl#created_by> "hjd" .
+<http://purl.obolibrary.org/obo/GO_1901852> <http://www.w3.org/2000/01/rdf-schema#label> "7,8-didemethyl-8-hydroxy-5-deazariboflavin biosynthetic process" .
+_:N825d0ae704034536a5e525aa69b380b9 <http://www.w3.org/2002/07/owl#annotatedTarget> "OBSOLETE. The formation of a protein-phosphoribosyl dephospho-coenzyme A linkage via O-(phosphoribosyl dephospho-coenzyme A)-L-serine." .
