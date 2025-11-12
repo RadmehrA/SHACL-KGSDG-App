@@ -93,6 +93,10 @@ def factorize_and_initialize_vae(file_path, latent_dim=64):
 loaded_models = {}
 
 # ------ VAE Save/Load Functions ------
+<<<<<<< HEAD
+=======
+
+>>>>>>> 00bb4cf (Second_edition)
 # Path to store models persistently (using the mounted directory in Docker)
 MODEL_DIR = "/app/uploaded/vae"  # This points to the uploaded directory inside the container
 

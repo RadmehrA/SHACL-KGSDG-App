@@ -22,7 +22,7 @@ import torch
 from models.gan_model import factorize_and_initialize_gan, generate_synthetic_data, save_model, load_model, train_gan,  Generator, Discriminator, factorize_and_initialize_gans
 from pydantic import BaseModel
 from typing import Dict, Any, Union, List
-from models.distribution_helpers import generate_normal_distribution, generate_uniform_distribution, generate_skewed_distribution
+from models.distribution_helpers import generate_normal_distribution, generate_uniform_distribution, generate_skewed_distribution, extract_distribution_info
 from models.vae_generator import generate_data_vae_model, factorize_and_initialize_vae, train_vae, save_vae_model, load_vae_model, load_and_generate_vae_data
 import tempfile
 import pickle
@@ -44,12 +44,25 @@ app.add_middleware(
 # Store the parsed shape map globally
 shape_map_storage = []
 
-# SHACL parsing
-def parse_shacl(file_path):
+from rdflib import Graph, Namespace, RDF, URIRef, BNode
+from typing import List, Dict, Tuple
+
+DIST_NS = "http://example.org/distribution#"
+SH = Namespace("http://www.w3.org/ns/shacl#")
+
+def extract_distribution_info(constraints: List[Dict[str, str]]) -> Dict[str, any]:
+    dist_info = {}
+    for c in constraints:
+        for key, val in c.items():
+            if key.startswith(DIST_NS):
+                short_key = key[len(DIST_NS):]  # e.g., "distribution", "categories", "mean", etc.
+                dist_info[short_key] = val
+    return dist_info
+
+def parse_shacl(file_path: str) -> List[Dict]:
     g = Graph()
     g.parse(file_path, format="turtle")
 
-    SH = Namespace("http://www.w3.org/ns/shacl#")
     shapes = []
 
     for s in g.subjects(RDF.type, SH.NodeShape):
@@ -59,9 +72,11 @@ def parse_shacl(file_path):
             "properties": []
         }
 
+        # Extract target classes
         for target_class in g.objects(s, SH.targetClass):
             shape_map_entry["target_classes"].append(str(target_class))
 
+        # Extract properties and their constraints
         for property in g.objects(s, SH.property):
             property_entry = {"property": str(property), "constraints": []}
             for predicate, value in g.predicate_objects(property):
@@ -69,10 +84,16 @@ def parse_shacl(file_path):
                     property_entry["constraints"].append({str(predicate): str(value)})
                 elif isinstance(predicate, BNode):
                     property_entry["constraints"].append({"BlankNode": str(predicate)})
+
+            # Extract distribution info from constraints
+            property_entry["distribution"] = extract_distribution_info(property_entry["constraints"])
+
             shape_map_entry["properties"].append(property_entry)
 
         shapes.append(shape_map_entry)
+
     return shapes
+
 
 @app.post("/upload_shacl")
 async def upload_shacl(file: UploadFile = File(...)):
@@ -87,17 +108,23 @@ async def upload_shacl(file: UploadFile = File(...)):
 
     return {"message": f"SHACL file uploaded successfully: {file_location}", "shape_map": shape_map_storage}
 
-# Updated helpers
+
+from typing import List, Dict, Tuple
 
 def extract_path_and_datatype(constraints: List[Dict[str, str]]) -> Tuple[str, str]:
     path = None
     datatype = "http://www.w3.org/2001/XMLSchema#string"
+    
     for c in constraints:
         if "http://www.w3.org/ns/shacl#path" in c:
             path = c["http://www.w3.org/ns/shacl#path"]
         if "http://www.w3.org/ns/shacl#datatype" in c:
             datatype = c["http://www.w3.org/ns/shacl#datatype"]
+        elif "http://www.w3.org/ns/shacl#nodeKind" in c and c["http://www.w3.org/ns/shacl#nodeKind"] == "http://www.w3.org/ns/shacl#IRI":
+            datatype = "IRI"
+    
     return path, datatype
+
 
 def get_cardinality(constraints: List[Dict[str, str]]) -> Tuple[int, int]:
     min_count = 1
@@ -897,12 +924,17 @@ loaded_models = {}
 MODEL_DIR = "/app/models/saved_models/vae"
 ttl_dir = "/app/uploaded/vae"
 
+
+from typing import Optional, Dict, Any
+
 class VAEGenerationRequest(BaseModel):
     model_name: str
     subject: str
     predicate: str  # Accept only the part after the last slash
     num_samples: int = 1
-    distribution: str = "normal"
+    distribution: str = "normal"  # For legacy support
+    dist_params: Optional[Dict[str, Any]] = None  # parsed distribution params from SHACL
+
 
 @app.post("/generate_vae")
 async def generate_vae(request: VAEGenerationRequest):
@@ -965,12 +997,23 @@ async def upload_ttl(file: UploadFile = File(...), model_name: str = Form(...)):
         print(f"❌ Error during training: {str(e)}")
         return {"error": str(e)}
 
+# class GenerateRequest(BaseModel):
+#     model_name: str
+#     subject: str
+#     predicate: str
+#     num_samples: int = 1
+#     distribution: Optional[str] = "normal"  # normal, uniform, skewed, categorical
+
+from typing import Optional, Dict, Any
+
 class GenerateRequest(BaseModel):
     model_name: str
     subject: str
     predicate: str
     num_samples: int = 1
     distribution: Optional[str] = "normal"  # normal, uniform, skewed, categorical
+    dist_params: Optional[Dict[str, Any]] = None
+
 
 @app.post("/gan/load-and-generate")
 def load_and_generate_gan_data(request: GenerateRequest):
@@ -990,10 +1033,9 @@ def load_and_generate_gan_data(request: GenerateRequest):
             subject_input=request.subject,
             predicate_input=request.predicate,
             num_samples=request.num_samples,
-            distribution=request.distribution
+            distribution=request.distribution,
+            dist_params=request.dist_params  # <-- pass dist_params here
         )
         return {"generated_objects": results}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error generating data: {str(e)}")
-
-

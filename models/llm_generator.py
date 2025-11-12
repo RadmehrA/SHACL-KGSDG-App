@@ -19,6 +19,8 @@ DATATYPE_MAP = {
     "http://www.w3.org/2001/XMLSchema#boolean": "true/false value",
     "http://www.w3.org/2001/XMLSchema#date": "date (YYYY-MM-DD)",
     "http://www.w3.org/2001/XMLSchema#dateTime": "datetime (YYYY-MM-DDTHH:MM:SS)",
+    "http://www.w3.org/ns/shacl#IRI": "IRI (e.g., http://example.org/resource/123)"
+    
 }
 
 def simplify_key(path: str) -> str:

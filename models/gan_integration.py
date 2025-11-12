@@ -1,7 +1,6 @@
 def generate_data_with_gan(constraints: list, gan_model):
     """Generate data using a GAN model based on SHACL constraints"""
-    # Example GAN-based data generation
-    # For simplicity, the implementation is omitted. Replace this with actual GAN model code.
+    
     generated_data = []
     for constraint in constraints:
         # Use the GAN model to generate data for each constraint

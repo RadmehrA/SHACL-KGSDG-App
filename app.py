@@ -103,22 +103,40 @@ st.sidebar.header("⚙️ Settings")
 # Upload SHACL
 shacl_file = st.sidebar.file_uploader(" Upload SHACL File", type=["ttl", "shacl"])
 available_properties = []
+
+
+
 def render_shacl_tree(shape_map):
+    DATATYPE_MAP = {
+        "http://www.w3.org/2001/XMLSchema#string": "string",
+        "http://www.w3.org/2001/XMLSchema#integer": "integer",
+        "http://www.w3.org/2001/XMLSchema#decimal": "decimal number",
+        "http://www.w3.org/2001/XMLSchema#boolean": "true/false value",
+        "http://www.w3.org/2001/XMLSchema#date": "date (YYYY-MM-DD)",
+        "http://www.w3.org/2001/XMLSchema#dateTime": "datetime (YYYY-MM-DDTHH:MM:SS)",
+        "IRI": "IRI (Internationalized Resource Identifier)"
+    }
+
     for shape in shape_map:
-        # Get the root node (target class)
-        target_class = shape.get("target_classes", ["Unknown"])[0].split("/")[-1]
+        target_class = (shape.get("target_classes") or ["Unknown"])[0].split("/")[-1]
         st.sidebar.markdown(f"### ⊛ {target_class}")
         
         for prop in shape.get("properties", []):
             constraints = {list(c.keys())[0]: list(c.values())[0] for c in prop["constraints"]}
-            path = constraints.get("http://www.w3.org/ns/shacl#path", "unknown")
-            datatype = constraints.get("http://www.w3.org/ns/shacl#datatype", "unknown")
             
-            # Simplify path and datatype display
+            path = constraints.get("http://www.w3.org/ns/shacl#path", "unknown")
+            
+            datatype = constraints.get("http://www.w3.org/ns/shacl#datatype")
+            if not datatype and constraints.get("http://www.w3.org/ns/shacl#nodeKind") == "http://www.w3.org/ns/shacl#IRI":
+                datatype = "IRI"
+            if not datatype:
+                datatype = "http://www.w3.org/2001/XMLSchema#string"
+            
             prop_name = path.split("/")[-1]
-            datatype_name = datatype.split("#")[-1]
+            datatype_name = DATATYPE_MAP.get(datatype, datatype.split("#")[-1] if "#" in datatype else datatype)
             
             st.sidebar.markdown(f"  - `{prop_name}`: *{datatype_name}*")
+
 
 # Fetch saved models using the FastAPI endpoint
 def fetch_saved_models():
@@ -170,14 +188,21 @@ vae_saved_models = requests.get("http://fastapi-backend:8000/models/saved/vae").
 saved_gan_models = [model for model in gan_saved_models if model.lower().endswith("gan")]
 saved_vae_models = [model for model in vae_saved_models if model.lower().endswith("vae")]
 
+import hashlib
 
-for prop in selected_properties:
+def make_streamlit_key(prefix, path):
+    # Use hash to ensure uniqueness and avoid problematic characters
+    hashed = hashlib.md5(path.encode()).hexdigest()
+    return f"{prefix}_{hashed}"
+
+
+for i, prop in enumerate(selected_properties):
     path = prop["path"]
     
-    model_key = f"model_select_{path}"
+    # Use index + path to generate unique keys
+    model_key = make_streamlit_key("model_select", f"{i}_{path}")
     selected_model = st.sidebar.selectbox(f"Model for `{path}`", model_options, key=model_key)
     
-
     if path not in property_model_map:
         property_model_map[path] = {}
 
@@ -185,7 +210,7 @@ for prop in selected_properties:
 
     # Handle GAN selection
     if selected_model == "GAN" and saved_gan_models:
-        gan_model_key = f"gan_model_select_{path}"
+        gan_model_key = make_streamlit_key("gan_model_select", f"{i}_{path}")
         selected_gan_model = st.sidebar.selectbox(
             f"Select saved GAN model for `{path}`",
             ["all"] + saved_gan_models,
@@ -195,7 +220,7 @@ for prop in selected_properties:
 
     # Handle VAE selection
     elif selected_model == "VAE" and saved_vae_models:
-        vae_model_key = f"vae_model_select_{path}"
+        vae_model_key = make_streamlit_key("vae_model_select", f"{i}_{path}")
         selected_vae_model = st.sidebar.selectbox(
             f"Select saved VAE model for `{path}`",
             ["string_vae"] + saved_vae_models,
@@ -203,29 +228,35 @@ for prop in selected_properties:
         )
         property_model_map[path]["name"] = selected_vae_model
 
-
     # Select distribution per property
-    dist_key = f"distribution_select_{path}"
+    dist_key = make_streamlit_key("distribution_select", f"{i}_{path}")
     selected_distribution = st.sidebar.selectbox(f"Distribution for `{path}`", distribution_options, key=dist_key)
     
+    mean_key = make_streamlit_key("mean", f"{i}_{path}")
+    std_key = make_streamlit_key("std", f"{i}_{path}")
+    low_key = make_streamlit_key("low", f"{i}_{path}")
+    high_key = make_streamlit_key("high", f"{i}_{path}")
+    custom_key = make_streamlit_key("custom", f"{i}_{path}")
+
     # Add distribution-specific parameters
     dist_params = {}
     if selected_distribution == "Normal":
-        dist_params["mean"] = st.sidebar.number_input(f"Mean for `{path}`", value=0.0, key=f"mean_{path}")
-        dist_params["stddev"] = st.sidebar.number_input(f"Std Dev for `{path}`", value=1.0, key=f"std_{path}")
+        dist_params["mean"] = st.sidebar.number_input(f"Mean for `{path}`", value=0.0, key=mean_key)
+        dist_params["stddev"] = st.sidebar.number_input(f"Std Dev for `{path}`", value=1.0, key=std_key)
     elif selected_distribution == "Uniform":
-        dist_params["low"] = st.sidebar.number_input(f"Low for `{path}`", value=0.0, key=f"low_{path}")
-        dist_params["high"] = st.sidebar.number_input(f"High for `{path}`", value=1.0, key=f"high_{path}")
+        dist_params["low"] = st.sidebar.number_input(f"Low for `{path}`", value=0.0, key=low_key)
+        dist_params["high"] = st.sidebar.number_input(f"High for `{path}`", value=1.0, key=high_key)
     elif selected_distribution == "Skewed":
-        dist_params["custom_param"] = st.sidebar.text_input(f"Custom Param for `{path}`", key=f"custom_{path}")
-        dist_params["low"] = st.sidebar.number_input(f"Low for `{path}`", value=0.0, key=f"low_{path}")
-        dist_params["high"] = st.sidebar.number_input(f"High for `{path}`", value=1.0, key=f"high_{path}")
+        dist_params["custom_param"] = st.sidebar.text_input(f"Custom Param for `{path}`", key=custom_key)
+        dist_params["low"] = st.sidebar.number_input(f"Low for `{path}`", value=0.0, key=low_key)
+        dist_params["high"] = st.sidebar.number_input(f"High for `{path}`", value=1.0, key=high_key)
 
     # Store the distribution selection and its parameters
     property_distribution_map[path] = {
         "type": selected_distribution,
         "parameters": dist_params
     }
+
 
 
 # Distribution selection for all properties
