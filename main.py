@@ -111,6 +111,9 @@ async def upload_shacl(file: UploadFile = File(...)):
 
 from typing import List, Dict, Tuple
 
+
+from typing import List, Dict, Tuple
+
 def extract_path_and_datatype(constraints: List[Dict[str, str]]) -> Tuple[str, str]:
     path = None
     datatype = "http://www.w3.org/2001/XMLSchema#string"
@@ -924,7 +927,6 @@ loaded_models = {}
 MODEL_DIR = "/app/models/saved_models/vae"
 ttl_dir = "/app/uploaded/vae"
 
-
 from typing import Optional, Dict, Any
 
 class VAEGenerationRequest(BaseModel):
@@ -1013,7 +1015,6 @@ class GenerateRequest(BaseModel):
     num_samples: int = 1
     distribution: Optional[str] = "normal"  # normal, uniform, skewed, categorical
     dist_params: Optional[Dict[str, Any]] = None
-
 
 @app.post("/gan/load-and-generate")
 def load_and_generate_gan_data(request: GenerateRequest):
