@@ -1,36 +1,40 @@
-![App Screenshot](image.jpg)
+# SRDF-GEN: SHACL-based Synthetic Knowledge Graph Generator (SHACL-KGSDG-App)
 
-# Synthetic RDF Data Generator (SRDF-GEN)
+SRDF-GEN is a web-based framework for schema-driven RDF data generation guided by SHACL shapes and ontology structures. It provides a flexible, modular, and reproducible environment for generating synthetic Knowledge Graph (KG) data, enabling benchmarking, privacy-preserving research, and experimentation in the Semantic Web domain.
 
-SRDF-GEN is a web-based framework for schema-driven RDF data generation guided by SHACL shapes and ontology structures. The system supports three generative models—LLM, GAN, and VAE—to produce high-quality RDF triples based on user-defined shapes and distributions.
+Paper Dataset: Example SHACL schemas and generated synthetic data are available at [Zenodo (DOI: 10.5281/zenodo.17497899)](https://zenodo.org/records/17497899)
 
-Paper Dataset and Example SHACL: [Zenodo Record](https://zenodo.org/records/17497899)
+---
 
-## Key Features
+## Table of Contents
 
-- Upload SHACL `.ttl` files to define your data schema
-- Tree-based visualization of target classes and properties
-- Per-property selection of:
-  - Generative model: LLM, GAN, or VAE
-  - Data distribution
-  - Number of samples to generate
-- Download generated data in:
-  - `.ttl` (Turtle)
-  - `.json`
-  - `.json-ld`
-- Uses pretrained GAN/VAE models trained on [DBpedia Core Triples](https://databus.dbpedia.org/dbpedia/collections/latest-core)
-- No training data required from the user
-- Easily extensible to support other knowledge bases like Wikidata
+1. Overview
+2. Architecture
+3. Features
+4. Requirements and Prerequisites
+5. Environment Variables
+6. Local Deployment (Docker Compose)
+7. Using the Application
+8. Demo Video
+9. Deployment on Cloud Platforms
+10. Development Notes
+11. Citing SRDF-GEN
+12. License
 
-## Technologies Used
+---
 
-- FastAPI – Backend API
-- Streamlit – Web UI for interactive input and output
-- PyTorch / TensorFlow – For VAE and GAN model inference
-- SPARQLWrapper, rdflib, PySHACL – For RDF manipulation and validation
-- Docker – Containerized deployment
-- SHACL – Schema constraint definitions
-- GPT API – Used by the LLM model for generating RDF triples
+## Overview
+
+Access to real-world data is often limited by privacy restrictions, data scarcity, and biases. In fields such as healthcare, finance, and scientific research, access is further constrained by ethical and regulatory factors.
+
+SRDF-GEN addresses these challenges by providing a Synthetic RDF Data Generation framework that:
+- Utilizes SHACL shapes to drive RDF schema-aware data generation.
+- Integrates generative backends for realistic and varied data synthesis.
+- Ensures structural validity and semantic consistency with ontologies.
+
+The system enables the generation, evaluation, and export of RDF data for reproducible Semantic Web research.
+
+---
 
 ## Architecture
 
@@ -41,88 +45,154 @@ Core Components:
 
 ![SRDF-GEN Architecture](architecture.png)
 
-## How to Deploy
+---
 
-You can deploy the app locally using Docker Compose, which will spin up:
+## Features
 
-- FastAPI backend
-- Streamlit frontend
-- MongoDB database
+- SHACL2Shape Parser: Automatically converts SHACL schemas into generator-ready shape structures.
+- Subject–Predicate–Object Tokenization: Enables compatibility with LLM and generative models.
+- Pluggable Generative Backends: Extensible integration for LLMs or statistical models.
+- Statistical Distribution Module: Allows fine-grained control over data distributions.
+- RDF & JSON-LD Output: Supports multiple export formats.
+- Web Interface: Simple UI for non-technical users to generate and inspect RDF graphs.
+- MongoDB Integration: Persistent, queryable storage of generated datasets.
 
-### Prerequisites
+---
 
-- Docker
-- Docker Compose
-- Visual Studio Code (recommended)
+## Requirements and Prerequisites
 
-> MongoDB and Docker must be running before building the project.
+| Tool | Version | Description |
+|------|---------|-------------|
+| Docker | >= 20.10 | Containerization engine |
+| Docker Compose | >= 1.29 | Multi-container orchestration |
+| Git | Latest | Clone and manage repository |
+| Python | 3.9+ | Optional, for local development |
 
-### Steps
+---
 
-```bash
-# Clone the repository
+## Environment Variables
+
+Create a `.env` file in the root directory:
+
+```
+# GROQ API Configuration
+GROQ_BASE_URL=https://api.groq.com/v1
+GROQ_API_KEY=your_api_key_here
+
+# MongoDB Connection
+MONGO_URI=mongodb://host.docker.internal:27017/?directConnection=true
+```
+
+These are automatically loaded by `config.py` using `python-dotenv`.
+
+---
+
+## Local Deployment (Docker Compose)
+
+### Clone the repository
+
+```
 git clone https://github.com/RadmehrA/SHACL-KGSDG-App.git
 cd SHACL-KGSDG-App
+```
 
-# Start MongoDB and all services via Docker
+### Create `.env` file
+
+Use the template above.
+
+### Build and start the services
+
+```
 docker-compose up --build
 ```
 
 This will:
-- Build FastAPI and Streamlit services
-- Mount `./models/saved_models` and `./uploaded` into backend container
-- Set up MongoDB with local volume `mongo-data`
+- Build the backend (FastAPI) and frontend (Streamlit) images.
+- Pull the MongoDB image.
+- Create a shared Docker network (`app_network`).
+- Mount local volumes for saved models and uploaded files.
 
-**Access the App**
+### Access the running services
 
-- Backend (FastAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
-- Frontend (Streamlit): [http://localhost:8501/docs](http://localhost:8501/docs)
+| Service | URL | Description |
+|---------|-----|-------------|
+| Streamlit Frontend | http://localhost:8501 | Web interface |
+| FastAPI Backend | http://localhost:8000/docs | Interactive API documentation |
+| MongoDB | localhost:27017 | Local database instance |
 
-### Using Visual Studio Code
+---
 
-- Open and edit the codebase easily
-- Launch Docker containers using the Docker extension (optional)
+## Using the Application
 
-## How to Use the App
+1. Upload SHACL Schema: Use the frontend to upload SHACL shape files or select sample ones.
+2. Configure Generation Parameters: Choose target triple count, property constraints, and generation mode.
+3. Run Synthetic KG Generation: The backend generates RDF data conforming to SHACL constraints.
+4. Export Data: Download results as `.ttl`, `.jsonld`, or `.nt` formats.
+5. Inspect or Reuse Results: View generated KGs via the Streamlit interface or connect to MongoDB for programmatic access.
 
-1. Open the Streamlit frontend at [http://localhost:8501/docs](http://localhost:8501/docs).
-2. Upload your SHACL `.ttl` file in the Settings section.
-3. View the tree-based representation of target classes and properties.
-4. Configure property settings: choose model (LLM/GAN/VAE), data distribution, and number of samples.
-5. Click **Generate synthetic data (batch request)** to generate RDF triples.
-6. Preview the generated data.
-7. Use the interactive chat box for LLM model refinement.
-8. Download the generated data in `.json`, `.json-ld`, or `.ttl` formats.
-
-## How to Use the Models
-
-### LLM (Large Language Model)
-
-- Provide an API key from a GPT provider (e.g., Groq Console).
-- Input the API key in the `.env` file.
-- Premium accounts unlock unlimited data generation; free tier has sample limits.
-
-### GAN and VAE Models
-
-- Pretrained models are available in the repository.
-- To extend or train new models:
-  - Access backend APIs at `/upload_and_train_gan/` or `/upload_and_train_vae/`
-  - Upload domain-specific `.ttl` files from DBpedia or Wikidata
-  - Set training parameters and execute to store models
-- Restart Docker containers to automatically load trained models.
+---
 
 ## Demo Video
+
+See SRDF-GEN in action. This demo walks through uploading SHACL schemas, generating synthetic KGs, and exporting the results.
 
 <video width="600" controls>
   <source src="demo.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
+---
+
+## Deployment on Cloud Platforms
+
+Docker Hub:
+
+```
+docker build -t yourusername/srdf-gen:latest .
+docker push yourusername/srdf-gen:latest
+```
+
+Render / Railway / Heroku (Container Deployment):
+- Create a new Web Service from your GitHub repo.
+- Use `docker-compose.yml` as the build file.
+- Set environment variables from your `.env`.
+- Expose ports 8000 (Backend) and 8501 (Frontend).
+
+AWS ECS / Fargate:
+- Push the built image to Amazon ECR.
+- Define ECS task definitions for `fastapi-backend`, `streamlit-frontend`, and `mongo`.
+- Expose ports 8000, 8501, 27017.
+
+---
+
+## Development Notes
+
+Rebuild containers after code changes:
+```
+docker-compose up --build
+```
+
+Stop containers:
+```
+docker-compose down
+```
+
+Clean everything (including database):
+```
+docker-compose down -v
+```
+
+---
+
 ## Citing SRDF-GEN
+
+If you use SRDF-GEN in your research or projects, please cite:
 
 Radmehr A., et al. (2025). SRDF-GEN: SHACL-based Synthetic Knowledge Graph Generator. A SHACL-guided framework for RDF synthetic data generation and benchmarking. [Zenodo Record 17497899](https://zenodo.org/records/17497899)
 
+---
+
 ## License
 
-MIT License. You are free to use, modify, and distribute for research and commercial purposes.
+This project is released under the MIT License. You are free to use, modify, and distribute it for research and commercial purposes.
 
