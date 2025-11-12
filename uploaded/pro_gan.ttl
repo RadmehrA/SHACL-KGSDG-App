@@ -1,0 +1,139 @@
+<http://purl.obolibrary.org/obo/PR_000058021> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "UniProtKB:Q9BXX0, Thr-305, MOD:00005~GNO:G43417UB" .
+_:N2ada432ba5f442309ad54aa497458bfb <http://www.w3.org/2002/07/owl#annotatedTarget> "TMEM14A" .
+<http://rgd.mcw.edu/rgdweb/report/gene/main.html?id=1563369> <http://purl.obolibrary.org/obo/IAO_0000115> "A protein coding gene Ctps2 in rat." .
+_:N4feb52e8e21d49658230e8fd05449aab <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002160> .
+_:Nd70830b1194241f186eb9129438148c6 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:Na7649d15e02e4df29539ca06f2394a3e <http://www.geneontology.org/formats/oboInOwl#hasSynonymType> <http://purl.obolibrary.org/obo/pr#Gene-based> .
+_:N6f8d6a67e0354a33ac97fce40b00e351 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> .
+_:Nd9a488d741844d289053631b5a418cf4 <http://www.w3.org/2002/07/owl#annotatedTarget> "hSLC4A5/iso:h3" .
+_:N57cd05d4b27144a79c6bc6ebf6932884 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_Q7TNK3> .
+<http://purl.obolibrary.org/obo/PR_000085667> <http://www.w3.org/2000/01/rdf-schema#comment> "Category=organism-modification." .
+_:N82545f5f0d9f48f4bc3d2e51522241b7 <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002160> .
+_:Ne75b5c33afd64960b6834ac0ef3bd11b <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_10090> .
+_:N89666cc0383f459c9fa4aefeefe9bf8f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Na615c16228dd4b5da73214c2f331423a <http://www.w3.org/2002/07/owl#someValuesFrom> <http://dictybase.org/gene/DDB_G0293306> .
+<http://purl.obolibrary.org/obo/PR_P53349> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "MEK kinase 1 (mouse)" .
+_:N9649e160b08b449ebe8a3e88be6540cf <http://www.w3.org/2002/07/owl#annotatedTarget> "At-GDU3" .
+_:N2d21494bb8654bdba61425bb0951869b <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N68c3e13309d74efcb2e46ee3fccbcc2a .
+_:N88a8051ae5c340da91a12c7ddb2bf4e9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://www.informatics.jax.org/marker/MGI:2146388> <http://www.w3.org/2000/01/rdf-schema#label> "Ubxn7 (mouse)" .
+_:N8e906a812dd6439bbbec189418fad8cc <http://www.w3.org/2002/07/owl#annotatedSource> <http://www.pombase.org/spombe/result/SPBC17G9.03c> .
+<http://purl.obolibrary.org/obo/PR_000019236> <http://purl.obolibrary.org/obo/IAO_0000115> "An F-actin-capping protein subunit alpha-2 that has had the initiator methionine removed." .
+<http://purl.obolibrary.org/obo/PR_A0A0G2JXN2> <http://www.w3.org/2002/07/owl#equivalentClass> _:N3ef382292b3d492986c70c97bf0da894 .
+<http://purl.obolibrary.org/obo/PR_P61201-1> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/PR_P61201> .
+<http://purl.obolibrary.org/obo/PR_Q07343-3> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N1f3a2859250d415fb8d58f143875a0f9 .
+_:Nf4921c0039a84ba7999481bbb9c98639 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_93061> .
+_:N967ad6a4df1c4d509526b21cf2250d7f <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+_:N0047b494347b4063b4a7a3d9c317fb72 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<http://purl.obolibrary.org/obo/PR_Q3V0F0> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> "Gm603" .
+_:Ne3f1a261bdca401f8c4d062c3216bfe7 <http://www.w3.org/2002/07/owl#annotatedTarget> "Reactome:R-HSA-8863221" .
+_:N8478506954824220aa8b796b69dfd0a3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N0b1e517125e1453a80729fdf401a8294 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PMID:15731757" .
+_:N89bef1474c5044818863c5d2e9a70209 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:P69892" .
+_:N0a08f9c5481c44d1a437d0fba8d49d68 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Na06a04e98b70482e91de4acc3f17af88 <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002160> .
+_:N93befcd48c424c85b9811cb1ad0617c7 <http://www.w3.org/2002/07/owl#annotatedTarget> "OR4K3P" .
+<http://purl.obolibrary.org/obo/PR_000038874> <http://purl.obolibrary.org/obo/IAO_0000115> "An interleukin-1 receptor type 1 that is a translation product of some mRNA whose exon structure and start site selection renders it capable of giving rise to a protein with the amino acid sequence represented by UniProtKB:P13504-1 or a 1:1 ortholog thereof." .
+_:Na53b1e198ed24936abdaf79ec4e647bd <http://www.w3.org/2002/07/owl#annotatedTarget> "NVP-2 (rat)" .
+_:Ndf05a345b70042d49c724ca78139fc3b <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_Q86XE5> .
+_:N40305f7c3d774de489bbe05ae3a0bd14 <http://www.w3.org/2002/07/owl#annotatedTarget> "A protein coding gene mde2 in Schizosaccharomyces pombe." .
+_:N012982d51e004da59700df4167030365 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/PR_Q9ZSR7-1> <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "protein" .
+<http://purl.obolibrary.org/obo/PR_Q9BQA9-1> <http://www.w3.org/2000/01/rdf-schema#comment> "Category=organism-sequence." .
+<http://purl.obolibrary.org/obo/PR_Q8NEZ4-1> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "hKMT2C/iso:h1" .
+<http://purl.obolibrary.org/obo/PR_Q8BP67> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:Q8BP67" .
+_:Nd85200ee796d4182b190803383fd3414 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_3702> .
+<http://purl.obolibrary.org/obo/PR_Q800Q5> <http://www.w3.org/2000/01/rdf-schema#label> "transcription factor 7-like 1-B (zebrafish)" .
+<http://purl.obolibrary.org/obo/PR_000060294> <http://www.w3.org/2000/01/rdf-schema#label> "RAF proto-oncogene serine/threonine-protein kinase sequence variant V263A phosphorylated 1 (human)" .
+<http://flybase.org/reports/FBgn0014861> <http://purl.obolibrary.org/obo/IAO_0000115> "A protein coding gene Mcm2 in fruit fly." .
+_:Nb70597b5774042fa85a8e0aa8f22a43c <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:Na7051102ffcd41509f0ea3b6b725fdd5 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym> .
+_:N9d75b0dbc71d49c6ab83d1d77b55568e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N664db78fd97540898e094f96034e3596 <http://www.w3.org/2000/01/rdf-schema#label> "PR:Q9H3M9 located_in GO:0005829" .
+_:Nc5644cfff5ac48998c204b91b1cef360 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+_:N439a8d7d1f234986ad645e098d2ffe51 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N035bbc8a1c364f4ab41c38ca3df65005 <http://www.w3.org/2002/07/owl#annotatedTarget> "An A-kinase anchor protein 17A (human) that is a translation product of some mRNA whose exon structure and start site selection renders it capable of giving rise to a protein with the amino acid sequence represented by UniProtKB:Q02040-3." .
+_:Nb46b778c4ae648e88f6cefa7b1c943a5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nf561f982987a4da997620b1981f40431 <http://www.w3.org/2002/07/owl#annotatedTarget> "Lirf" .
+_:Na3716a709da94899808e46c645854b9b <http://www.w3.org/2002/07/owl#intersectionOf> _:N4f3b0f39b08047f4a7b6f8f7fc7d28c9 .
+_:Ne3be2cb08b684a71b6e08e740ddd309e <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/PR_000025009> .
+<http://rgd.mcw.edu/rgdweb/report/gene/main.html?id=621777> <http://www.w3.org/2000/01/rdf-schema#label> "Stc2 (rat)" .
+_:N619e99fb0d304976b70cd98903d1e422 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_9606> .
+_:N44c291684ca640cda7b018189d9f63ae <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_9606> .
+<http://purl.obolibrary.org/obo/PR_B6SEH8> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:B6SEH8" .
+_:Ndfb23572055f4449b6bed565c9c2e1d5 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:N333fee4abff7494face4c87db6a2f192 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N1f5708800a7645a19f9302b4c22fa400 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:Q9Z0R6" .
+_:Nf5292847715f4dbcb06e5e4141d30257 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:Nb90a8ba58b3e468aa09343875e1a9f50 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+<https://bar.utoronto.ca/thalemine/portal.do?externalids=AT3G52750> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/SO_0001217> .
+_:N0edc2d971aae42019d0ff297f9f3926a <http://www.w3.org/2002/07/owl#annotatedTarget> "CaO19.10894" .
+<http://purl.obolibrary.org/obo/PR_000048805> <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "Reactome:R-HSA-9029082" .
+_:N69acbc8a15b04144a880de4fbf075209 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N7b47abb6f0e147039b233e959a427c1d <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+_:Nd4a3e7d199574913ab9739da05a184bc <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_4896> .
+_:N308acf542eb74bbea22144edb3433149 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:Q8BS39" .
+_:N8f5444a14e4a4c13bd0b988fa020f77b <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:A5I7S1" .
+_:Nb49607e892c94bf9b1a79f8c91b1884c <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_10116> .
+<http://purl.obolibrary.org/obo/PR_Q96GZ6-5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Nc135cad4fdfc46f09daf550fec40c60d <http://www.w3.org/2002/07/owl#annotatedTarget> "A protein coding gene Nfe2l2 in rat." .
+_:N926e0f0dfd634a8fa1966fd88c3fa8c2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nc376989286694a46a0e62dd2e372a1ca <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nd8ff28e3a6374f50933430bf74746450 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Naabc7410ff1442f9b15847ee1a08362d <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_Q6AYZ1> .
+_:Nfac650e7c5de446a843609c9ada9cba8 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_10116> .
+_:N12b46883102c41b1b0cc6ced21cd0815 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_000074445> .
+_:N6c9955c491254a79b5e36745dadff74b <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+_:N8faa6dd0f3d547479776ddadb78ea366 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+_:Ne13cab779ab1478487fb5427edcab3c0 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:N22b8e9811af546f49fa6ac8ce8e9179d <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:N18b1f61d09b94d6fab3de86d33b213d1 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+_:N4379bcdb64954ed6840305ece4dc470d <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002160> .
+_:N5de69972b71e46f080ad4fdd311734f1 <http://www.geneontology.org/formats/oboInOwl#hasSynonymType> <http://purl.obolibrary.org/obo/pr#Gene-based> .
+<http://purl.obolibrary.org/obo/PR_P60390> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N2eead88540974c7589fd949892f8d21d .
+<http://purl.obolibrary.org/obo/PR_Q96L11-1> <http://www.w3.org/2000/01/rdf-schema#comment> "Category=organism-sequence." .
+<http://purl.obolibrary.org/obo/PR_Q99LI9> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "mCLP1" .
+_:N2ad024156cb9497e9b549fe86787f798 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> .
+<http://purl.obolibrary.org/obo/PR_000022255> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N9ce612ab1d434c358aa3b27c407a6c18 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_P0A6D7> .
+_:N0a58a05f47ae4636864e1b6c079541d6 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+<http://purl.obolibrary.org/obo/PR_P92550> <http://www.w3.org/2002/07/owl#equivalentClass> _:N4bc1353b7c32457e89e73bcecf378f3c .
+_:N47083f881ae842e59191f0008d60c163 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N81e07d1a18e044a6be260fb0d2cda224 <http://www.w3.org/2002/07/owl#annotatedTarget> "A protein coding gene Zfp263 in mouse." .
+<http://purl.obolibrary.org/obo/PR_Q9BUY5> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/PR_000017885> .
+<http://www.informatics.jax.org/marker/MGI:1890218> <http://www.geneontology.org/formats/oboInOwl#id> "MGI:1890218" .
+_:N83f9af87940b48bda5a227dd7292fc8e <http://www.w3.org/2002/07/owl#annotatedTarget> "A transmembrane protein 213 (human) that is a translation product of some mRNA whose exon structure and start site selection renders it capable of giving rise to a protein with the amino acid sequence represented by UniProtKB:A2RRL7-1." .
+_:Ne5a14184b0d049d2a0cc46fdcfeb17b7 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_000058991> .
+_:N9e367e062bfe43f9b9eb888b5fcfa5d3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:N43c1d6d46d904fac9639bfa68abd8828 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_P49895-6> .
+_:Nf60a07ed1d9045bca6f1c858e335f896 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/PR_000013106> .
+_:N5c698fa1f24b4275b57444136808013c <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:Q96JM7" .
+_:N65b081d0d3524079a7ec5ecc353f9da9 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+<http://purl.obolibrary.org/obo/PR_000068877> <http://www.w3.org/2000/01/rdf-schema#label> "AP-3 complex subunit mu-1 methylated 1 (human)" .
+_:N79a883f2f2da4e76bb8e3eef967dd775 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:N7822ef9018e6467e8dd48fa9cc697288 <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/RO_0002160> .
+_:Nc434d136c2c74da6b8a9ce78307fad7d <http://www.w3.org/2002/07/owl#annotatedTarget> "A protein coding gene ipo8 in zebrafish." .
+_:N3330e56a186144a2b09073e458c22379 <http://www.w3.org/2002/07/owl#intersectionOf> _:Nf961320fb5b347b6be002bcf1bda11d5 .
+_:Nd5ef2f9ebfec4d8e8fd06a39c35faa8f <http://www.w3.org/2002/07/owl#someValuesFrom> <http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=17620> .
+_:Nd6dd68e3821a40aeb00d53fec40ec3eb <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:N9fd9889e15574fe7b6732748d41fb717 <http://www.w3.org/2002/07/owl#intersectionOf> _:Na29930b6473d410bab665b8c22ec0bfd .
+<http://www.pombase.org/spombe/result/SPBC1604.03c> <http://www.w3.org/2000/01/rdf-schema#comment> "Category=external." .
+_:N11f2de9c3ee9445c9be48a4cf3188c31 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:Nde88413de34a4c9c83a5a3256bd7f21f <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "PRO:DNx" .
+_:N6cfa7bd10e0f4428a48d007904fdff2a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+<http://purl.obolibrary.org/obo/PR_P37634> <http://purl.obolibrary.org/obo/IAO_0000115> "A ribosomal RNA large subunit methyltransferase J that is encoded in the genome of Escherichia coli K-12." .
+_:Neb8fbde6f4fa4731832629628d66bf0b <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_10090> .
+<http://purl.obolibrary.org/obo/PR_Q92597-2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Nee677bf54a49477fbe106014aa1abe43 <http://www.w3.org/2002/07/owl#annotatedSource> <http://purl.obolibrary.org/obo/PR_O75909> .
+<http://dictybase.org/gene/DDB_G0274315> <http://www.w3.org/2000/01/rdf-schema#comment> "Category=external." .
+_:Nfeae108b437d4d2dad485841d0108857 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_192222> .
+_:Ne89ee60df9d94830b059bf26a0e8bab9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N7bc5b4f1ed764e3789fd5976d1b54f20 .
+_:N371c28ceffe442f88fd15eb9221065b2 <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "UniProtKB:Q9VG74" .
+<http://www.informatics.jax.org/marker/MGI:88612> <http://www.w3.org/2000/01/rdf-schema#comment> "Category=external." .
+_:Nd4351eeff0f34a9f913efb8dfcbe98da <http://www.w3.org/2002/07/owl#annotatedSource> <https://bar.utoronto.ca/thalemine/portal.do?externalids=AT4G31615> .
+_:N7eb5eeebac6646ccbdf2654cf5ca4591 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.obolibrary.org/obo/NCBITaxon_9606> .
+_:N1a8e5640670848a1b5d30e5eba155094 <http://www.w3.org/2002/07/owl#onProperty> <http://purl.obolibrary.org/obo/BFO_0000051> .
+_:Na397b0ba97504ac7ae4745abb3e21151 <http://www.w3.org/2002/07/owl#annotatedProperty> <http://purl.obolibrary.org/obo/IAO_0000115> .
+<http://purl.obolibrary.org/obo/PR_P30101> <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "hPDIA3" .
+_:Nbace3870ab904cbb941c70bab4213ef3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Axiom> .
+_:N4a570ed336ae43738bae81dd0e3a7518 <http://www.w3.org/2002/07/owl#annotatedTarget> "YJL090C" .

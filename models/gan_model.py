@@ -20,20 +20,72 @@ def load_rdf_graph(file_path):
     g.parse(file_path, format='ttl')
     return [(str(s), str(p), str(o)) for s, p, o in g]
 
-<<<<<<< HEAD
-=======
+# def factorize_and_initialize_gan(file_path):
+#     global factorized_data, generator, discriminator, optimizer_g, optimizer_d
 
-def load_rdf_graph(file_path):
-    g = rdflib.Graph()
-    if file_path.endswith(".ttl"):
-        g.parse(file_path, format="ttl")
-    elif file_path.endswith(".owl") or file_path.endswith(".rdf") or file_path.endswith(".xml"):
-        g.parse(file_path, format="xml")
-    else:
-        raise ValueError(f"Unsupported file format for: {file_path}")
-    return [(str(s), str(p), str(o)) for s, p, o in g]
+#     triples = load_dbpedia_ttl(file_path)
+#     df = pd.DataFrame(triples, columns=["subject", "predicate", "object"])
 
->>>>>>> 00bb4cf (Second_edition)
+#     subjects = pd.factorize(df['subject'])[0]
+#     predicates = pd.factorize(df['predicate'])[0]
+#     objects = pd.factorize(df['object'])[0]
+
+#     subject_dim = len(np.unique(subjects))
+#     predicate_dim = len(np.unique(predicates))
+#     object_dim = len(np.unique(objects))
+
+#     factorized_data = {
+#         "df": df,
+#         "subjects": subjects,
+#         "predicates": predicates,
+#         "objects": objects,
+#         "subject_dim": subject_dim,
+#         "predicate_dim": predicate_dim,
+#         "object_dim": object_dim,
+#         "subject_uniques": df["subject"].unique(),
+#         "predicate_uniques": df["predicate"].unique(),
+#         "object_inverse_map": dict(enumerate(df["object"].unique()))
+#     }
+
+#     generator = Generator(subject_dim, predicate_dim, object_dim, z_dim)
+#     discriminator = Discriminator(subject_dim, predicate_dim, object_dim)
+#     optimizer_g = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+#     optimizer_d = optim.Adam(discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+
+# def factorize_and_initialize_gan(file_path):
+#     triples = load_dbpedia_ttl(file_path)
+#     df = pd.DataFrame(triples, columns=["subject", "predicate", "object"])
+
+#     subjects = pd.factorize(df['subject'])[0]
+#     predicates = pd.factorize(df['predicate'])[0]
+#     objects = pd.factorize(df['object'])[0]
+
+#     subject_dim = len(np.unique(subjects))
+#     predicate_dim = len(np.unique(predicates))
+#     object_dim = len(np.unique(objects))
+
+#     factorized_data = {
+#         "df": df,
+#         "subjects": subjects,
+#         "predicates": predicates,
+#         "objects": objects,
+#         "subject_dim": subject_dim,
+#         "predicate_dim": predicate_dim,
+#         "object_dim": object_dim,
+#         "subject_uniques": df["subject"].unique(),
+#         "predicate_uniques": df["predicate"].unique(),
+#         "object_inverse_map": dict(enumerate(df["object"].unique()))
+#     }
+
+#     generator = Generator(subject_dim, predicate_dim, object_dim, z_dim)
+#     discriminator = Discriminator(subject_dim, predicate_dim, object_dim)
+#     optimizer_g = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+#     optimizer_d = optim.Adam(discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+
+#     return factorized_data, generator, discriminator, optimizer_g, optimizer_d
+
+
+
 def factorize_and_initialize_gan(file_path):
     triples = load_rdf_graph(file_path)
     df = pd.DataFrame(triples, columns=["subject", "predicate", "object"])
@@ -241,11 +293,52 @@ def load_model(model_name):
 
     print(f"✅ Model '{model_name}' loaded successfully.")
 
-<<<<<<< HEAD
+
+# def generate_synthetic_data(model_name, subject_input, predicate_input, num_samples=1, distribution="normal"):
+
+#     if model_name not in loaded_models:
+#         raise RuntimeError(f"Model '{model_name}' is not loaded.")
+    
+#     model = loaded_models[model_name]
+#     generator = model["generator"]
+#     factorized_data = model["factorized_data"]
+
+#     if generator is None:
+#         raise RuntimeError("Generator model is not loaded.")
+    
+#     subject_dim = factorized_data["subject_dim"]
+#     predicate_dim = factorized_data["predicate_dim"]
+
+#     subject_input_lower = subject_input.lower()
+#     predicate_input_lower = predicate_input.lower()
+
+#     subject_matches = [s for s in factorized_data["subject_uniques"] if subject_input_lower in s.lower()]
+#     predicate_matches = [p for p in factorized_data["predicate_uniques"] if predicate_input_lower in p.lower()]
+
+#     if len(subject_matches) == 0:
+#         raise ValueError(f"Subject '{subject_input}' not found.")
+#     if len(predicate_matches) == 0:
+#         raise ValueError(f"Predicate '{predicate_input}' not found.")
+
+#     subject_input = subject_matches[0]
+#     predicate_input = predicate_matches[0]
+
+#     subject_idx = np.where(factorized_data["subject_uniques"] == subject_input)[0][0]
+#     predicate_idx = np.where(factorized_data["predicate_uniques"] == predicate_input)[0][0]
+
+#     s = torch.tensor([subject_idx], dtype=torch.long)
+#     p = torch.tensor([predicate_idx], dtype=torch.long)
+#     s_oh = torch.nn.functional.one_hot(s, num_classes=subject_dim).float()
+#     p_oh = torch.nn.functional.one_hot(p, num_classes=predicate_dim).float()
+
+#     z = sample_noise(num_samples, z_dim, distribution)
+#     generated = generator(z, s_oh.repeat(num_samples, 1), p_oh.repeat(num_samples, 1)).detach().numpy()
+#     generated_idx = np.argmax(generated, axis=1)
+#     decoded_objects = [factorized_data["object_inverse_map"].get(idx, "UNKNOWN") for idx in generated_idx]
+#     return decoded_objects
+
+
 def generate_synthetic_data(model_name, subject_input, predicate_input, num_samples=1, distribution="normal"):
-=======
-def generate_synthetic_data(model_name, subject_input, predicate_input, num_samples=1, distribution="normal",dist_params=None):
->>>>>>> 00bb4cf (Second_edition)
     # If the model_name is "all", loop through all loaded models
     if model_name == "all":
         generated_objects = []
