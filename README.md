@@ -144,7 +144,7 @@ This will:
 ## Demo Video
 
 See SRDF-GEN in action. This demo walks through uploading SHACL schemas, generating synthetic KGs, and exporting the results.
-
+[Watch the demo video](SRDFGEN_demonstration.mp4)
 <video width="600" controls>
   <source src="demo.mp4" type="video/mp4">
   Your browser does not support the video tag.
