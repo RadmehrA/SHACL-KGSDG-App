@@ -45,6 +45,9 @@ Core Components:
 
 ![SRDF-GEN Architecture](architecture.png)
 
+SRDF-GEN backend engine diagram:
+![SRDF-GEN Architecture](engine-architecture.png)
+
 ---
 
 ## Features
