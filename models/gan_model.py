@@ -15,13 +15,27 @@ optimizer_d = None
 criterion = nn.BCELoss()
 z_dim = 100
 
-def load_dbpedia_ttl(file_path):
+def load_rdf_graph(file_path):
     g = rdflib.Graph()
     g.parse(file_path, format='ttl')
     return [(str(s), str(p), str(o)) for s, p, o in g]
 
+<<<<<<< HEAD
+=======
+
+def load_rdf_graph(file_path):
+    g = rdflib.Graph()
+    if file_path.endswith(".ttl"):
+        g.parse(file_path, format="ttl")
+    elif file_path.endswith(".owl") or file_path.endswith(".rdf") or file_path.endswith(".xml"):
+        g.parse(file_path, format="xml")
+    else:
+        raise ValueError(f"Unsupported file format for: {file_path}")
+    return [(str(s), str(p), str(o)) for s, p, o in g]
+
+>>>>>>> 00bb4cf (Second_edition)
 def factorize_and_initialize_gan(file_path):
-    triples = load_dbpedia_ttl(file_path)
+    triples = load_rdf_graph(file_path)
     df = pd.DataFrame(triples, columns=["subject", "predicate", "object"])
 
     subjects = pd.factorize(df['subject'])[0]
@@ -57,7 +71,7 @@ def factorize_and_initialize_gan(file_path):
 def factorize_and_initialize_gans(file_path):
     global factorized_data, generator, discriminator, optimizer_g, optimizer_d
 
-    triples = load_dbpedia_ttl(file_path)
+    triples = load_rdf_graph(file_path)
     df = pd.DataFrame(triples, columns=["subject", "predicate", "object"])
 
     subjects = pd.factorize(df['subject'])[0]
@@ -116,17 +130,38 @@ class Discriminator(nn.Module):
     def forward(self, subject, predicate, object):
         return self.fc(torch.cat((subject, predicate, object), dim=1))
 
-def sample_noise(batch_size, z_dim, distribution="normal"):
+def sample_noise(batch_size, z_dim, distribution="normal", dist_params=None):
+    """
+    dist_params is a dict with parameters depending on distribution type.
+    Example:
+      - normal: {'mean': 0, 'std': 1}
+      - uniform: {'low': -1, 'high': 1}
+      - skewed: {'skew': 3}  # example param
+      - categorical: {'probs': [0.1, 0.2, ..., 0.05]}  (length = z_dim)
+    """
     if distribution == "uniform":
-        return torch.rand(batch_size, z_dim) * 2 - 1  # Range [-1, 1]
+        low = dist_params.get("low", -1) if dist_params else -1
+        high = dist_params.get("high", 1) if dist_params else 1
+        return torch.rand(batch_size, z_dim) * (high - low) + low
     elif distribution == "skewed":
-        return torch.randn(batch_size, z_dim) ** 3
+        skew = dist_params.get("skew", 3) if dist_params else 3
+        base = torch.randn(batch_size, z_dim)
+        return base ** skew
     elif distribution == "categorical":
-        return torch.nn.functional.one_hot(torch.randint(0, z_dim, (batch_size,)), num_classes=z_dim).float()
-    else:  # Default to normal
-        return torch.randn(batch_size, z_dim)
+        probs = dist_params.get("probs") if dist_params else None
+        if probs is None:
+            probs = torch.ones(z_dim) / z_dim  # uniform categorical by default
+        else:
+            probs = torch.tensor(probs)
+        categorical_samples = torch.multinomial(probs, batch_size, replacement=True)
+        return torch.nn.functional.one_hot(categorical_samples, num_classes=z_dim).float()
+    else:  # default normal
+        mean = dist_params.get("mean", 0) if dist_params else 0
+        std = dist_params.get("std", 1) if dist_params else 1
+        return torch.randn(batch_size, z_dim) * std + mean
 
-def train_gan(num_epochs=1000, batch_size=64, distribution="normal"):
+
+def train_gan(num_epochs=1000, batch_size=64, distribution="normal",dist_params=None):
     df = factorized_data["df"]
     subjects = factorized_data["subjects"]
     predicates = factorized_data["predicates"]
@@ -157,7 +192,8 @@ def train_gan(num_epochs=1000, batch_size=64, distribution="normal"):
             real_preds = discriminator(s_oh, p_oh, o_oh)
             d_loss_real = criterion(real_preds, real_labels)
 
-            z = sample_noise(current_batch_size, z_dim, distribution)
+            #z = sample_noise(current_batch_size, z_dim, distribution)
+            z = sample_noise(current_batch_size, z_dim, distribution, dist_params)
             fake_objects = generator(z, s_oh, p_oh)
             fake_preds = discriminator(s_oh, p_oh, fake_objects)
             d_loss_fake = criterion(fake_preds, fake_labels)
@@ -205,7 +241,11 @@ def load_model(model_name):
 
     print(f"✅ Model '{model_name}' loaded successfully.")
 
+<<<<<<< HEAD
 def generate_synthetic_data(model_name, subject_input, predicate_input, num_samples=1, distribution="normal"):
+=======
+def generate_synthetic_data(model_name, subject_input, predicate_input, num_samples=1, distribution="normal",dist_params=None):
+>>>>>>> 00bb4cf (Second_edition)
     # If the model_name is "all", loop through all loaded models
     if model_name == "all":
         generated_objects = []
@@ -236,7 +276,8 @@ def generate_synthetic_data(model_name, subject_input, predicate_input, num_samp
                 s_oh = torch.nn.functional.one_hot(s, num_classes=subject_dim).float()
                 p_oh = torch.nn.functional.one_hot(p, num_classes=predicate_dim).float()
 
-                z = sample_noise(num_samples, z_dim, distribution)
+                #z = sample_noise(num_samples, z_dim, distribution)
+                z = sample_noise(num_samples, z_dim, distribution, dist_params)
                 generated = generator(z, s_oh.repeat(num_samples, 1), p_oh.repeat(num_samples, 1)).detach().numpy()
                 generated_idx = np.argmax(generated, axis=1)
                 decoded_objects = [factorized_data["object_inverse_map"].get(idx, "UNKNOWN") for idx in generated_idx]
