@@ -1,33 +1,3 @@
-# import numpy as np
-
-# def generate_sample_from_distribution(distribution_type: str, parameters: dict):
-#     """Generate synthetic sample based on the specified distribution"""
-#     if distribution_type == "uniform":
-#         return np.random.uniform(parameters.get("min", 0), parameters.get("max", 100))
-#     elif distribution_type == "normal":
-#         return np.random.normal(parameters.get("mean", 50), parameters.get("std_dev", 10))
-#     # Add more distributions as needed
-#     return None
-
-
-# def generate_sample_from_distribution(distribution_type: str, parameters: dict, path: str = None):
-#     """Generate synthetic sample based on the specified distribution"""
-#     if distribution_type == "uniform":
-#         return np.random.uniform(parameters.get("min", 0), parameters.get("max", 100))
-#     elif distribution_type == "normal":
-#         return np.random.normal(parameters.get("mean", 50), parameters.get("std_dev", 10))
-#     return generate_integer_data(path)
-
-
-# def generate_sample_from_distribution(distribution_type: str, parameters: dict, path: str = None):
-#     """Generate synthetic sample based on the specified distribution"""
-#     if distribution_type == "uniform":
-#         return np.random.uniform(parameters.get("min", 0), parameters.get("max", 100))
-#     elif distribution_type == "normal":
-#         return np.random.normal(parameters.get("mean", 50), parameters.get("std_dev", 10))
-#     return generate_integer_data(path)
-
-
 import random
 from typing import Dict, Any
 
