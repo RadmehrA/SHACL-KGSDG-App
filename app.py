@@ -105,7 +105,6 @@ shacl_file = st.sidebar.file_uploader(" Upload SHACL File", type=["ttl", "shacl"
 available_properties = []
 
 
-
 def render_shacl_tree(shape_map):
     DATATYPE_MAP = {
         "http://www.w3.org/2001/XMLSchema#string": "string",
