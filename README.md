@@ -207,3 +207,84 @@ Radmehr A., et al. (2025). SRDF-GEN: SHACL-based Synthetic Knowledge Graph Gener
 
 This project is released under the MIT License. You are free to use, modify, and distribute it for research and commercial purposes.
 
+---
+## Resources
+
+## Resource Metadata
+
+* **Resource type:** Knowledge Graph
+* **License:** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+* **DOI:** [10.5281/zenodo.15592724]
+* **Project URL:** [https://github.com/RadmehrA/SHACL-KGSDG-App](https://github.com/RadmehrA/SHACL-KGSDG-App)
+
+---
+
+## Components & Access
+
+### **1. SRDF-GEN Web Application**
+
+Source code and Docker image for local or cloud deployment, providing:
+
+* Interactive RDF generation
+* Backend and schema configuration tools
+
+**Access:** [https://github.com/RadmehrA/SHACL-KGSDG-App](https://github.com/RadmehrA/SHACL-KGSDG-App)
+
+---
+
+### **2. SHACL2Shape Parser Library**
+
+Provides programmatic utilities for:
+
+* SHACL shape parsing
+* Template extraction
+* JSON-based schema representation
+* API documentation
+
+**Access:** GitHub repository (same organization)
+
+---
+
+### **3. Example SHACL Schemas**
+
+Sample schemas for testing and demonstrations:
+
+* `PersonShape`
+* `ProteinShape`
+
+**Access:** GitHub repository
+
+---
+
+### **4. Generated RDF Datasets & Provenance Metadata**
+
+RDF datasets enriched with:
+
+* VoID and DCAT metadata
+* SHACL validation results
+* Provenance traces
+
+**Datasets:**
+
+* PersonShape: [https://orkg.org/resources/R1559471?noRedirect](https://orkg.org/resources/R1559471?noRedirect)
+* GAN ProteinShape: [https://orkg.org/resources/R1559476?noRedirect](https://orkg.org/resources/R1559476?noRedirect)
+* VAE ProteinShape: [https://orkg.org/resources/R1559479?q=dataset](https://orkg.org/resources/R1559479?q=dataset)
+* DOI (all datasets): [https://zenodo.org/records/17497899](https://zenodo.org/records/17497899)
+
+---
+
+### **5. Evaluation Scripts & Benchmarks**
+
+Includes reproducibility resources:
+
+* Experiment scripts
+* Benchmark configurations
+* Evaluation outputs
+
+**Access:** [https://purl.utwente.nl/essays/108253](https://purl.utwente.nl/essays/108253)
+
+---
+
+If you want, I can add installation instructions, usage examples, architecture diagrams, or badges.
+
+
