@@ -1,0 +1,16 @@
+Column,MeanLength,MedianLength,MinLength,MaxLength
+Protein URI,43.28971962616822,42.0,42,48
+Equivalent URI,41.28971962616822,40.0,40,46
+owl:annotatedProperty,62.0588066139468,44.0,3,544
+owl:annotatedSource,60.773400431344356,42.0,1,750
+rdfs:comment,54.3823148813803,42.0,1,524
+oboInOwl:hasBroadSynonym,73.18749101365924,48.0,4,568
+oboInOwl:hasDbXref,56.152695902228615,41.0,3,549
+oboInOwl:hasExactSynonym,65.53040977713874,45.0,3,562
+oboInOwl:hasNarrowSynonym,74.6802300503235,52.0,1,569
+oboInOwl:hasRelatedSynonym,62.64471603163192,43.0,4,534
+rdfs:label,45.76721782890007,40.0,3,319
+owl:onProperty,59.1979870596693,42.0,1,524
+owl:someValuesFrom,66.8018691588785,45.0,4,593
+rdfs:subClassOf,52.27821710999281,40.0,1,531
+rdf:type,90.16937455068296,83.0,46,404

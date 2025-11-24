@@ -1,0 +1,16 @@
+Column,UniqueValues
+Protein URI,6955
+Equivalent URI,1391
+owl:annotatedProperty,5636
+owl:annotatedSource,5567
+rdfs:comment,4522
+oboInOwl:hasBroadSynonym,5543
+oboInOwl:hasDbXref,5633
+oboInOwl:hasExactSynonym,5591
+oboInOwl:hasNarrowSynonym,5636
+oboInOwl:hasRelatedSynonym,5615
+rdfs:label,1568
+owl:onProperty,5545
+owl:someValuesFrom,6096
+rdfs:subClassOf,4564
+rdf:type,6659
