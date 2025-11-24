@@ -1,0 +1,16 @@
+Column,DataType
+Protein URI,object
+Equivalent URI,object
+owl:annotatedProperty,object
+owl:annotatedSource,object
+rdfs:comment,object
+oboInOwl:hasBroadSynonym,object
+oboInOwl:hasDbXref,object
+oboInOwl:hasExactSynonym,object
+oboInOwl:hasNarrowSynonym,object
+oboInOwl:hasRelatedSynonym,object
+rdfs:label,object
+owl:onProperty,object
+owl:someValuesFrom,object
+rdfs:subClassOf,object
+rdf:type,object
