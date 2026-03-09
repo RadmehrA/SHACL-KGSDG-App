@@ -2,7 +2,7 @@
 import random
 import time
 import requests
-from config import GROQ_BASE_URL, GROQ_API_KEY
+# from config import GROQ_BASE_URL, GROQ_API_KEY
 from collections import defaultdict, deque
 
 # Simple in-memory caches
@@ -37,40 +37,39 @@ def generate_prompt(field_name: str, readable_type: str, user_message: str) -> s
 
 def fetch_from_llm(prompt: str) -> list:
     """
-    Fetch multiple samples from the LLM for a given prompt using Groq API.
+    Fetch multiple samples from a local Ollama LLM.
     """
-    url = f"{GROQ_BASE_URL}/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
-        "Content-Type": "application/json",
-    }
+    # url = "http://127.0.0.1:11434/api/generate"
+    url = "http://host.docker.internal:11434/api/generate"
+
     payload = {
-        "model": "meta-llama/llama-4-scout-17b-16e-instruct",
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.9,  # Increased randomness
-        "max_tokens": 60,
-        "n": 1  # Request multiple variations
+        # "model": "llama3",   # or "mistral"
+        "model": "llama3:8b",
+        "prompt": prompt,
+        "stream": False,
+        "options": {
+            "temperature": 0.9,
+            "num_predict": 60
+        }
     }
 
     try:
-        response = requests.post(url, headers=headers, json=payload)
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         response_json = response.json()
 
-        generated_values = []
-        for choice in response_json.get("choices", []):
-            value = choice["message"]["content"].strip().split("\n")[0].strip('"')
-            generated_values.append(value)
+        text = response_json.get("response", "").strip()
+        value = text.split("\n")[0].strip('"')
 
-        return generated_values
+        return [value]
 
     except Exception as e:
-        print(f"[LLM ERROR] Could not generate for prompt {prompt}: {e}")
+        print(f"[LLM ERROR - OLLAMA] {e}")
         return ["ExampleValue"]
 
 import time
 
-def generate_llm_data(path: str, datatype: str, user_interactive_message: str) -> str:
+def generate_llm_data(path: str, datatype: str, user_interactive_message: str = "") -> str:
     """
     Generate synthetic data using LLM with dynamic prompt variation, caching, and duplicate checking.
     """

@@ -20,7 +20,6 @@ def extract_distribution_info(constraints: List[Dict[str, str]]) -> Dict[str, an
     for c in constraints:
         for key, val in c.items():
             if key.startswith(DIST_NS):
-                short_key = key[len(DIST_NS):]  # e.g., "distribution", "categories", "mean"
-                # For categories, you may want to parse the RDF list - for now store raw string
+                short_key = key[len(DIST_NS):]
                 dist_info[short_key] = val
     return dist_info

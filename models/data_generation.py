@@ -15,5 +15,4 @@ def generate_distribution_data(distribution_type: str, parameters: dict):
         return np.random.uniform(parameters.get("min", 0), parameters.get("max", 100))
     elif distribution_type == "normal":
         return np.random.normal(parameters.get("mean", 50), parameters.get("std_dev", 10))
-    # Add more distribution types as needed
     return None

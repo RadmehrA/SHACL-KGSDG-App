@@ -1,5 +1,94 @@
+# services:
+#   fastapi-backend:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       MONGO_URI: "mongodb://host.docker.internal:27017/?directConnection=true"
+#     volumes:
+#       - ./models/saved_models:/app/models/saved_models
+#       - ./uploaded:/app/uploaded
+#     networks:
+#       - app_network
+
+#   streamlit-frontend:
+#     build:
+#       context: .  # Assuming Streamlit is in the same directory as Dockerfile
+#     ports:
+#       - "8501:8501"
+#     depends_on:
+#       - fastapi-backend
+#     networks:
+#       - app_network
+
+#   mongo:
+#     image: mongo
+#     container_name: mongodb
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo-data:/data/db
+#     networks:
+#       - app_network
+
+# volumes:
+#   mongo-data:
+
+# networks:
+#   app_network:
+#     driver: bridge
+
+
+# services:
+#   fastapi-backend:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       MONGO_URI: "mongodb://host.docker.internal:27017/?directConnection=true"
+#     volumes:
+#       - ./models/saved_models:/app/models/saved_models
+#       - ./uploaded:/app/uploaded
+#     networks:
+#       - app_network
+
+#   streamlit-frontend:
+#     build:
+#       context: .
+#     ports:
+#       - "8501:8501"
+#     depends_on:
+#       - fastapi-backend
+#     networks:
+#       - app_network
+
+#   mongo:
+#     image: mongo
+#     container_name: mongodb
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo-data:/data/db
+#     networks:
+#       - app_network
+
+# volumes:
+#   mongo-data:
+
+# networks:
+#   app_network:
+#     driver: bridge
+
+
+version: '3.9'
+
 services:
   fastapi-backend:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,8 +103,9 @@ services:
       - app_network
 
   streamlit-frontend:
+    platform: linux/amd64
     build:
-      context: .  # Assuming Streamlit is in the same directory as Dockerfile
+      context: .
     ports:
       - "8501:8501"
     depends_on:

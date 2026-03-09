@@ -1,3 +1,25 @@
+# fastapi
+# uvicorn
+# streamlit
+# pydantic
+# requests
+# pymongo
+# python-multipart
+# rdflib
+# openai>=1.0.0
+# replicate
+# asyncio
+# dotenv
+# torch
+# torchvision
+# numpy
+# pandas  # optional, for data manipulation
+# typing
+# pathlib
+# rdflib
+
+
+
 fastapi
 uvicorn
 streamlit
@@ -8,12 +30,13 @@ python-multipart
 rdflib
 openai>=1.0.0
 replicate
-asyncio
-dotenv
-torch
-torchvision
-numpy
-pandas  # optional, for data manipulation
-typing
-pathlib
-rdflib
+python-dotenv
+numpy<2.0.0
+pandas
+motor
+sentence-transformers==2.2.2
+transformers==4.28.1
+huggingface-hub==0.13.4
+httpx
+streamlit-aggrid
+sseclient-py
