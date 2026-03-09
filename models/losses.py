@@ -16,7 +16,6 @@ def vae_loss(recon_x, x, mu, logvar, beta=0.001):
     return recon_loss + beta * kl_loss, recon_loss, kl_loss
 
 
-# ---------- Optional Constraint Loss ----------
 def constraint_loss(pred, constraints):
     """
     Placeholder for future constraint penalties.

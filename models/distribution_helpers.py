@@ -9,10 +9,10 @@ def generate_uniform_distribution(low: float, high: float, num_values: int) -> l
 
 def generate_skewed_distribution(low: float, high: float, num_values: int, custom_param: str) -> list:
     values = [random.uniform(low, high) for _ in range(num_values)]
-    # Skewness logic can be added based on custom_param
+    
     return values
 
-# Add other distribution functions as needed
+
 DIST_NS = "http://example.org/distribution#"
 
 def extract_distribution_info(constraints: List[Dict[str, str]]) -> Dict[str, any]:

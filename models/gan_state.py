@@ -1,4 +1,3 @@
-# gan_state.py
 
 factorized_data = {}
 generator = None

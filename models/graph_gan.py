@@ -2,9 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# ===============================
-# Graph Generator
-# ===============================
 class GraphGenerator(nn.Module):
     def __init__(self, num_subjects, num_predicates, num_objects, hidden_dim=128):
         super(GraphGenerator, self).__init__()
@@ -12,11 +9,11 @@ class GraphGenerator(nn.Module):
         self.num_predicates = num_predicates
         self.num_objects = num_objects
 
-        # Embeddings
+        
         self.subject_embed = nn.Embedding(num_subjects, hidden_dim)
         self.predicate_embed = nn.Embedding(num_predicates, hidden_dim)
 
-        # Fully connected layers
+        
         self.fc1 = nn.Linear(hidden_dim * 2, hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, num_objects)
 
@@ -25,13 +22,9 @@ class GraphGenerator(nn.Module):
         p_emb = self.predicate_embed(p_idx)
         x = torch.cat([s_emb, p_emb], dim=-1)
         x = F.relu(self.fc1(x))
-        logits = self.fc2(x)  # shape: [batch_size, num_objects]
+        logits = self.fc2(x)
         return logits
 
-
-# ===============================
-# Graph Discriminator
-# ===============================
 class GraphDiscriminator(nn.Module):
     def __init__(self, num_subjects, num_predicates, num_objects, hidden_dim=128):
         super(GraphDiscriminator, self).__init__()
@@ -40,7 +33,7 @@ class GraphDiscriminator(nn.Module):
         self.object_embed = nn.Embedding(num_objects, hidden_dim)
 
         self.fc1 = nn.Linear(hidden_dim * 3, hidden_dim)
-        self.fc2 = nn.Linear(hidden_dim, 1)  # single logit for real/fake
+        self.fc2 = nn.Linear(hidden_dim, 1)
 
     def forward(self, s_idx, p_idx, o_idx):
         s_emb = self.subject_embed(s_idx)
@@ -48,5 +41,5 @@ class GraphDiscriminator(nn.Module):
         o_emb = self.object_embed(o_idx)
         x = torch.cat([s_emb, p_emb, o_emb], dim=-1)
         x = F.relu(self.fc1(x))
-        logit = self.fc2(x)  # shape: [batch_size, 1]
+        logit = self.fc2(x)
         return torch.sigmoid(logit)

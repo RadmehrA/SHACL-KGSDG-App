@@ -1,17 +1,15 @@
-# models/llm_generator.py
 import random
 import time
 import requests
-# from config import GROQ_BASE_URL, GROQ_API_KEY
 from collections import defaultdict, deque
 
-# Simple in-memory caches
-LLM_CACHE = {}  # Per prompt
-RECENT_RESPONSES_HISTORY = deque(maxlen=5)  # Tracks the last 5 unique responses
-RECENT_RESPONSES = set()  # Across prompts
-RECENT_CACHE_LIMIT = 50  # How many recent outputs to track
 
-# Datatype mappings for readability
+LLM_CACHE = {}
+RECENT_RESPONSES_HISTORY = deque(maxlen=5)
+RECENT_RESPONSES = set()
+RECENT_CACHE_LIMIT = 50
+
+
 DATATYPE_MAP = {
     "http://www.w3.org/2001/XMLSchema#string": "text",
     "http://www.w3.org/2001/XMLSchema#integer": "integer",
@@ -39,11 +37,11 @@ def fetch_from_llm(prompt: str) -> list:
     """
     Fetch multiple samples from a local Ollama LLM.
     """
-    # url = "http://127.0.0.1:11434/api/generate"
+    
     url = "http://host.docker.internal:11434/api/generate"
 
     payload = {
-        # "model": "llama3",   # or "mistral"
+        
         "model": "llama3:8b",
         "prompt": prompt,
         "stream": False,
@@ -73,7 +71,6 @@ def generate_llm_data(path: str, datatype: str, user_interactive_message: str = 
     """
     Generate synthetic data using LLM with dynamic prompt variation, caching, and duplicate checking.
     """
-    # Wait for 2 seconds before running
     time.sleep(2)
 
     readable_type = DATATYPE_MAP.get(datatype, "text")
@@ -81,30 +78,24 @@ def generate_llm_data(path: str, datatype: str, user_interactive_message: str = 
     prompt = generate_prompt(field_name, readable_type, user_interactive_message)
 
     if prompt not in LLM_CACHE or not LLM_CACHE[prompt]:
-        # Fetch fresh values if cache is empty
         LLM_CACHE[prompt] = fetch_from_llm(prompt)
 
     attempt = 0
-    while attempt < 5:  # Try a few times to get a unique value
+    while attempt < 5:
         if not LLM_CACHE[prompt]:
-            # Auto-refill if we run out
             LLM_CACHE[prompt] = fetch_from_llm(prompt)
 
         value = LLM_CACHE[prompt].pop()
 
-        # Check if the value is not in the last 5 responses
         if value not in RECENT_RESPONSES and value not in RECENT_RESPONSES_HISTORY:
-            # Update recent responses
             RECENT_RESPONSES.add(value)
             if len(RECENT_RESPONSES) > RECENT_CACHE_LIMIT:
-                # Remove oldest item (not perfectly FIFO but simple)
                 RECENT_RESPONSES.pop()
 
-            # Add the value to the history of recent responses
             RECENT_RESPONSES_HISTORY.append(value)
             return value
 
         attempt += 1
 
-    # If no unique value after several tries, return the last tried one
+    
     return value
