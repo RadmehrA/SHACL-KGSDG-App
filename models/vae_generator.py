@@ -360,15 +360,12 @@ def train_vae(model, optimizer, factorized_data, num_epochs=100, batch_size=64):
         if epoch % 10 == 0:
             print(f"Epoch [{epoch}/{num_epochs}] Loss: {total_loss/total_samples:.4f}")
 
-# -----------------------------
-# Generate data from VAE
-# -----------------------------
 def generate_from_vae(model, factorized_data, subject, predicate, num_samples=1):
     subject_dim = factorized_data["subject_dim"]
     predicate_dim = factorized_data["predicate_dim"]
     numeric = model.numeric
 
-    # Match input subject/predicate
+    
     subject_matches = [s for s in factorized_data["subject_uniques"] if subject.lower() in s.lower()]
     predicate_matches = [p for p in factorized_data["predicate_uniques"] if predicate.lower() in p.lower()]
 

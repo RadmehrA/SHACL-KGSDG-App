@@ -18,3 +18,5 @@ huggingface-hub==0.13.4
 httpx
 streamlit-aggrid
 sseclient-py
+matplotlib
+pyvis

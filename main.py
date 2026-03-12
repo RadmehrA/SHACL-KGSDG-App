@@ -40,8 +40,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# Store the parsed shape map globally
 shape_map_storage = []
 
 from rdflib import Graph, Namespace, RDF, URIRef, BNode
@@ -55,7 +53,7 @@ def extract_distribution_info(constraints: List[Dict[str, str]]) -> Dict[str, an
     for c in constraints:
         for key, val in c.items():
             if key.startswith(DIST_NS):
-                short_key = key[len(DIST_NS):]  # e.g., "distribution", "categories", "mean", etc.
+                short_key = key[len(DIST_NS):]
                 dist_info[short_key] = val
     return dist_info
 
@@ -72,11 +70,11 @@ def parse_shacl(file_path: str) -> List[Dict]:
             "properties": []
         }
 
-        # Extract target classes
+        
         for target_class in g.objects(s, SH.targetClass):
             shape_map_entry["target_classes"].append(str(target_class))
 
-        # Extract properties and their constraints
+        
         for property in g.objects(s, SH.property):
             property_entry = {"property": str(property), "constraints": []}
             for predicate, value in g.predicate_objects(property):
@@ -85,7 +83,7 @@ def parse_shacl(file_path: str) -> List[Dict]:
                 elif isinstance(predicate, BNode):
                     property_entry["constraints"].append({"BlankNode": str(predicate)})
 
-            # Extract distribution info from constraints
+            
             property_entry["distribution"] = extract_distribution_info(property_entry["constraints"])
 
             shape_map_entry["properties"].append(property_entry)
@@ -144,15 +142,15 @@ def get_cardinality(constraints: List[Dict[str, str]]) -> Tuple[int, int]:
 def generate_synthetic_sample_with_distribution(constraints: List[Dict[str, str]], user_interactive_message: str, distribution_type: str, distribution_parameters: Dict[str, Any]) -> Dict[str, Any]:
     generated_sample = {}
 
-    # Extract path and datatype
+    
     path, datatype = extract_path_and_datatype(constraints)
 
-    # Get cardinality for the number of values
+    
     min_count, max_count = get_cardinality(constraints)
     num_values = random.randint(min_count, max_count)
 
     if path:
-        # Handle the distribution-based generation
+        
         if distribution_type == "Normal":
             mean = distribution_parameters.get("mean", 0.0)
             stddev = distribution_parameters.get("stddev", 1.0)
@@ -167,10 +165,10 @@ def generate_synthetic_sample_with_distribution(constraints: List[Dict[str, str]
             custom_param = distribution_parameters.get("custom_param", "")
             values = generate_skewed_distribution(low, high, num_values, custom_param)
         else:
-            # Default case for LLM-based generation
+            
             values = [generate_llm_data(path, datatype, user_interactive_message) for _ in range(num_values)]
 
-        # Store the generated values
+        
         generated_sample[simplify_key(path)] = values[0] if len(values) == 1 else values
 
     return generated_sample
@@ -231,18 +229,18 @@ def generate_synthetic_sample_with_distribution_gan(
 ) -> Dict[str, Any]:
     generated_sample = {}
 
-    # Extract predicate path and datatype from SHACL constraints
+    
     path, datatype = extract_path_and_datatype(constraints)
     if not path:
         return generated_sample
 
     simplified = simplify_key(path)
 
-    # Determine cardinality
+    
     min_count, max_count = get_cardinality(constraints)
     num_values = random.randint(min_count, max_count)
 
-    # Choose models
+    
     if isinstance(model_config, dict) and "modelname" in model_config:
         selected_models = [model_config["modelname"], "all"]
     else:
@@ -250,7 +248,7 @@ def generate_synthetic_sample_with_distribution_gan(
         if "all" not in selected_models:
             selected_models.append("all")
 
-    # Generate values
+    
     generated_values = []
     for model_name in selected_models:
         try:
@@ -265,10 +263,10 @@ def generate_synthetic_sample_with_distribution_gan(
         except ValueError as e:
             generated_values.append(f"Error: {str(e)}")
 
-    # Deduplicate and limit to num_values
+    
     generated_values = list(dict.fromkeys(generated_values))[:num_values]
 
-    # Store in final sample
+    
     generated_sample[simplified] = generated_values[0] if len(generated_values) == 1 else generated_values
     return generated_sample
 
@@ -281,17 +279,17 @@ def generate_synthetic_sample_with_distribution_vae(
     num_samples=None,
     distribution="normal"
 ):
-    # Extract path and datatype from SHACL constraints
+    
     path, datatype = extract_path_and_datatype(constraints)
     if not path:
         raise ValueError("No valid path found in SHACL constraints.")
 
-    # Get cardinality
+    
     min_count, max_count = get_cardinality(constraints)
     if num_samples is None:
         num_samples = random.randint(min_count, max_count)
 
-    # Subject and predicate matching
+    
     subject_dim = factorized_data["subject_dim"]
     predicate_dim = factorized_data["predicate_dim"]
 
@@ -320,7 +318,7 @@ def generate_synthetic_sample_with_distribution_vae(
 
     x_cond = torch.cat((s_oh, p_oh), dim=1).repeat(num_samples, 1)
 
-    # Generate samples using the selected distribution
+    
     with torch.no_grad():
         if distribution == "normal":
             mu, logvar = model.encode(x_cond)
@@ -456,8 +454,6 @@ async def generate_data(request: DistributionRequest):
     return StreamingResponse(data_generator(), media_type="text/event-stream")
 
 
-
-
 @app.get("/test_generate_llm_data")
 async def test_generate_llm_data(path: str, datatype: str, user_interactive_message: str = ""):
     print(f"[DEBUG] Received Path: {path}, Datatype: {datatype}, User Interactive Message: {user_interactive_message}")
@@ -479,7 +475,7 @@ async def stream_generate_data(num_samples: int = 5, user_interactive_message: s
                 for shape in shape_map:
                     for property_data in shape["properties"]:
                         constraints = property_data["constraints"]
-                        # Pass the user interactive message to generate synthetic sample
+                        
                         generated_sample = generate_synthetic_sample_with_distribution(constraints, user_interactive_message)
                         sample.update(generated_sample)
                 yield f"data: {json.dumps(sample)}\n\n"
@@ -574,12 +570,10 @@ def factorize_rdf_data(file_path: str):
         predicates.append(str(pred))
         objects.append(str(obj))
 
-    # Factorize the subjects, predicates, and objects
     subject_encoded, subject_unique = pd.factorize(subjects)
     predicate_encoded, predicate_unique = pd.factorize(predicates)
     object_encoded, object_unique = pd.factorize(objects)
 
-    # Return factorized data
     factorized_data = {
         "subjects": subject_encoded,
         "predicates": predicate_encoded,
@@ -746,11 +740,11 @@ def load_model_by_name(model_name, models_root="/app/models/saved_models/gan"):
                 factorized_data["object_dim"]
             )
 
-            # Load the state dicts into the models
+            
             generator.load_state_dict(torch.load(gen_path, map_location=torch.device('cpu')))
             discriminator.load_state_dict(torch.load(disc_path, map_location=torch.device('cpu')))
 
-            # Optionally, set the models to evaluation mode
+            
             generator.eval()
             discriminator.eval()
 
@@ -927,7 +921,7 @@ async def upload_ttl(file: UploadFile = File(...), model_name: str = Form(...)):
         factorize_and_initialize_gans(path)
         train_gan(num_epochs=100, batch_size=32)
 
-        save_gan_to_mongo(model_name)  # <-- save to MongoDB instead of disk
+        save_gan_to_mongo(model_name)
         return {"message": f"Model '{model_name}' trained and saved in MongoDB."}
 
     except Exception as e:
@@ -940,7 +934,7 @@ class GenerateRequest(BaseModel):
     subject: str
     predicate: str
     num_samples: int = 1
-    distribution: Optional[str] = "normal"  # normal, uniform, skewed, categorical
+    distribution: Optional[str] = "normal"
     dist_params: Optional[Dict[str, Any]] = None
 
 @app.post("/gan/load-and-generate")
@@ -948,7 +942,7 @@ async def load_and_generate_gan_data(request: GenerateRequest):
     model_name = request.model_name
 
     try:
-        # Load model asynchronously if not already in memory
+        
         if model_name not in loaded_models:
             model = await load_gan_from_mongo_async(model_name)
         else:
@@ -957,10 +951,10 @@ async def load_and_generate_gan_data(request: GenerateRequest):
         factorized_data = model["factorized_data"]
         generator = model["generator"]
 
-        # 🔹 Add this line to inspect predicates
+        
         print("Factorized predicates:", factorized_data["predicate_uniques"])
 
-        # --- Helper to map local names ---
+        
         def map_local_name(factorized_data, local_name, key="predicate"):
             return factorized_data.get(f"{key}_map", {}).get(local_name, local_name)
 
@@ -1235,9 +1229,9 @@ def filter_by_distribution(samples, dist_type, params, encode_categorical=False)
 
         elif mode == "top_k":
             top_k = params.get("top_k", len(samples))
-            filtered = samples[:top_k]  # assumes samples are probability-ordered
+            filtered = samples[:top_k]
 
-    # --- NUMERIC ---
+    
     elif dist_type == "numeric":
         
         if encode_categorical:
@@ -1344,7 +1338,7 @@ async def generate_vae(req: GenerateRequest):
     p_idx = torch.LongTensor([factorized["predicate_to_idx"][req.predicate]])
     valid_objects = factorized["sp_to_obj"][(req.subject, req.predicate)]
 
-    # --- Generate samples with retry mechanism ---
+    
     results = []
     max_attempts = req.num_samples * 5
     attempts = 0
@@ -1364,7 +1358,7 @@ async def generate_vae(req: GenerateRequest):
             results.append(factorized["objects"][obj_idx])
             attempts += 1
 
-    # --- Apply distribution filtering if requested ---
+    
     if req.distribution_type and req.distribution_params:
         results = filter_by_distribution(
             results,
@@ -1373,7 +1367,7 @@ async def generate_vae(req: GenerateRequest):
             encode_categorical=req.encode_categorical
         )
 
-    # --- Final safety check ---
+    
     if not results:
         raise HTTPException(
             status_code=500,
@@ -1518,7 +1512,7 @@ def train_gan(X, y, factorized, epochs=100):
             p_idx = X_tensor[i, 1].unsqueeze(0)
             real_obj_idx = y_tensor[i].unsqueeze(0)
 
-            # Train Discriminator
+            
             D.zero_grad()
             real_logits = D(s_idx, p_idx, real_obj_idx)
             real_labels = torch.ones_like(real_logits)
@@ -1533,7 +1527,7 @@ def train_gan(X, y, factorized, epochs=100):
             loss_D.backward()
             optim_D.step()
 
-            # Train Generator
+            
             G.zero_grad()
             fake_logits = D(s_idx, p_idx, fake_obj_idx)
             loss_G = criterion(fake_logits, torch.ones_like(fake_logits))
@@ -1591,7 +1585,7 @@ class GenerateRequest(BaseModel):
 
 @app.post("/graphgan/generate")
 async def generate_gan(req: GenerateRequest):
-    # --- Load GAN model ---
+    
     doc = await gan_collection.find_one({"model_name": req.model_name})
     if not doc:
         raise HTTPException(status_code=404, detail="Model not found")
@@ -1610,7 +1604,7 @@ async def generate_gan(req: GenerateRequest):
     p_idx = torch.LongTensor([factorized["predicate_to_idx"][req.predicate]])
     valid_objects = factorized["sp_to_obj"][(req.subject, req.predicate)]
 
-    # --- Generate samples ---
+    
     results = []
     max_attempts = req.num_samples * 5
     attempts = 0
@@ -1678,7 +1672,7 @@ from sklearn.preprocessing import LabelEncoder
 def filter_by_distribution(samples, dist_type, params, encode_categorical=False):
     filtered = []
 
-    # --- CATEGORICAL ---
+    
     if dist_type == "categorical":
         mode = params.get("mode", "allowed_list")
 
@@ -1699,9 +1693,9 @@ def filter_by_distribution(samples, dist_type, params, encode_categorical=False)
             top_k = params.get("top_k", len(samples))
             filtered = samples[:top_k]
 
-    # --- NUMERIC ---
+    
     elif dist_type == "numeric":
-        # encode categorical if requested
+        
         if encode_categorical:
             le = LabelEncoder()
             numeric_samples = le.fit_transform(samples)
@@ -1772,9 +1766,6 @@ RECENT_RESPONSES_HISTORY = deque(maxlen=5)
 RECENT_RESPONSES = set()
 RECENT_CACHE_LIMIT = 50
 
-# -----------------------
-# Datatype mappings
-# -----------------------
 DATATYPE_MAP = {
     "http://www.w3.org/2001/XMLSchema#string": "text",
     "http://www.w3.org/2001/XMLSchema#integer": "integer",
@@ -1785,9 +1776,6 @@ DATATYPE_MAP = {
     "http://www.w3.org/ns/shacl#IRI": "IRI (e.g., http://example.org/resource/123)"
 }
 
-# -----------------------
-# Helpers
-# -----------------------
 def simplify_key(path: str) -> str:
     return path.split("/")[-1]
 
@@ -1826,7 +1814,7 @@ def parse_llm_response(text: str):
     if not text or not text.strip():
         raise ValueError("Empty LLM output")
     
-    # Try proper JSON
+    
     try:
         data = json.loads(text)
         if "value" in data:
@@ -2021,7 +2009,7 @@ async def generate_llm(req: LLMGenerateRequest):
             detail="No samples matched the distribution. Try relaxing the filter."
         )
 
-    # ✅ Only return the list of generated samples
+    
     return {"generated_samples": result["generated_samples"]}
 
 import os
@@ -2067,7 +2055,7 @@ def extract_distribution_info(constraints: list, g: Graph) -> dict:
         for key, val in c.items():
             if key.startswith(DIST_NS):
                 short_key = key[len(DIST_NS):]
-                # Convert BNode (RDF list) to Python list
+                
                 if isinstance(val, BNode):
                     dist_info[short_key] = parse_rdf_list(g, val)
                 else:
@@ -2265,7 +2253,7 @@ def clean_llm_output(val):
 
         val = val.strip()
 
-        # remove common LLM prefixes
+        
         bad_prefixes = [
             "Here is",
             "Example",
@@ -2513,7 +2501,7 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
 
                 factorized, model, G = None, None, None
 
-                # Load models
+                
                 if prop.model_type in ["VAE", "GAN"]:
                     if prop.model_name in models_cache:
                         factorized, model, G = models_cache[prop.model_name]
@@ -2593,7 +2581,7 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
 
                 sample_result[prop.path] = obj_value
 
-                # Add RDF triple
+                
                 subj_uri = URIRef(prop.shape)
                 pred_uri = URIRef(prop.path)
                 if prop.datatype.lower() == "iri":
@@ -2619,3 +2607,440 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
         yield f"data: {json.dumps({'progress': 100, 'rdf_turtle_samples': all_samples_rdf, 'generated_data_samples': all_samples_result})}\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+
+# -------------------------------------Custom-LLM-------------------------------------------------
+
+import datetime
+import pickle
+import tempfile
+from typing import List, Optional
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+from fastapi import UploadFile, File, HTTPException
+from pydantic import BaseModel
+from rdflib import Graph
+
+llm_collection = db["llm_models"]
+
+
+
+class KGModel(nn.Module):
+
+    def __init__(self, sp_vocab_size, o_vocab_size, hidden=128):
+        super().__init__()
+
+        self.sp_embed = nn.Embedding(sp_vocab_size, hidden)
+        self.o_embed = nn.Embedding(o_vocab_size, hidden)
+
+        self.transformer = nn.Transformer(
+            d_model=hidden,
+            nhead=4,
+            num_encoder_layers=2
+        )
+
+        self.output = nn.Linear(hidden, o_vocab_size)
+
+    def forward(self, sp_ids, o_ids):
+
+        sp_vec = self.sp_embed(sp_ids)
+        o_vec = self.o_embed(o_ids)
+
+        x = sp_vec + o_vec
+        x = self.transformer(x, x)
+
+        logits = self.output(x)
+
+        return logits
+
+
+class KGTokenizer:
+
+    def __init__(self):
+
+        self.sp_vocab = {}
+        self.o_vocab = {}
+
+        self.sp_inverse = {}
+        self.o_inverse = {}
+
+    def build_from_graph(self, triples):
+
+        sp_id = 0
+        o_id = 0
+
+        for s, p, o in triples:
+
+            sp_token = f"{s}|{p}"
+
+            if sp_token not in self.sp_vocab:
+                self.sp_vocab[sp_token] = sp_id
+                self.sp_inverse[sp_id] = sp_token
+                sp_id += 1
+
+            if o not in self.o_vocab:
+                self.o_vocab[o] = o_id
+                self.o_inverse[o_id] = o
+                o_id += 1
+
+    def encode(self, s, p, o):
+
+        sp_token = f"{s}|{p}"
+
+        return (
+            self.sp_vocab.get(sp_token, -1),
+            self.o_vocab.get(o, -1)
+        )
+
+
+class OntologyLoader:
+
+    def __init__(self):
+        self.graph = Graph()
+
+    def load(self, path: str):
+        self.graph.parse(path)
+
+    def triples(self):
+
+        for s, p, o in self.graph:
+            yield str(s), str(p), str(o)
+
+
+
+class CustomKGLLM:
+
+    def __init__(self, triples: List[tuple]):
+
+        self.triples = triples
+
+        self.tokenizer = KGTokenizer()
+        self.tokenizer.build_from_graph(triples)
+
+        
+        self.sp_to_obj = {}
+
+        for s, p, o in triples:
+
+            key = (s, p)
+
+            if key not in self.sp_to_obj:
+                self.sp_to_obj[key] = []
+
+            self.sp_to_obj[key].append(self.tokenizer.o_vocab[o])
+
+
+    async def train(self, epochs=100, lr=0.01):
+
+        self.model = KGModel(
+            len(self.tokenizer.sp_vocab),
+            len(self.tokenizer.o_vocab)
+        )
+
+        optimizer = optim.Adam(self.model.parameters(), lr=lr)
+        loss_fn = nn.CrossEntropyLoss()
+
+        training_data = []
+
+        for s, p, o in self.triples:
+
+            sp_id, o_id = self.tokenizer.encode(s, p, o)
+
+            if sp_id != -1 and o_id != -1:
+                training_data.append((sp_id, o_id))
+
+        if not training_data:
+            return
+
+        self.model.train()
+
+        for epoch in range(epochs):
+
+            for sp_id, o_id in training_data:
+
+                sp_tensor = torch.tensor([sp_id])
+                o_tensor = torch.tensor([0])
+
+                logits = self.model(sp_tensor, o_tensor)
+
+                loss = loss_fn(
+                    logits.view(1, -1),
+                    torch.tensor([o_id])
+                )
+
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+
+        self.model.eval()
+
+
+    def generate(self, subject, predicate, num_samples):
+
+        if not hasattr(self, "model"):
+            return ["Unknown"]
+
+        if (subject, predicate) not in self.sp_to_obj:
+            return ["Unknown"]
+
+        sp_token = f"{subject}|{predicate}"
+        sp_id = self.tokenizer.sp_vocab[sp_token]
+
+        valid_objects = self.sp_to_obj[(subject, predicate)]
+
+        results = []
+
+        with torch.no_grad():
+
+            for _ in range(num_samples):
+
+                sp_tensor = torch.tensor([sp_id])
+                o_tensor = torch.tensor([0])
+
+                logits = self.model(sp_tensor, o_tensor)
+
+                probs = torch.softmax(logits, dim=1)
+
+                mask = torch.zeros_like(probs)
+                mask[:, valid_objects] = 1
+
+                probs = probs * mask
+
+                if probs.sum() == 0:
+                    continue
+
+                probs = probs / probs.sum()
+
+                obj_idx = torch.multinomial(probs, 1).item()
+
+                results.append(self.tokenizer.o_inverse[obj_idx])
+
+        return results
+
+
+kg_llm = None
+
+
+@app.post("/llm/upload_ontology")
+async def upload_ontology(file: UploadFile = File(...)):
+
+    content = await file.read()
+
+    temp = tempfile.NamedTemporaryFile(delete=False, suffix=".owl")
+
+    temp.write(content)
+    temp.close()
+
+    return {"temp_path": temp.name}
+
+
+@app.post("/llm/load_ontology")
+async def load_ontology(temp_path: str):
+
+    global kg_llm
+
+    loader = OntologyLoader()
+    loader.load(temp_path)
+
+    triples = list(loader.triples())
+
+    kg_llm = CustomKGLLM(triples)
+
+    return {
+        "num_triples": len(triples)
+    }
+
+
+class TrainRequest(BaseModel):
+    model_name: str
+    epochs: int = 100
+    lr: float = 0.01
+
+
+@app.post("/llm/train")
+async def train_llm(req: TrainRequest):
+
+    global kg_llm
+
+    if not kg_llm:
+        raise HTTPException(status_code=400, detail="Load ontology first")
+
+    
+    await kg_llm.train(req.epochs, req.lr)
+
+    
+    doc = {
+
+        "model_name": req.model_name,
+
+        "model_state": pickle.dumps(
+            kg_llm.model.state_dict()
+        ),
+
+        "tokenizer": pickle.dumps(
+            kg_llm.tokenizer
+        ),
+
+        "sp_to_obj": pickle.dumps(
+            kg_llm.sp_to_obj
+        ),
+
+        "created_at": datetime.datetime.utcnow()
+    }
+
+    await llm_collection.replace_one(
+        {"model_name": req.model_name},
+        doc,
+        upsert=True
+    )
+
+    return {
+        "message": f"Model '{req.model_name}' trained and saved successfully"
+    }
+
+
+class GenerateRequest(BaseModel):
+
+    model_name: str
+    subject: str
+    predicate: str
+    num_samples: int = 3
+
+    distribution_type: Optional[str] = None
+    distribution_params: Optional[dict] = None
+    encode_categorical: bool = False
+
+
+@app.post("/llm/generate")
+async def generate(req: GenerateRequest):
+
+    
+    doc = await llm_collection.find_one({"model_name": req.model_name})
+
+    if not doc:
+        raise HTTPException(status_code=404, detail="Model not found")
+
+    tokenizer = pickle.loads(doc["tokenizer"])
+    sp_to_obj = pickle.loads(doc["sp_to_obj"])
+
+    model = KGModel(
+        len(tokenizer.sp_vocab),
+        len(tokenizer.o_vocab)
+    )
+
+    model.load_state_dict(
+        pickle.loads(doc["model_state"])
+    )
+
+    model.eval()
+
+    if (req.subject, req.predicate) not in sp_to_obj:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid subject-predicate combination"
+        )
+
+    sp_token = f"{req.subject}|{req.predicate}"
+
+    sp_id = tokenizer.sp_vocab[sp_token]
+
+    valid_objects = sp_to_obj[(req.subject, req.predicate)]
+
+    results = []
+
+    with torch.no_grad():
+
+        for _ in range(req.num_samples):
+
+            sp_tensor = torch.tensor([sp_id])
+            o_tensor = torch.tensor([0])
+
+            logits = model(sp_tensor, o_tensor)
+
+            probs = torch.softmax(logits, dim=1)
+
+            mask = torch.zeros_like(probs)
+            mask[:, valid_objects] = 1
+
+            probs = probs * mask
+
+            if probs.sum() == 0:
+                continue
+
+            probs = probs / probs.sum()
+
+            obj_idx = torch.multinomial(probs, 1).item()
+
+            results.append(
+                tokenizer.o_inverse[obj_idx]
+            )
+
+    
+    if req.distribution_type and req.distribution_params:
+
+        results = filter_by_distribution(
+            results,
+            req.distribution_type,
+            req.distribution_params,
+            encode_categorical=req.encode_categorical
+        )
+
+    return {
+        "generated_objects": results[:req.num_samples]
+    }
+
+
+
+@app.post("/llm/load_model/{model_name}")
+async def load_model(model_name: str):
+
+    global kg_llm
+
+    doc = await llm_collection.find_one({"model_name": model_name})
+
+    if not doc:
+        raise HTTPException(status_code=404, detail="Model not found")
+
+    tokenizer = pickle.loads(doc["tokenizer"])
+    sp_to_obj = pickle.loads(doc["sp_to_obj"])
+
+    model = KGModel(
+        len(tokenizer.sp_vocab),
+        len(tokenizer.o_vocab)
+    )
+
+    model.load_state_dict(pickle.loads(doc["model_state"]))
+    model.eval()
+
+    kg_llm = {
+        "model": model,
+        "tokenizer": tokenizer,
+        "sp_to_obj": sp_to_obj
+    }
+
+    return {"message": f"Model '{model_name}' loaded"}
+
+
+@app.get("/llm/subject_predicates/{model_name}")
+async def list_subject_predicates(model_name: str):
+
+    doc = await llm_collection.find_one({"model_name": model_name})
+
+    if not doc:
+        raise HTTPException(status_code=404, detail="Model not found")
+
+    sp_to_obj = pickle.loads(doc["sp_to_obj"])
+
+    subject_predicates = {}
+
+    for (s, p) in sp_to_obj.keys():
+
+        subject_predicates.setdefault(s, []).append(p)
+
+    return {
+        "model_name": model_name,
+        "subject_predicates": subject_predicates
+    }
