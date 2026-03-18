@@ -1090,7 +1090,7 @@ def extract_explicit_triples(owl_path: str):
                         collection = Collection(g, union_list)
                         for item in collection:
                             triples.add((str(cls), str(prop), str(item)))
-                # hasValue
+                
                 hasv = g.value(restriction, OWL.hasValue)
                 if hasv:
                     triples.add((str(cls), str(prop), str(hasv)))
@@ -1210,7 +1210,7 @@ from sklearn.preprocessing import LabelEncoder
 def filter_by_distribution(samples, dist_type, params, encode_categorical=False):
     filtered = []
 
-    # --- CATEGORICAL ---
+    
     if dist_type == "categorical":
         mode = params.get("mode", "allowed_list")
 
@@ -1315,7 +1315,7 @@ async def filter_distribution(req: DistributionRequest):
 
 @app.post("/graphvae/generate")
 async def generate_vae(req: GenerateRequest):
-    # --- Load VAE model ---
+    
     doc = await vae_collection.find_one({"model_name": req.model_name})
     if not doc:
         raise HTTPException(status_code=404, detail="Model not found")
@@ -1439,12 +1439,12 @@ def extract_explicit_triples(owl_path: str):
     triples = set()
     EXCLUDED = {str(RDF.type), str(RDFS.subClassOf)}
 
-    # Direct triples
+    
     for s, p, o in g:
         if isinstance(s, URIRef) and isinstance(o, URIRef) and str(p) not in EXCLUDED:
             triples.add((str(s), str(p), str(o)))
 
-    # Flatten Restrictions
+    
     for cls in g.subjects(RDF.type, OWL.Class):
         for restriction in g.objects(cls, RDFS.subClassOf):
             if (restriction, RDF.type, OWL.Restriction) in g:
@@ -2268,6 +2268,43 @@ def clean_llm_output(val):
 
     return val
 
+
+
+async def load_custom_llm(model_name: str):
+    doc = await llm_collection.find_one({"model_name": model_name})
+    if not doc:
+        raise HTTPException(status_code=404, detail=f"Custom LLM '{model_name}' not found")
+
+    file_ids = doc["file_ids"]
+
+    
+    model_bytes = io.BytesIO()
+    await fs_bucket.download_to_stream(file_ids["model"], model_bytes)
+    model_bytes.seek(0)
+
+    tokenizer_bytes = io.BytesIO()
+    await fs_bucket.download_to_stream(file_ids["tokenizer"], tokenizer_bytes)
+    tokenizer_bytes.seek(0)
+
+    sp_to_obj_bytes = io.BytesIO()
+    await fs_bucket.download_to_stream(file_ids["sp_to_obj"], sp_to_obj_bytes)
+    sp_to_obj_bytes.seek(0)
+
+    tokenizer = pickle.load(tokenizer_bytes)
+    sp_to_obj = pickle.load(sp_to_obj_bytes)
+
+    model = KGModel(len(tokenizer.sp_vocab), len(tokenizer.o_vocab))
+    model.load_state_dict(torch.load(model_bytes))
+    model.eval()
+
+    return {
+        "model_name": model_name,
+        "model": model,
+        "tokenizer": tokenizer,
+        "sp_to_obj": sp_to_obj
+    }
+
+
 from fastapi import Query
 
 @app.post("/generate_from_shacl")
@@ -2287,7 +2324,8 @@ async def generate_from_shacl(req: List[PropertySchema], num_samples: int = Quer
 
         for prop in req:
             
-            if prop.model_type not in ["LLM", "VAE", "GAN"]:
+            
+            if prop.model_type not in ["LLM", "VAE", "GAN", "CUSTOM_LLM"]:
                 raise HTTPException(status_code=400, detail=f"Invalid model_type for {prop.path}")
 
             factorized, model, G = None, None, None
@@ -2332,9 +2370,42 @@ async def generate_from_shacl(req: List[PropertySchema], num_samples: int = Quer
                     distribution_params=prop.distribution_params
                 )
                 obj_value = val_list["generated_samples"][0]
+            elif prop.model_type == "CUSTOM_LLM":
+                    
+                    if prop.model_name in models_cache:
+                        custom_llm_loaded = models_cache[prop.model_name]
+                    else:
+                        custom_llm_loaded = await load_custom_llm(prop.model_name)
+                        models_cache[prop.model_name] = custom_llm_loaded
+
+                    model = custom_llm_loaded["model"]
+                    tokenizer = custom_llm_loaded["tokenizer"]
+                    sp_to_obj = custom_llm_loaded["sp_to_obj"]
+
+                    if (prop.shape, prop.path) in sp_to_obj:
+                        sp_token = f"{prop.shape}|{prop.path}"
+                        sp_id = tokenizer.sp_vocab[sp_token]
+                        valid_objects = sp_to_obj[(prop.shape, prop.path)]
+
+                        with torch.no_grad():
+                            logits = model(torch.tensor([sp_id]), torch.tensor([0]))
+                            probs = torch.softmax(logits, dim=1)
+
+                            mask = torch.zeros_like(probs)
+                            mask[:, valid_objects] = 1
+                            probs = probs * mask
+
+                            if probs.sum() > 0:
+                                probs = probs / probs.sum()
+                                obj_idx = torch.multinomial(probs, 1).item()
+                                obj_value = tokenizer.o_inverse[obj_idx]
+                            else:
+                                obj_value = "Unknown"
+                    else:
+                        obj_value = "Unknown"
 
             else:
-                # VAE/GAN sampling
+                
                 if prop.shape in factorized["subject_to_idx"] and prop.path in factorized["predicate_to_idx"]:
                     s_idx = torch.LongTensor([factorized["subject_to_idx"][prop.shape]])
                     p_idx = torch.LongTensor([factorized["predicate_to_idx"][prop.path]])
@@ -2470,8 +2541,6 @@ async def upload_shacl_and_extract_schema(file: UploadFile = File(...)):
 
     return {"message": "SHACL uploaded and schema extracted", "json_schema": json_schema}
 
-
-
 from fastapi.responses import StreamingResponse
 import json
 import asyncio
@@ -2525,7 +2594,7 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                             G.eval()
                             models_cache[prop.model_name] = (factorized, None, G)
 
-                # Generate value
+                
                 if prop.model_type == "LLM":
                     val_list = generates_llm_data(
                         shape=prop.shape,
@@ -2537,6 +2606,40 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                         distribution_params=prop.distribution_params
                     )
                     obj_value = val_list["generated_samples"][0]
+
+                elif prop.model_type == "CUSTOM_LLM":
+                    
+                    if prop.model_name in models_cache:
+                        custom_llm_loaded = models_cache[prop.model_name]
+                    else:
+                        custom_llm_loaded = await load_custom_llm(prop.model_name)
+                        models_cache[prop.model_name] = custom_llm_loaded
+
+                    model = custom_llm_loaded["model"]
+                    tokenizer = custom_llm_loaded["tokenizer"]
+                    sp_to_obj = custom_llm_loaded["sp_to_obj"]
+
+                    if (prop.shape, prop.path) in sp_to_obj:
+                        sp_token = f"{prop.shape}|{prop.path}"
+                        sp_id = tokenizer.sp_vocab[sp_token]
+                        valid_objects = sp_to_obj[(prop.shape, prop.path)]
+
+                        with torch.no_grad():
+                            logits = model(torch.tensor([sp_id]), torch.tensor([0]))
+                            probs = torch.softmax(logits, dim=1)
+
+                            mask = torch.zeros_like(probs)
+                            mask[:, valid_objects] = 1
+                            probs = probs * mask
+
+                            if probs.sum() > 0:
+                                probs = probs / probs.sum()
+                                obj_idx = torch.multinomial(probs, 1).item()
+                                obj_value = tokenizer.o_inverse[obj_idx]
+                            else:
+                                obj_value = "Unknown"
+                    else:
+                        obj_value = "Unknown"
 
                 elif prop.model_type in ["VAE", "GAN"]:
                     if prop.shape in factorized["subject_to_idx"] and prop.path in factorized["predicate_to_idx"]:
@@ -2559,7 +2662,7 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                                     obj_idx = torch.multinomial(probs, 1).item()
                                     obj_value = factorized["objects"][obj_idx]
 
-                # Fallback
+                
                 if obj_value is None:
                     if prop.distribution_type == "categorical":
                         allowed = prop.distribution_params.get("allowed_list", ["UnknownValue"])
@@ -2733,47 +2836,53 @@ class CustomKGLLM:
             self.sp_to_obj[key].append(self.tokenizer.o_vocab[o])
 
 
-    async def train(self, epochs=100, lr=0.01):
+
+    async def train(self, epochs=100, lr=0.01, batch_size=32, device=None):
+
+        device = device or ("cuda" if torch.cuda.is_available() else "cpu")
 
         self.model = KGModel(
             len(self.tokenizer.sp_vocab),
             len(self.tokenizer.o_vocab)
-        )
+        ).to(device)
 
         optimizer = optim.Adam(self.model.parameters(), lr=lr)
         loss_fn = nn.CrossEntropyLoss()
 
-        training_data = []
+        sp_ids = []
+        o_ids = []
 
         for s, p, o in self.triples:
-
             sp_id, o_id = self.tokenizer.encode(s, p, o)
-
             if sp_id != -1 and o_id != -1:
-                training_data.append((sp_id, o_id))
+                sp_ids.append(sp_id)
+                o_ids.append(o_id)
 
-        if not training_data:
+        if not sp_ids:
             return
+
+        sp_ids = torch.tensor(sp_ids, dtype=torch.long, device=device)
+        o_ids = torch.tensor(o_ids, dtype=torch.long, device=device)
 
         self.model.train()
 
         for epoch in range(epochs):
+            perm = torch.randperm(len(sp_ids), device=device)
 
-            for sp_id, o_id in training_data:
+            for i in range(0, len(sp_ids), batch_size):
+                idx = perm[i:i+batch_size]
+                sp_batch = sp_ids[idx]
+                o_batch = o_ids[idx]
 
-                sp_tensor = torch.tensor([sp_id])
-                o_tensor = torch.tensor([0])
+                logits = self.model(sp_batch, torch.zeros_like(sp_batch, device=device))
 
-                logits = self.model(sp_tensor, o_tensor)
-
-                loss = loss_fn(
-                    logits.view(1, -1),
-                    torch.tensor([o_id])
-                )
+                loss = loss_fn(logits.view(-1, logits.size(-1)), o_batch)
 
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
+
+            print(f"Epoch {epoch+1}/{epochs} - Loss: {loss.item():.4f}")
 
         self.model.eval()
 
@@ -2860,9 +2969,16 @@ class TrainRequest(BaseModel):
     lr: float = 0.01
 
 
+
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
+import io
+
+db = mongo_client["graphvae_db"]
+llm_collection = db["llm_models"]
+fs_bucket = AsyncIOMotorGridFSBucket(db)
+
 @app.post("/llm/train")
 async def train_llm(req: TrainRequest):
-
     global kg_llm
 
     if not kg_llm:
@@ -2872,147 +2988,74 @@ async def train_llm(req: TrainRequest):
     await kg_llm.train(req.epochs, req.lr)
 
     
+    model_bytes = io.BytesIO()
+    torch.save(kg_llm.model.state_dict(), model_bytes)
+    model_bytes.seek(0)
+
+    tokenizer_bytes = io.BytesIO()
+    pickle.dump(kg_llm.tokenizer, tokenizer_bytes)
+    tokenizer_bytes.seek(0)
+
+    sp_to_obj_bytes = io.BytesIO()
+    pickle.dump(kg_llm.sp_to_obj, sp_to_obj_bytes)
+    sp_to_obj_bytes.seek(0)
+
+    
+    existing = await llm_collection.find_one({"model_name": req.model_name})
+    if existing:
+        for file_id in existing.get("file_ids", {}).values():
+            await fs_bucket.delete(file_id)
+
+    
+    model_id = await fs_bucket.upload_from_stream(f"{req.model_name}_model.pt", model_bytes)
+    tokenizer_id = await fs_bucket.upload_from_stream(f"{req.model_name}_tokenizer.pkl", tokenizer_bytes)
+    sp_to_obj_id = await fs_bucket.upload_from_stream(f"{req.model_name}_sp_to_obj.pkl", sp_to_obj_bytes)
+
+    
     doc = {
-
         "model_name": req.model_name,
-
-        "model_state": pickle.dumps(
-            kg_llm.model.state_dict()
-        ),
-
-        "tokenizer": pickle.dumps(
-            kg_llm.tokenizer
-        ),
-
-        "sp_to_obj": pickle.dumps(
-            kg_llm.sp_to_obj
-        ),
-
+        "file_ids": {
+            "model": model_id,
+            "tokenizer": tokenizer_id,
+            "sp_to_obj": sp_to_obj_id
+        },
         "created_at": datetime.datetime.utcnow()
     }
 
-    await llm_collection.replace_one(
-        {"model_name": req.model_name},
-        doc,
-        upsert=True
-    )
+    await llm_collection.replace_one({"model_name": req.model_name}, doc, upsert=True)
 
-    return {
-        "message": f"Model '{req.model_name}' trained and saved successfully"
-    }
-
-
-class GenerateRequest(BaseModel):
-
-    model_name: str
-    subject: str
-    predicate: str
-    num_samples: int = 3
-
-    distribution_type: Optional[str] = None
-    distribution_params: Optional[dict] = None
-    encode_categorical: bool = False
-
-
-@app.post("/llm/generate")
-async def generate(req: GenerateRequest):
-
-    
-    doc = await llm_collection.find_one({"model_name": req.model_name})
-
-    if not doc:
-        raise HTTPException(status_code=404, detail="Model not found")
-
-    tokenizer = pickle.loads(doc["tokenizer"])
-    sp_to_obj = pickle.loads(doc["sp_to_obj"])
-
-    model = KGModel(
-        len(tokenizer.sp_vocab),
-        len(tokenizer.o_vocab)
-    )
-
-    model.load_state_dict(
-        pickle.loads(doc["model_state"])
-    )
-
-    model.eval()
-
-    if (req.subject, req.predicate) not in sp_to_obj:
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid subject-predicate combination"
-        )
-
-    sp_token = f"{req.subject}|{req.predicate}"
-
-    sp_id = tokenizer.sp_vocab[sp_token]
-
-    valid_objects = sp_to_obj[(req.subject, req.predicate)]
-
-    results = []
-
-    with torch.no_grad():
-
-        for _ in range(req.num_samples):
-
-            sp_tensor = torch.tensor([sp_id])
-            o_tensor = torch.tensor([0])
-
-            logits = model(sp_tensor, o_tensor)
-
-            probs = torch.softmax(logits, dim=1)
-
-            mask = torch.zeros_like(probs)
-            mask[:, valid_objects] = 1
-
-            probs = probs * mask
-
-            if probs.sum() == 0:
-                continue
-
-            probs = probs / probs.sum()
-
-            obj_idx = torch.multinomial(probs, 1).item()
-
-            results.append(
-                tokenizer.o_inverse[obj_idx]
-            )
-
-    
-    if req.distribution_type and req.distribution_params:
-
-        results = filter_by_distribution(
-            results,
-            req.distribution_type,
-            req.distribution_params,
-            encode_categorical=req.encode_categorical
-        )
-
-    return {
-        "generated_objects": results[:req.num_samples]
-    }
-
+    return {"message": f"Model '{req.model_name}' trained and saved successfully in MongoDB"}
 
 
 @app.post("/llm/load_model/{model_name}")
 async def load_model(model_name: str):
-
     global kg_llm
 
     doc = await llm_collection.find_one({"model_name": model_name})
-
     if not doc:
         raise HTTPException(status_code=404, detail="Model not found")
 
-    tokenizer = pickle.loads(doc["tokenizer"])
-    sp_to_obj = pickle.loads(doc["sp_to_obj"])
+    file_ids = doc["file_ids"]
 
-    model = KGModel(
-        len(tokenizer.sp_vocab),
-        len(tokenizer.o_vocab)
-    )
+    
+    model_bytes = io.BytesIO()
+    await fs_bucket.download_to_stream(file_ids["model"], model_bytes)
+    model_bytes.seek(0)
 
-    model.load_state_dict(pickle.loads(doc["model_state"]))
+    tokenizer_bytes = io.BytesIO()
+    await fs_bucket.download_to_stream(file_ids["tokenizer"], tokenizer_bytes)
+    tokenizer_bytes.seek(0)
+
+    sp_to_obj_bytes = io.BytesIO()
+    await fs_bucket.download_to_stream(file_ids["sp_to_obj"], sp_to_obj_bytes)
+    sp_to_obj_bytes.seek(0)
+
+    
+    tokenizer = pickle.load(tokenizer_bytes)
+    sp_to_obj = pickle.load(sp_to_obj_bytes)
+
+    model = KGModel(len(tokenizer.sp_vocab), len(tokenizer.o_vocab))
+    model.load_state_dict(torch.load(model_bytes))
     model.eval()
 
     kg_llm = {
@@ -3021,7 +3064,116 @@ async def load_model(model_name: str):
         "sp_to_obj": sp_to_obj
     }
 
-    return {"message": f"Model '{model_name}' loaded"}
+    return {"message": f"Model '{model_name}' loaded successfully from MongoDB"}
+
+
+
+class GenerateRequest(BaseModel):
+    model_name: str
+    subject: str
+    predicate: str
+    num_samples: int = 3
+
+    shape: Optional[str] = None
+    path: Optional[str] = None
+    datatype: Optional[str] = None
+
+    distribution_type: Optional[str] = None
+    distribution_params: Optional[dict] = None
+    encode_categorical: bool = False
+
+
+
+@app.post("/custom_llm/generate")
+async def generate(req: GenerateRequest):
+    global kg_llm
+
+    
+    if not kg_llm or kg_llm.get("model_name") != req.model_name:
+        
+        doc = await llm_collection.find_one({"model_name": req.model_name})
+        if not doc:
+            raise HTTPException(status_code=404, detail="Model not found")
+
+        file_ids = doc["file_ids"]
+
+        
+        model_bytes = io.BytesIO()
+        await fs_bucket.download_to_stream(file_ids["model"], model_bytes)
+        model_bytes.seek(0)
+
+        tokenizer_bytes = io.BytesIO()
+        await fs_bucket.download_to_stream(file_ids["tokenizer"], tokenizer_bytes)
+        tokenizer_bytes.seek(0)
+
+        sp_to_obj_bytes = io.BytesIO()
+        await fs_bucket.download_to_stream(file_ids["sp_to_obj"], sp_to_obj_bytes)
+        sp_to_obj_bytes.seek(0)
+
+        
+        tokenizer = pickle.load(tokenizer_bytes)
+        sp_to_obj = pickle.load(sp_to_obj_bytes)
+
+        model = KGModel(len(tokenizer.sp_vocab), len(tokenizer.o_vocab))
+        model.load_state_dict(torch.load(model_bytes))
+        model.eval()
+
+        
+        kg_llm = {
+            "model_name": req.model_name,
+            "model": model,
+            "tokenizer": tokenizer,
+            "sp_to_obj": sp_to_obj
+        }
+
+    model = kg_llm["model"]
+    tokenizer = kg_llm["tokenizer"]
+    sp_to_obj = kg_llm["sp_to_obj"]
+
+    
+    if (req.subject, req.predicate) not in sp_to_obj:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid subject-predicate combination"
+        )
+
+    sp_token = f"{req.subject}|{req.predicate}"
+    sp_id = tokenizer.sp_vocab[sp_token]
+    valid_objects = sp_to_obj[(req.subject, req.predicate)]
+
+    results = []
+
+    with torch.no_grad():
+        for _ in range(req.num_samples):
+            sp_tensor = torch.tensor([sp_id])
+            o_tensor = torch.tensor([0])
+
+            logits = model(sp_tensor, o_tensor)
+            probs = torch.softmax(logits, dim=1)
+
+            mask = torch.zeros_like(probs)
+            mask[:, valid_objects] = 1
+            probs = probs * mask
+
+            if probs.sum() == 0:
+                continue
+
+            probs = probs / probs.sum()
+            obj_idx = torch.multinomial(probs, 1).item()
+            results.append(tokenizer.o_inverse[obj_idx])
+
+    
+    if req.distribution_type and req.distribution_params:
+        results = filter_by_distribution(
+            results,
+            req.distribution_type,
+            req.distribution_params,
+            encode_categorical=req.encode_categorical
+        )
+
+    return {"generated_objects": results[:req.num_samples]}
+
+
 
 
 @app.get("/llm/subject_predicates/{model_name}")
@@ -3044,3 +3196,16 @@ async def list_subject_predicates(model_name: str):
         "model_name": model_name,
         "subject_predicates": subject_predicates
     }
+
+
+
+@app.get("/debug/custom_llm_keys/{model_name}")
+async def debug_custom_llm_keys(model_name: str):
+    custom_llm_loaded = await load_custom_llm(model_name)
+    
+    
+    keys = list(custom_llm_loaded["sp_to_obj"].keys())
+    print("sp_to_obj keys:", keys)
+    
+    
+    return {"sp_to_obj_keys": keys}

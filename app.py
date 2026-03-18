@@ -251,7 +251,7 @@ from pyvis.network import Network
 import streamlit.components.v1 as components
 
 with tab2:
-    st.header("Upload RDF Data for Visualization & Query (Interactive)")
+    st.header(" Query & Interactive Visualization")
 
     uploaded_rdf = st.file_uploader("Upload RDF (.ttl or .jsonld)", type=["ttl", "jsonld"])
 
@@ -330,8 +330,9 @@ LIMIT 100
 import streamlit as st
 import requests
 
+
 with tab3:
-    st.header("Upload Ontology & Train Graph Models")
+    st.header("Training Graph Models on Ontology")
 
     st.markdown("""
     Upload your ontology file and train a GraphVAE or GraphGAN model.
@@ -341,7 +342,16 @@ with tab3:
     model_name = st.text_input("Model Name", placeholder="Enter a unique model name")
     uploaded_file = st.file_uploader("Upload Ontology (.owl, .ttl)", type=["owl", "ttl"])
 
-    model_type = st.selectbox("Select Model Type", ["GraphVAE", "GraphGAN"])
+    
+    model_type = st.selectbox(
+        "Select Model Type",
+        ["GraphVAE", "GraphGAN"],
+        help="""
+GraphVAE: particularly effective for representation learning on ontology graphs. Excels at preserving the overall graph distribution and highly useful for  link prediction and graph reconstruction tasks. GraphVAE performs especially well with small to medium-sized ontologies. The model's primary focus is to maintain the distributional characteristics of nodes and edges, so that the learned embeddings reflect the structure of the original graph.
+
+GraphGAN: designed for generating new graph structures rather than just learning representations. It can capture complex patterns of node connectivity, which leads to producing edges that are both semantically plausible and consistent with the existing ontology. GraphGAN is better suited for larger or more complex ontologies. The model's key focus is on semantic similarity and overall graph consistency, resulting in the creation of realistic and meaningful graph expansions.
+"""
+    )
 
     if st.button("Train Model"):
         if not model_name:
