@@ -12,15 +12,18 @@ def get_base64_of_file(file_path):
     with open(file_path, "rb") as f:
         return base64.b64encode(f.read()).decode()
     
+
 def fetch_models(model_type):
     try:
         if model_type == "GAN":
             resp = requests.get(f"{API_BASE}/gan_models")
         elif model_type == "VAE":
             resp = requests.get(f"{API_BASE}/vae_models")
+        elif model_type == "CUSTOM_LLM":
+            resp = requests.get(f"{API_BASE}/custom_llm_models")
         else:
             return []
-        
+
         if resp.status_code == 200:
             return resp.json().get("saved_models", [])
         return []
@@ -144,12 +147,15 @@ with tab1:
             with st.expander(f"Property: {prop['path'].split('#')[-1]}", expanded=False):
                 col1, col2 = st.columns(2)
                 with col1:
+                    
+
                     prop["model_type"] = st.selectbox(
-                        "Model Type", ["LLM", "VAE", "GAN"], key=f"model_type_{idx}"
+                        "Model Type", ["LLM", "CUSTOM_LLM", "VAE", "GAN"], key=f"model_type_{idx}"
                     )
                 with col2:
                     default_name = "" if prop["model_type"] == "LLM" else prop.get("model_name", "")
                     
+
 
                     if prop["model_type"] in ["VAE", "GAN"]:
                         model_options = fetch_models(prop["model_type"])
@@ -159,7 +165,15 @@ with tab1:
                             index=0 if model_options else -1,
                             key=f"model_name_{idx}"
                         )
-                    else:
+                    elif prop["model_type"] == "CUSTOM_LLM":
+                        model_options = fetch_models("CUSTOM_LLM")
+                        prop["model_name"] = st.selectbox(
+                            "Custom LLM Name",
+                            options=model_options,
+                            index=0 if model_options else -1,
+                            key=f"model_name_{idx}"
+                        )
+                    else:  # LLM
                         prop["model_name"] = st.text_input(
                             "Model Name", value=default_name, key=f"model_name_{idx}"
                         )
@@ -331,48 +345,148 @@ import streamlit as st
 import requests
 
 
+
+
 with tab3:
-    st.header("Training Graph Models on Ontology")
+    st.header("Training Graph Models on Ontology / Custom LLM")
 
     st.markdown("""
-    Upload your ontology file and train a GraphVAE or GraphGAN model.
+    Upload your ontology file and train a GraphVAE, GraphGAN, or Custom LLM model.
     Provide a unique model name before training.
     """)
+
 
     model_name = st.text_input("Model Name", placeholder="Enter a unique model name")
     uploaded_file = st.file_uploader("Upload Ontology (.owl, .ttl)", type=["owl", "ttl"])
 
-    
     model_type = st.selectbox(
         "Select Model Type",
-        ["GraphVAE", "GraphGAN"],
+        ["GraphVAE", "GraphGAN", "Custom LLM"],
         help="""
-GraphVAE: particularly effective for representation learning on ontology graphs. Excels at preserving the overall graph distribution and highly useful for  link prediction and graph reconstruction tasks. GraphVAE performs especially well with small to medium-sized ontologies. The model's primary focus is to maintain the distributional characteristics of nodes and edges, so that the learned embeddings reflect the structure of the original graph.
+GraphVAE: learns embeddings from the graph structure for link prediction and reconstruction.
 
-GraphGAN: designed for generating new graph structures rather than just learning representations. It can capture complex patterns of node connectivity, which leads to producing edges that are both semantically plausible and consistent with the existing ontology. GraphGAN is better suited for larger or more complex ontologies. The model's key focus is on semantic similarity and overall graph consistency, resulting in the creation of realistic and meaningful graph expansions.
+GraphGAN: generates new graph structures with semantically plausible edges.
+
+Custom LLM: trains a language-model-like KG generator from your ontology triples. You must load the ontology before training.
 """
     )
 
+    
+    epochs, lr = 100, 0.01
+    temp_flat_path = None
+    if model_type == "Custom LLM":
+        st.subheader("Step 0: Flatten Ontology (optional but recommended)")
+        flatten_ontology = st.checkbox(
+            "Flatten OWL restrictions (someValuesFrom, allValuesFrom, hasValue)",
+            value=True,
+            help="Expands restrictions into direct triples before training."
+        )
+        epochs = st.number_input("Epochs", min_value=1, value=100)
+        lr = st.number_input("Learning Rate", min_value=0.0001, value=0.01, format="%.5f")
+
+       
+        if uploaded_file:
+            if flatten_ontology:
+                from rdflib import Graph, RDF, RDFS, OWL
+                from rdflib.collection import Collection
+                import tempfile
+
+                with st.spinner("Flattening ontology..."):
+                    g = Graph()
+                    
+                    try:
+                        g.parse(data=uploaded_file.getvalue(), format="xml")
+                    except Exception:
+                        g.parse(data=uploaded_file.getvalue(), format="ttl")
+
+                    
+                    for s, p, o in g.triples((None, RDFS.subClassOf, None)):
+                        if (o, RDF.type, OWL.Restriction) in g:
+                            on_property = g.value(o, OWL.onProperty)
+                            some_values = g.value(o, OWL.someValuesFrom)
+                            all_values = g.value(o, OWL.allValuesFrom)
+                            has_value = g.value(o, OWL.hasValue)
+
+                            if on_property and some_values:
+                                g.add((s, on_property, some_values))
+
+                            if on_property and all_values:
+                                union_node = g.value(all_values, OWL.unionOf)
+                                if union_node:
+                                    collection = Collection(g, union_node)
+                                    for item in collection:
+                                        g.add((s, on_property, item))
+                                else:
+                                    g.add((s, on_property, all_values))
+
+                            if on_property and has_value:
+                                g.add((s, on_property, has_value))
+
+                    
+                    temp_flat = tempfile.NamedTemporaryFile(delete=False, suffix=".owl")
+                    g.serialize(temp_flat.name, format="xml")
+                    temp_flat_path = temp_flat.name
+                    st.success(f"Ontology flattened and saved as temp file: {temp_flat_path}")
+            else:
+                temp_flat_path = None
+
+    
     if st.button("Train Model"):
         if not model_name:
             st.warning("Please enter a model name.")
         elif not uploaded_file:
             st.warning("Please upload an ontology file.")
         else:
-            with st.spinner(f"Training {model_type} model..."):
-                try:
-                    files = {"file": (uploaded_file.name, uploaded_file.getvalue())}
+            try:
+                files = {"file": (uploaded_file.name, uploaded_file.getvalue())}
+
+                if model_type in ["GraphVAE", "GraphGAN"]:
                     endpoint = (
-                        "http://fastapi-backend:8000/graphvae/upload_and_train"
+                        f"{API_BASE}/graphvae/upload_and_train"
                         if model_type == "GraphVAE"
-                        else "http://fastapi-backend:8000/graphgan/upload_and_train"
+                        else f"{API_BASE}/graphgan/upload_and_train"
                     )
                     params = {"model_name": model_name}
-                    response = requests.post(endpoint, params=params, files=files)
+                    with st.spinner(f"Training {model_type} model..."):
+                        response = requests.post(endpoint, params=params, files=files)
+                        if response.status_code == 200:
+                            st.success(response.json().get("message", "Model trained successfully!"))
+                        else:
+                            st.error(f"Error: {response.text}")
 
-                    if response.status_code == 200:
-                        st.success(response.json().get("message", "Model trained successfully!"))
-                    else:
-                        st.error(f"Error: {response.text}")
-                except Exception as e:
-                    st.error(f"An error occurred: {e}")
+                elif model_type == "Custom LLM":
+                    
+                    upload_path = temp_flat_path if temp_flat_path else None
+                    with st.spinner("Uploading ontology..."):
+                        if upload_path:
+                            with open(upload_path, "rb") as f:
+                                response = requests.post(f"{API_BASE}/llm/upload_ontology", files={"file": f})
+                        else:
+                            response = requests.post(f"{API_BASE}/llm/upload_ontology", files=files)
+
+                        if response.status_code != 200:
+                            st.error(f"Upload failed: {response.text}")
+                            st.stop()
+                        temp_path = response.json()["temp_path"]
+
+                    
+                    with st.spinner("Loading ontology into KG LLM..."):
+                        
+                        response = requests.post(f"{API_BASE}/llm/load_ontology", params={"temp_path": temp_path})
+                        if response.status_code != 200:
+                            st.error(f"Failed to load ontology: {response.text}")
+                            st.stop()
+                        num_triples = response.json()["num_triples"]
+                        st.info(f"Ontology loaded successfully ({num_triples} triples)")
+
+                    
+                    with st.spinner(f"Training Custom LLM ({epochs} epochs, lr={lr})..."):
+                        payload = {"model_name": model_name, "epochs": epochs, "lr": lr}
+                        response = requests.post(f"{API_BASE}/llm/train", json=payload)
+                        if response.status_code == 200:
+                            st.success(response.json().get("message", "Custom LLM trained successfully!"))
+                        else:
+                            st.error(f"Training failed: {response.text}")
+
+            except Exception as e:
+                st.error(f"An error occurred: {e}")

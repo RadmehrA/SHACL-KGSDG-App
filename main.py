@@ -2541,9 +2541,13 @@ async def upload_shacl_and_extract_schema(file: UploadFile = File(...)):
 
     return {"message": "SHACL uploaded and schema extracted", "json_schema": json_schema}
 
+
 from fastapi.responses import StreamingResponse
 import json
 import asyncio
+import torch
+import numpy as np
+from rdflib import Graph, URIRef, Literal
 
 @app.post("/generate_from_shacl_stream")
 async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int = 1):
@@ -2551,8 +2555,8 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
     Streaming version of generate_from_shacl.
     Streams progress updates and final results via SSE.
     """
+
     async def event_generator():
-        
         all_samples_result = []
         all_samples_rdf = []
         models_cache = {}
@@ -2562,10 +2566,10 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
             sample_result = {}
 
             for prop in req:
-                
                 obj_value = None
 
-                if prop.model_type not in ["LLM", "VAE", "GAN"]:
+                
+                if prop.model_type not in ["LLM", "CUSTOM_LLM", "VAE", "GAN"]:
                     raise HTTPException(status_code=400, detail=f"Invalid model_type for {prop.path}")
 
                 factorized, model, G = None, None, None
@@ -2577,6 +2581,8 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                     else:
                         if prop.model_type == "VAE":
                             doc = await vae_collection.find_one({"model_name": prop.model_name})
+                            if not doc:
+                                raise HTTPException(status_code=404, detail=f"VAE model '{prop.model_name}' not found")
                             factorized = pickle.loads(doc["factorized_data"])
                             model = GraphVAE(len(factorized["subjects"]),
                                              len(factorized["predicates"]),
@@ -2584,8 +2590,10 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                             model.load_state_dict(pickle.loads(doc["model_state"]))
                             model.eval()
                             models_cache[prop.model_name] = (factorized, model, None)
-                        else:  # GAN
+                        else:
                             doc = await gan_collection.find_one({"model_name": prop.model_name})
+                            if not doc:
+                                raise HTTPException(status_code=404, detail=f"GAN model '{prop.model_name}' not found")
                             factorized = pickle.loads(doc["factorized_data"])
                             G = GraphGenerator(len(factorized["subjects"]),
                                                len(factorized["predicates"]),
@@ -2607,8 +2615,8 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                     )
                     obj_value = val_list["generated_samples"][0]
 
+                
                 elif prop.model_type == "CUSTOM_LLM":
-                    
                     if prop.model_name in models_cache:
                         custom_llm_loaded = models_cache[prop.model_name]
                     else:
@@ -2641,6 +2649,7 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                     else:
                         obj_value = "Unknown"
 
+                
                 elif prop.model_type in ["VAE", "GAN"]:
                     if prop.shape in factorized["subject_to_idx"] and prop.path in factorized["predicate_to_idx"]:
                         s_idx = torch.LongTensor([factorized["subject_to_idx"][prop.shape]])
@@ -2695,7 +2704,6 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
                     obj = Literal(obj_value)
                 rdf_graph.add((subj_uri, pred_uri, obj))
 
-            
             all_samples_result.append(sample_result)
             all_samples_rdf.append(rdf_graph.serialize(format="turtle"))
 
@@ -2703,7 +2711,6 @@ async def generate_from_shacl_stream(req: List[PropertySchema], num_samples: int
             progress = int(((sample_idx + 1) / num_samples) * 100)
             yield f"data: {json.dumps({'progress': progress})}\n\n"
 
-            
             await asyncio.sleep(0.05)
 
         
@@ -3209,3 +3216,9 @@ async def debug_custom_llm_keys(model_name: str):
     
     
     return {"sp_to_obj_keys": keys}
+
+
+@app.get("/custom_llm_models")
+async def list_custom_llm_models():
+    models = await llm_collection.distinct("model_name")
+    return {"saved_models": models}
