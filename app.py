@@ -363,13 +363,12 @@ with tab3:
         "Select Model Type",
         ["GraphVAE", "GraphGAN", "Custom LLM"],
         help="""
-GraphVAE: learns embeddings from the graph structure for link prediction and reconstruction.
+GraphVAE is best suited for small to medium-sized ontologies. It focuses on learning embeddings from the graph structure, which is useful for tasks like link prediction and graph reconstruction. GraphVAE preserves the overall structure and distribution of nodes and edges in the ontology, making it ideal when you want accurate representations of existing relationships.
 
-GraphGAN: generates new graph structures with semantically plausible edges.
+GraphGAN is more appropriate for larger or complex ontologies. It specializes in generating new graph structures while maintaining semantically plausible edges. If your goal is to expand your ontology realistically or capture complex connectivity patterns, GraphGAN provides the ability to create meaningful new edges that align with the original ontology.
 
-Custom LLM: trains a language-model-like KG generator from your ontology triples. You must load the ontology before training.
-"""
-    )
+Custom LLM is designed for generating knowledge graph triples in a language-model-like fashion. It works well when patterns across triples matter and when conditional generation is needed. Before training a Custom LLM, you must load your ontology, and optionally flatten it, so that all restrictions and constraints are properly represented in the training data.
+""")
 
     
     epochs, lr = 100, 0.01
