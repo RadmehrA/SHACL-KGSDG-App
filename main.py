@@ -1158,29 +1158,88 @@ def vae_loss(recon_logits, target, mu, logvar):
     return recon_loss + kl_loss
 
 
-def train_model(X, y, factorized, epochs=100):
+# def train_model(X, y, factorized, epochs=100):
+#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#     model = GraphVAE(
+#         len(factorized["subjects"]),
+#         len(factorized["predicates"]),
+#         len(factorized["objects"])
+#     ).to(device)
+#     optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+#     X_tensor = torch.LongTensor(X).to(device)
+#     y_tensor = torch.LongTensor(y).to(device)
+
+#     for epoch in range(epochs):
+#         model.train()
+#         optimizer.zero_grad()
+#         s_idx = X_tensor[:, 0]
+#         p_idx = X_tensor[:, 1]
+#         output, mu, logvar = model(s_idx, p_idx)
+#         loss = vae_loss(output, y_tensor, mu, logvar)
+#         loss.backward()
+#         optimizer.step()
+#         if epoch % 10 == 0:
+#             print(f"Epoch {epoch}: Loss {loss.item():.4f}")
+
+#     return model
+
+from torch.utils.data import Dataset, DataLoader
+
+class TripleDataset(Dataset):
+    def __init__(self, X, y):
+        self.X = torch.LongTensor(X)
+        self.y = torch.LongTensor(y)
+
+    def __len__(self):
+        return self.X.shape[0]
+
+    def __getitem__(self, idx):
+        return self.X[idx], self.y[idx]
+
+
+def train_model(X, y, factorized, epochs=20, batch_size=1024):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     model = GraphVAE(
         len(factorized["subjects"]),
         len(factorized["predicates"]),
         len(factorized["objects"])
     ).to(device)
+
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-    X_tensor = torch.LongTensor(X).to(device)
-    y_tensor = torch.LongTensor(y).to(device)
+    dataset = TripleDataset(X, y)
+    loader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=2,
+        pin_memory=True
+    )
 
     for epoch in range(epochs):
         model.train()
-        optimizer.zero_grad()
-        s_idx = X_tensor[:, 0]
-        p_idx = X_tensor[:, 1]
-        output, mu, logvar = model(s_idx, p_idx)
-        loss = vae_loss(output, y_tensor, mu, logvar)
-        loss.backward()
-        optimizer.step()
-        if epoch % 10 == 0:
-            print(f"Epoch {epoch}: Loss {loss.item():.4f}")
+        total_loss = 0.0
+
+        for (batch_X, batch_y) in loader:
+            batch_X = batch_X.to(device, non_blocking=True)
+            batch_y = batch_y.to(device, non_blocking=True)
+
+            s_idx = batch_X[:, 0]
+            p_idx = batch_X[:, 1]
+
+            optimizer.zero_grad()
+            output, mu, logvar = model(s_idx, p_idx)
+            loss = vae_loss(output, batch_y, mu, logvar)
+
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+
+        if epoch % 1 == 0:
+            print(f"Epoch {epoch}: Loss {total_loss:.4f}")
 
     return model
 
@@ -1188,8 +1247,11 @@ def train_model(X, y, factorized, epochs=100):
 @app.post("/graphvae/upload_and_train")
 async def upload_and_train(model_name: str, file: UploadFile = File(...)):
     temp_path = f"/tmp/{file.filename}"
+    # with open(temp_path, "wb") as f:
+    #     f.write(await file.read())
     with open(temp_path, "wb") as f:
-        f.write(await file.read())
+        while chunk := await file.read(1024 * 1024):
+            f.write(chunk)
 
     triples = extract_explicit_triples(temp_path)
     if not triples:
@@ -1790,35 +1852,113 @@ def factorize_triples(triples):
     }
 
 
-# -----------------------------
-# GAN Training
-# -----------------------------
-def train_gan(X, y, factorized, epochs=100):
+# # -----------------------------
+# # GAN Training
+# # -----------------------------
+# def train_gan(X, y, factorized, epochs=100):
+#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#     G = GraphGenerator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
+#     D = GraphDiscriminator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
+
+#     optim_G = optim.Adam(G.parameters(), lr=0.001)
+#     optim_D = optim.Adam(D.parameters(), lr=0.001)
+#     criterion = nn.BCELoss()
+
+#     X_tensor = torch.LongTensor(X).to(device)
+#     y_tensor = torch.LongTensor(y).to(device)
+
+#     for epoch in range(epochs):
+#         for i in range(len(X_tensor)):
+#             s_idx = X_tensor[i, 0].unsqueeze(0)
+#             p_idx = X_tensor[i, 1].unsqueeze(0)
+#             real_obj_idx = y_tensor[i].unsqueeze(0)
+
+#             # Train Discriminator
+#             D.zero_grad()
+#             real_logits = D(s_idx, p_idx, real_obj_idx)
+#             real_labels = torch.ones_like(real_logits)
+#             loss_real = criterion(real_logits, real_labels)
+
+#             fake_obj_idx = G(s_idx, p_idx).argmax(dim=1)
+#             fake_logits = D(s_idx, p_idx, fake_obj_idx.detach())
+#             fake_labels = torch.zeros_like(fake_logits)
+#             loss_fake = criterion(fake_logits, fake_labels)
+
+#             loss_D = (loss_real + loss_fake) / 2
+#             loss_D.backward()
+#             optim_D.step()
+
+#             # Train Generator
+#             G.zero_grad()
+#             fake_logits = D(s_idx, p_idx, fake_obj_idx)
+#             loss_G = criterion(fake_logits, torch.ones_like(fake_logits))
+#             loss_G.backward()
+#             optim_G.step()
+
+#         if epoch % 10 == 0:
+#             print(f"Epoch {epoch}: D_loss={loss_D.item():.4f}, G_loss={loss_G.item():.4f}")
+
+#     return G, D
+
+from torch.utils.data import Dataset, DataLoader
+
+class TripleDataset(Dataset):
+    def __init__(self, X, y):
+        self.X = torch.LongTensor(X)
+        self.y = torch.LongTensor(y)
+
+    def __len__(self):
+        return self.X.shape[0]
+
+    def __getitem__(self, idx):
+        return self.X[idx], self.y[idx]
+    
+
+
+def train_gan(X, y, factorized, epochs=20, batch_size=1024):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    G = GraphGenerator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
-    D = GraphDiscriminator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
+
+    G = GraphGenerator(
+        len(factorized["subjects"]),
+        len(factorized["predicates"]),
+        len(factorized["objects"])
+    ).to(device)
+
+    D = GraphDiscriminator(
+        len(factorized["subjects"]),
+        len(factorized["predicates"]),
+        len(factorized["objects"])
+    ).to(device)
 
     optim_G = optim.Adam(G.parameters(), lr=0.001)
     optim_D = optim.Adam(D.parameters(), lr=0.001)
     criterion = nn.BCELoss()
 
-    X_tensor = torch.LongTensor(X).to(device)
-    y_tensor = torch.LongTensor(y).to(device)
+    dataset = TripleDataset(X, y)
+    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
 
     for epoch in range(epochs):
-        for i in range(len(X_tensor)):
-            s_idx = X_tensor[i, 0].unsqueeze(0)
-            p_idx = X_tensor[i, 1].unsqueeze(0)
-            real_obj_idx = y_tensor[i].unsqueeze(0)
+        total_d_loss = 0.0
+        total_g_loss = 0.0
 
+        for batch_X, batch_y in loader:
+            batch_X = batch_X.to(device, non_blocking=True)
+            batch_y = batch_y.to(device, non_blocking=True)
+
+            s_idx = batch_X[:, 0]
+            p_idx = batch_X[:, 1]
+
+            # ---------------------
             # Train Discriminator
+            # ---------------------
             D.zero_grad()
-            real_logits = D(s_idx, p_idx, real_obj_idx)
+
+            real_logits = D(s_idx, p_idx, batch_y)
             real_labels = torch.ones_like(real_logits)
             loss_real = criterion(real_logits, real_labels)
 
-            fake_obj_idx = G(s_idx, p_idx).argmax(dim=1)
-            fake_logits = D(s_idx, p_idx, fake_obj_idx.detach())
+            fake_obj = G(s_idx, p_idx).argmax(dim=1)
+            fake_logits = D(s_idx, p_idx, fake_obj.detach())
             fake_labels = torch.zeros_like(fake_logits)
             loss_fake = criterion(fake_logits, fake_labels)
 
@@ -1826,15 +1966,23 @@ def train_gan(X, y, factorized, epochs=100):
             loss_D.backward()
             optim_D.step()
 
+            # ---------------------
             # Train Generator
+            # ---------------------
             G.zero_grad()
-            fake_logits = D(s_idx, p_idx, fake_obj_idx)
+
+            fake_obj = G(s_idx, p_idx).argmax(dim=1)
+            fake_logits = D(s_idx, p_idx, fake_obj)
+
             loss_G = criterion(fake_logits, torch.ones_like(fake_logits))
             loss_G.backward()
             optim_G.step()
 
-        if epoch % 10 == 0:
-            print(f"Epoch {epoch}: D_loss={loss_D.item():.4f}, G_loss={loss_G.item():.4f}")
+            total_d_loss += loss_D.item()
+            total_g_loss += loss_G.item()
+
+        if epoch % 1 == 0:
+            print(f"Epoch {epoch}: D_loss={total_d_loss:.4f}, G_loss={total_g_loss:.4f}")
 
     return G, D
 
@@ -1878,9 +2026,23 @@ async def upload_and_train(model_name: str, file: UploadFile = File(...)):
     if not triples:
         raise HTTPException(status_code=400, detail="No valid triples extracted.")
 
+    # factorized = factorize_triples(triples)
+    # X = np.array([[factorized["subject_to_idx"][s], factorized["predicate_to_idx"][p]] for s, p, o in triples])
+    # y = np.array([factorized["object_to_idx"][o] for _, _, o in triples])
+    # factorized = factorize_triples(triples)
+    # X, y = factorized["X"], factorized["y"]
+
     factorized = factorize_triples(triples)
-    X = np.array([[factorized["subject_to_idx"][s], factorized["predicate_to_idx"][p]] for s, p, o in triples])
-    y = np.array([factorized["object_to_idx"][o] for _, _, o in triples])
+
+    X = np.array([
+        [factorized["subject_to_idx"][s], factorized["predicate_to_idx"][p]]
+        for s, p, o in triples
+    ])
+
+    y = np.array([
+        factorized["object_to_idx"][o]
+        for _, _, o in triples
+    ])
 
     G, D = train_gan(X, y, factorized, epochs=100)
 
