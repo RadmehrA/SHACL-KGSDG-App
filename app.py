@@ -182,7 +182,16 @@ with tab1:
                     allowed_list = prop["distribution_params"].get("allowed_list", [])
                     probabilities = prop["distribution_params"].get("probabilities", [])
                     st.text_area(f"Allowed Values", value=", ".join(allowed_list), key=f"allowed_{idx}")
-                    st.text_area(f"Probabilities", value=", ".join(probabilities), key=f"prob_{idx}")
+                    # st.text_area(f"Probabilities", value=", ".join(f"{p:.3f}" for p in probabilities), key=f"prob_{idx}")
+                    st.text_area(
+                        "Probabilities",
+                        value=", ".join(
+                            f"{float(p):.3f}" if isinstance(p, (int, float, str)) and str(p).replace('.', '', 1).isdigit()
+                            else str(p)
+                            for p in probabilities
+                        ),
+                        key=f"prob_{idx}"
+                    )
                 elif prop["distribution_type"] == "numeric":
                     mean = prop["distribution_params"].get("mean", 0)
                     std = prop["distribution_params"].get("std", 1)
@@ -199,6 +208,54 @@ with tab1:
                         prop["distribution_params"]["max"] = st.number_input(f"Max", value=float(max_val), key=f"max_{idx}")
 
     
+    # if parsed_schema and st.button("Generate RDF Samples (Real-Time)"):
+    #     st.markdown("""
+    #     <h3 style="font-family: 'Roboto', sans-serif; font-size: 18px; font-weight: 500; 
+    #                 background: linear-gradient(90deg, #ff7f7f, #ff4b4b);
+    #                 -webkit-background-clip: text;
+    #                 -webkit-text-fill-color: transparent;">
+    #         Generating RDF...
+    #     </h3>
+    #     """, unsafe_allow_html=True)
+
+        
+    #     for idx, prop in enumerate(parsed_schema):
+    #         if prop["distribution_type"] == "categorical":
+    #             allowed_str = st.session_state.get(f"allowed_{idx}", "")
+    #             prob_str = st.session_state.get(f"prob_{idx}", "")
+    #             prop["distribution_params"]["allowed_list"] = [v.strip() for v in allowed_str.split(",") if v.strip()]
+    #             if prob_str:
+    #                 prop["distribution_params"]["probabilities"] = [v.strip() for v in prob_str.split(",") if v.strip()]
+
+    #     url = f"{API_BASE}/generate_from_shacl_stream?num_samples={num_samples}"
+    #     st.subheader("📡 Request Sent to Backend")
+
+    #     st.markdown("**URL:**")
+    #     st.code(url, language="bash")
+
+    #     st.markdown("**Payload (JSON):**")
+    #     st.json(parsed_schema)
+    #     response = requests.post(url, json=parsed_schema, stream=True)
+    #     client = SSEClient(response)
+
+    #     progress_bar = st.progress(0)
+    #     generated_rdf = []
+    #     generated_data = []
+
+    #     for event in client.events():
+    #         data = json.loads(event.data)
+    #         progress = data.get("progress", 0)
+    #         progress_bar.progress(progress)
+
+    #         if "rdf_turtle_samples" in data:
+    #             generated_rdf = data["rdf_turtle_samples"]
+    #             generated_data = data["generated_data_samples"]
+
+    #     if generated_rdf and generated_data:
+    #         st.session_state['generated_rdf'] = generated_rdf
+    #         st.session_state['generated_data'] = generated_data
+    #         st.success("RDF generation completed!")
+
     if parsed_schema and st.button("Generate RDF Samples (Real-Time)"):
         st.markdown("""
         <h3 style="font-family: 'Roboto', sans-serif; font-size: 18px; font-weight: 500; 
@@ -209,16 +266,34 @@ with tab1:
         </h3>
         """, unsafe_allow_html=True)
 
-        
+        # Prepare distribution_params cleanly
         for idx, prop in enumerate(parsed_schema):
-            if prop["distribution_type"] == "categorical":
+            if prop.get("distribution_type") == "categorical":
                 allowed_str = st.session_state.get(f"allowed_{idx}", "")
                 prob_str = st.session_state.get(f"prob_{idx}", "")
-                prop["distribution_params"]["allowed_list"] = [v.strip() for v in allowed_str.split(",") if v.strip()]
-                if prob_str:
-                    prop["distribution_params"]["probabilities"] = [v.strip() for v in prob_str.split(",") if v.strip()]
+
+                allowed_list = [v.strip() for v in allowed_str.split(",") if v.strip()]
+                probabilities = [float(v.strip()) for v in prob_str.split(",") if v.strip()] if prob_str else []
+
+                # Only include distribution_params if allowed_list is not empty
+                if allowed_list:
+                    prop["distribution_params"] = {
+                        "allowed_list": allowed_list,
+                        "probabilities": probabilities if probabilities else None
+                    }
+                else:
+                    prop.pop("distribution_params", None)
+                    prop.pop("distribution_type", None)  # optional, if you want to remove the type as well
 
         url = f"{API_BASE}/generate_from_shacl_stream?num_samples={num_samples}"
+        st.subheader("📡 Request Sent to Backend")
+
+        st.markdown("**URL:**")
+        st.code(url, language="bash")
+
+        st.markdown("**Payload (JSON):**")
+        st.json(parsed_schema)
+
         response = requests.post(url, json=parsed_schema, stream=True)
         client = SSEClient(response)
 

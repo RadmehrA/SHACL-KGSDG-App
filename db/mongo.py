@@ -5,7 +5,8 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017")
 
 client = AsyncIOMotorClient(MONGO_URI)
 llm_db = client["kg_llm_db"]
-db = client["synthetic_models"]
+# db = client["synthetic_models"]
+db = client["graphvae_db"]
 ontology_collection = llm_db["ontologies"]
 model_collection = llm_db["models"]
 gan_collection = db["gan_models"]
