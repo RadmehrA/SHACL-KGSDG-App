@@ -1097,33 +1097,6 @@ def extract_explicit_triples(owl_path: str):
 
     return list(triples)
 
-
-# def factorize_triples(triples):
-#     subjects = sorted(set(t[0] for t in triples))
-#     predicates = sorted(set(t[1] for t in triples))
-#     objects = sorted(set(t[2] for t in triples))
-
-#     subject_to_idx = {s: i for i, s in enumerate(subjects)}
-#     predicate_to_idx = {p: i for i, p in enumerate(predicates)}
-#     object_to_idx = {o: i for i, o in enumerate(objects)}
-
-#     sp_to_obj = {}
-#     for s, p, o in triples:
-#         key = (s, p)
-#         if key not in sp_to_obj:
-#             sp_to_obj[key] = []
-#         sp_to_obj[key].append(object_to_idx[o])
-
-#     return {
-#         "subjects": subjects,
-#         "predicates": predicates,
-#         "objects": objects,
-#         "subject_to_idx": subject_to_idx,
-#         "predicate_to_idx": predicate_to_idx,
-#         "object_to_idx": object_to_idx,
-#         "sp_to_obj": sp_to_obj
-#     }
-
 def factorize_triples(triples):
     """
     Factorize triples into integer indices suitable for VAE input.
@@ -1158,31 +1131,6 @@ def vae_loss(recon_logits, target, mu, logvar):
     return recon_loss + kl_loss
 
 
-# def train_model(X, y, factorized, epochs=100):
-#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#     model = GraphVAE(
-#         len(factorized["subjects"]),
-#         len(factorized["predicates"]),
-#         len(factorized["objects"])
-#     ).to(device)
-#     optimizer = optim.Adam(model.parameters(), lr=0.001)
-
-#     X_tensor = torch.LongTensor(X).to(device)
-#     y_tensor = torch.LongTensor(y).to(device)
-
-#     for epoch in range(epochs):
-#         model.train()
-#         optimizer.zero_grad()
-#         s_idx = X_tensor[:, 0]
-#         p_idx = X_tensor[:, 1]
-#         output, mu, logvar = model(s_idx, p_idx)
-#         loss = vae_loss(output, y_tensor, mu, logvar)
-#         loss.backward()
-#         optimizer.step()
-#         if epoch % 10 == 0:
-#             print(f"Epoch {epoch}: Loss {loss.item():.4f}")
-
-#     return model
 
 from torch.utils.data import Dataset, DataLoader
 
@@ -1275,169 +1223,6 @@ async def upload_and_train(model_name: str, file: UploadFile = File(...)):
 
     return {"message": f"Model '{model_name}' trained successfully."}
 
-
-# import os
-# import pickle
-# import numpy as np
-# import torch
-# import torch.optim as optim
-# import torch.nn as nn
-
-# from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
-# from rdflib import Graph, RDF, RDFS, OWL, URIRef
-# from rdflib.collection import Collection
-# from motor.motor_asyncio import AsyncIOMotorClient
-
-# from models.graph_vae import GraphVAE
-
-# MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017")
-
-# mongo_client = AsyncIOMotorClient(MONGO_URI)
-# db = mongo_client["graphvae_db"]
-# vae_collection = db["vae_models"]
-
-# # ---------- RDF extraction ----------
-# def extract_explicit_triples(owl_path: str):
-#     g = Graph()
-#     g.parse(owl_path)
-#     triples = set()
-#     EXCLUDED = {str(RDF.type), str(RDFS.subClassOf)}
-
-#     for s, p, o in g:
-#         if isinstance(s, URIRef) and isinstance(o, URIRef) and str(p) not in EXCLUDED:
-#             triples.add((str(s), str(p), str(o)))
-
-#     for cls in g.subjects(RDF.type, OWL.Class):
-#         for restriction in g.objects(cls, RDFS.subClassOf):
-#             if (restriction, RDF.type, OWL.Restriction) in g:
-#                 prop = g.value(restriction, OWL.onProperty)
-#                 if not prop:
-#                     continue
-#                 some = g.value(restriction, OWL.someValuesFrom)
-#                 if some:
-#                     triples.add((str(cls), str(prop), str(some)))
-#                 allv = g.value(restriction, OWL.allValuesFrom)
-#                 if allv:
-#                     if isinstance(allv, URIRef):
-#                         triples.add((str(cls), str(prop), str(allv)))
-#                     for union_list in g.objects(allv, OWL.unionOf):
-#                         collection = Collection(g, union_list)
-#                         for item in collection:
-#                             triples.add((str(cls), str(prop), str(item)))
-                
-#                 hasv = g.value(restriction, OWL.hasValue)
-#                 if hasv:
-#                     triples.add((str(cls), str(prop), str(hasv)))
-
-#     return list(triples)
-
-# # ---------- Factorization ----------
-# def factorize_triples(triples):
-#     subjects = sorted(set(t[0] for t in triples))
-#     predicates = sorted(set(t[1] for t in triples))
-#     objects = sorted(set(t[2] for t in triples))
-
-#     subject_to_idx = {s: i for i, s in enumerate(subjects)}
-#     predicate_to_idx = {p: i for i, p in enumerate(predicates)}
-#     object_to_idx = {o: i for i, o in enumerate(objects)}
-
-#     X = np.array([[subject_to_idx[s], predicate_to_idx[p]] for s, p, o in triples])
-#     y = np.array([object_to_idx[o] for s, p, o in triples])
-
-#     return {
-#         "subjects": subjects,
-#         "predicates": predicates,
-#         "objects": objects,
-#         "subject_to_idx": subject_to_idx,
-#         "predicate_to_idx": predicate_to_idx,
-#         "object_to_idx": object_to_idx,
-#         "X": X,
-#         "y": y
-#     }
-
-# # ---------- VAE loss ----------
-# def vae_loss(recon_logits, target, mu, logvar):
-#     recon_loss = nn.CrossEntropyLoss()(recon_logits, target)
-#     kl_loss = -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
-#     return recon_loss + kl_loss
-
-# # ---------- Batch training ----------
-# def train_model(X, y, factorized, epochs=100, batch_size=1024):
-#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#     model = GraphVAE(
-#         len(factorized["subjects"]),
-#         len(factorized["predicates"]),
-#         len(factorized["objects"])
-#     ).to(device)
-#     optimizer = optim.Adam(model.parameters(), lr=0.001)
-
-#     X_tensor = torch.LongTensor(X).to(device)
-#     y_tensor = torch.LongTensor(y).to(device)
-
-#     dataset_size = X_tensor.shape[0]
-#     num_batches = (dataset_size + batch_size - 1) // batch_size
-
-#     for epoch in range(epochs):
-#         model.train()
-#         perm = torch.randperm(dataset_size)
-#         X_tensor = X_tensor[perm]
-#         y_tensor = y_tensor[perm]
-
-#         epoch_loss = 0
-#         for i in range(num_batches):
-#             start = i * batch_size
-#             end = min(start + batch_size, dataset_size)
-#             batch_X = X_tensor[start:end]
-#             batch_y = y_tensor[start:end]
-
-#             optimizer.zero_grad()
-#             s_idx = batch_X[:, 0]
-#             p_idx = batch_X[:, 1]
-#             output, mu, logvar = model(s_idx, p_idx)
-#             loss = vae_loss(output, batch_y, mu, logvar)
-#             loss.backward()
-#             optimizer.step()
-#             epoch_loss += loss.item() * (end - start)
-
-#         print(f"Epoch {epoch}: Loss {epoch_loss/dataset_size:.4f}")
-
-#     return model
-
-# # ---------- Background training ----------
-# async def background_train(model_name, file_path):
-#     triples = extract_explicit_triples(file_path)
-#     if not triples:
-#         print(f"No valid triples for model {model_name}")
-#         return
-
-#     factorized = factorize_triples(triples)
-#     X = factorized["X"]
-#     y = factorized["y"]
-
-#     model = train_model(X, y, factorized, epochs=100, batch_size=4096)
-
-#     # Save to MongoDB
-#     await vae_collection.replace_one(
-#         {"model_name": model_name},
-#         {
-#             "model_name": model_name,
-#             "model_state": pickle.dumps(model.state_dict()),
-#             "factorized_data": pickle.dumps(factorized)
-#         },
-#         upsert=True
-#     )
-#     print(f"Model '{model_name}' trained successfully.")
-
-# # ---------- API endpoint ----------
-# @app.post("/graphvae/upload_and_train")
-# async def upload_and_train(model_name: str, file: UploadFile = File(...), background_tasks: BackgroundTasks = None):
-#     temp_path = f"/tmp/{file.filename}"
-#     with open(temp_path, "wb") as f:
-#         f.write(await file.read())
-
-#     background_tasks.add_task(background_train, model_name, temp_path)
-
-#     return {"message": f"Model '{model_name}' training started in the background."}
 
 
 from typing import Optional
@@ -1682,40 +1467,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 gan_collection = db["gan_models"]
 
-# def extract_explicit_triples(owl_path: str):
-#     g = Graph()
-#     g.parse(owl_path)
-#     triples = set()
-#     EXCLUDED = {str(RDF.type), str(RDFS.subClassOf)}
-
-    
-#     for s, p, o in g:
-#         if isinstance(s, URIRef) and isinstance(o, URIRef) and str(p) not in EXCLUDED:
-#             triples.add((str(s), str(p), str(o)))
-
-    
-#     for cls in g.subjects(RDF.type, OWL.Class):
-#         for restriction in g.objects(cls, RDFS.subClassOf):
-#             if (restriction, RDF.type, OWL.Restriction) in g:
-#                 prop = g.value(restriction, OWL.onProperty)
-#                 if not prop:
-#                     continue
-#                 some = g.value(restriction, OWL.someValuesFrom)
-#                 if some:
-#                     triples.add((str(cls), str(prop), str(some)))
-#                 allv = g.value(restriction, OWL.allValuesFrom)
-#                 if allv:
-#                     if isinstance(allv, URIRef):
-#                         triples.add((str(cls), str(prop), str(allv)))
-#                     for union_list in g.objects(allv, OWL.unionOf):
-#                         collection = Collection(g, union_list)
-#                         for item in collection:
-#                             triples.add((str(cls), str(prop), str(item)))
-#                 hasv = g.value(restriction, OWL.hasValue)
-#                 if hasv:
-#                     triples.add((str(cls), str(prop), str(hasv)))
-
-#     return list(triples)
 
 def extract_explicit_triples(owl_path: str):
     g = Graph()
@@ -1754,76 +1505,6 @@ def extract_explicit_triples(owl_path: str):
     return list(triples)
 
 
-# def factorize_triples(triples):
-#     subjects = sorted(set(t[0] for t in triples))
-#     predicates = sorted(set(t[1] for t in triples))
-#     objects = sorted(set(t[2] for t in triples))
-
-#     subject_to_idx = {s: i for i, s in enumerate(subjects)}
-#     predicate_to_idx = {p: i for i, p in enumerate(predicates)}
-#     object_to_idx = {o: i for i, o in enumerate(objects)}
-
-#     sp_to_obj = {}
-#     for s, p, o in triples:
-#         key = (s, p)
-#         if key not in sp_to_obj:
-#             sp_to_obj[key] = []
-#         sp_to_obj[key].append(object_to_idx[o])
-
-#     return {
-#         "subjects": subjects,
-#         "predicates": predicates,
-#         "objects": objects,
-#         "subject_to_idx": subject_to_idx,
-#         "predicate_to_idx": predicate_to_idx,
-#         "object_to_idx": object_to_idx,
-#         "sp_to_obj": sp_to_obj
-#     }
-
-# def train_gan(X, y, factorized, epochs=100):
-#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#     G = GraphGenerator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
-#     D = GraphDiscriminator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
-
-#     optim_G = optim.Adam(G.parameters(), lr=0.001)
-#     optim_D = optim.Adam(D.parameters(), lr=0.001)
-
-#     criterion = nn.BCELoss()
-#     X_tensor = torch.LongTensor(X).to(device)
-#     y_tensor = torch.LongTensor(y).to(device)
-
-#     for epoch in range(epochs):
-#         for i in range(len(X_tensor)):
-#             s_idx = X_tensor[i, 0].unsqueeze(0)
-#             p_idx = X_tensor[i, 1].unsqueeze(0)
-#             real_obj_idx = y_tensor[i].unsqueeze(0)
-
-            
-#             D.zero_grad()
-#             real_logits = D(s_idx, p_idx, real_obj_idx)
-#             real_labels = torch.ones_like(real_logits)
-#             loss_real = criterion(real_logits, real_labels)
-
-#             fake_obj_idx = G(s_idx, p_idx).argmax(dim=1)
-#             fake_logits = D(s_idx, p_idx, fake_obj_idx.detach())
-#             fake_labels = torch.zeros_like(fake_logits)
-#             loss_fake = criterion(fake_logits, fake_labels)
-
-#             loss_D = (loss_real + loss_fake) / 2
-#             loss_D.backward()
-#             optim_D.step()
-
-            
-#             G.zero_grad()
-#             fake_logits = D(s_idx, p_idx, fake_obj_idx)
-#             loss_G = criterion(fake_logits, torch.ones_like(fake_logits))
-#             loss_G.backward()
-#             optim_G.step()
-
-#         if epoch % 10 == 0:
-#             print(f"Epoch {epoch}: D_loss={loss_D.item():.4f}, G_loss={loss_G.item():.4f}")
-
-#     return G, D
 
 def factorize_triples(triples):
     subjects = sorted(set(t[0] for t in triples))
@@ -1852,53 +1533,6 @@ def factorize_triples(triples):
     }
 
 
-# # -----------------------------
-# # GAN Training
-# # -----------------------------
-# def train_gan(X, y, factorized, epochs=100):
-#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#     G = GraphGenerator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
-#     D = GraphDiscriminator(len(factorized["subjects"]), len(factorized["predicates"]), len(factorized["objects"])).to(device)
-
-#     optim_G = optim.Adam(G.parameters(), lr=0.001)
-#     optim_D = optim.Adam(D.parameters(), lr=0.001)
-#     criterion = nn.BCELoss()
-
-#     X_tensor = torch.LongTensor(X).to(device)
-#     y_tensor = torch.LongTensor(y).to(device)
-
-#     for epoch in range(epochs):
-#         for i in range(len(X_tensor)):
-#             s_idx = X_tensor[i, 0].unsqueeze(0)
-#             p_idx = X_tensor[i, 1].unsqueeze(0)
-#             real_obj_idx = y_tensor[i].unsqueeze(0)
-
-#             # Train Discriminator
-#             D.zero_grad()
-#             real_logits = D(s_idx, p_idx, real_obj_idx)
-#             real_labels = torch.ones_like(real_logits)
-#             loss_real = criterion(real_logits, real_labels)
-
-#             fake_obj_idx = G(s_idx, p_idx).argmax(dim=1)
-#             fake_logits = D(s_idx, p_idx, fake_obj_idx.detach())
-#             fake_labels = torch.zeros_like(fake_logits)
-#             loss_fake = criterion(fake_logits, fake_labels)
-
-#             loss_D = (loss_real + loss_fake) / 2
-#             loss_D.backward()
-#             optim_D.step()
-
-#             # Train Generator
-#             G.zero_grad()
-#             fake_logits = D(s_idx, p_idx, fake_obj_idx)
-#             loss_G = criterion(fake_logits, torch.ones_like(fake_logits))
-#             loss_G.backward()
-#             optim_G.step()
-
-#         if epoch % 10 == 0:
-#             print(f"Epoch {epoch}: D_loss={loss_D.item():.4f}, G_loss={loss_G.item():.4f}")
-
-#     return G, D
 
 from torch.utils.data import Dataset, DataLoader
 
@@ -1987,35 +1621,6 @@ def train_gan(X, y, factorized, epochs=20, batch_size=1024):
     return G, D
 
 
-# @app.post("/graphgan/upload_and_train")
-# async def upload_and_train(model_name: str, file: UploadFile = File(...)):
-#     temp_path = f"/tmp/{file.filename}"
-#     with open(temp_path, "wb") as f:
-#         f.write(await file.read())
-
-#     triples = extract_explicit_triples(temp_path)
-#     if not triples:
-#         raise HTTPException(status_code=400, detail="No valid triples extracted.")
-
-#     factorized = factorize_triples(triples)
-#     X = np.array([[factorized["subject_to_idx"][s], factorized["predicate_to_idx"][p]] for s, p, o in triples])
-#     y = np.array([factorized["object_to_idx"][o] for _, _, o in triples])
-
-#     G, D = train_gan(X, y, factorized, epochs=100)
-
-#     await gan_collection.replace_one(
-#         {"model_name": model_name},
-#         {
-#             "model_name": model_name,
-#             "G_state": pickle.dumps(G.state_dict()),
-#             "D_state": pickle.dumps(D.state_dict()),
-#             "factorized_data": pickle.dumps(factorized)
-#         },
-#         upsert=True
-#     )
-
-#     return {"message": f"GraphGAN '{model_name}' trained successfully."}
-
 @app.post("/graphgan/upload_and_train")
 async def upload_and_train(model_name: str, file: UploadFile = File(...)):
     temp_path = f"/tmp/{file.filename}"
@@ -2026,11 +1631,7 @@ async def upload_and_train(model_name: str, file: UploadFile = File(...)):
     if not triples:
         raise HTTPException(status_code=400, detail="No valid triples extracted.")
 
-    # factorized = factorize_triples(triples)
-    # X = np.array([[factorized["subject_to_idx"][s], factorized["predicate_to_idx"][p]] for s, p, o in triples])
-    # y = np.array([factorized["object_to_idx"][o] for _, _, o in triples])
-    # factorized = factorize_triples(triples)
-    # X, y = factorized["X"], factorized["y"]
+    
 
     factorized = factorize_triples(triples)
 
@@ -2520,20 +2121,6 @@ app.add_middleware(
 
 shape_map_storage: List[Dict[str, Any]] = []
 
-# DIST_NS = "http://example.org/distribution#"
-# SH = Namespace("http://www.w3.org/ns/shacl#")
-
-# from rdflib import Graph, RDF, BNode
-
-# def parse_rdf_list(graph: Graph, node) -> list:
-#     """Recursively parse an RDF list into a Python list."""
-#     result = []
-#     while node and node != RDF.nil:
-#         first = graph.value(node, RDF.first)
-#         if first is not None:
-#             result.append(str(first))
-#         node = graph.value(node, RDF.rest)
-#     return result
 
 def extract_distribution_info(constraints: list, g: Graph) -> dict:
     """
@@ -2553,78 +2140,6 @@ def extract_distribution_info(constraints: list, g: Graph) -> dict:
     return dist_info
 
 
-# def extract_path_and_datatype(constraints: List[Dict[str, str]]) -> Tuple[str, str]:
-#     """Extract sh:path and sh:datatype (or IRI nodeKind) from constraints."""
-#     path = None
-#     datatype = "http://www.w3.org/2001/XMLSchema#string"
-    
-#     for c in constraints:
-#         if str(SH.path) in c:
-#             path = c[str(SH.path)]
-#         if str(SH.datatype) in c:
-#             datatype = c[str(SH.datatype)]
-#         elif str(SH.nodeKind) in c and c[str(SH.nodeKind)] == str(SH.IRI):
-#             datatype = "IRI"
-    
-#     return path, datatype
-
-# def get_cardinality(constraints: List[Dict[str, str]]) -> Tuple[int, int]:
-#     """Extract minCount and maxCount from constraints."""
-#     min_count = 1
-#     max_count = 1
-#     for c in constraints:
-#         if str(SH.minCount) in c:
-#             min_count = int(c[str(SH.minCount)])
-#         if str(SH.maxCount) in c:
-#             max_count = int(c[str(SH.maxCount)])
-#     return min_count, max_count
-
-
-# from rdflib import Graph, RDF, BNode
-# from rdflib.namespace import SH, XSD
-
-# def parse_shacl(file_path: str) -> list[dict]:
-#     """Parse a SHACL file and extract shapes, properties, constraints, and distributions."""
-#     g = Graph()
-#     g.parse(file_path, format="turtle")
-#     shapes = []
-
-#     for s in g.subjects(RDF.type, SH.NodeShape):
-        
-#         target_classes = list(g.objects(s, SH.targetClass))
-#         if not target_classes:
-#             continue
-#         shape_entry = {
-#             "shape_iri": str(target_classes[0]),
-#             "target_classes": [str(t) for t in target_classes],
-#             "properties": []
-#         }
-
-#         for prop in g.objects(s, SH.property):
-#             prop_entry = {"property": str(prop), "constraints": []}
-
-            
-#             for pred, val in g.predicate_objects(prop):
-#                 prop_entry["constraints"].append({str(pred): val})
-
-            
-#             prop_entry["distribution"] = extract_distribution_info(prop_entry["constraints"], g)
-
-            
-#             path, datatype = extract_path_and_datatype(prop_entry["constraints"])
-#             min_count, max_count = get_cardinality(prop_entry["constraints"])
-#             prop_entry.update({
-#                 "path": path,
-#                 "datatype": datatype,
-#                 "min_count": min_count,
-#                 "max_count": max_count
-#             })
-
-#             shape_entry["properties"].append(prop_entry)
-
-#         shapes.append(shape_entry)
-
-#     return shapes
 
 @app.post("/upload_shacl")
 async def upload_shacl(file: UploadFile = File(...)):
@@ -2958,78 +2473,6 @@ async def generate_from_shacl(req: List[PropertySchema], num_samples: int = Quer
         "generated_data_samples": all_samples_result
     }
 
-
-# @app.post("/upload_shacl_and_extract_schema")
-# async def upload_shacl_and_extract_schema(file: UploadFile = File(...)):
-    
-#     os.makedirs("shacl_files", exist_ok=True)
-#     file_location = f"shacl_files/{file.filename}"
-#     with open(file_location, "wb") as f:
-#         shutil.copyfileobj(file.file, f)
-
-    
-#     shapes = parse_shacl(file_location)
-#     json_schema = []
-
-#     g = Graph()
-#     g.parse(file_location, format="turtle")
-
-#     for shape in shapes:
-#         shape_iri = shape.get("shape_iri")
-#         for prop in shape["properties"]:
-#             path, datatype = extract_path_and_datatype(prop["constraints"])
-#             min_count, max_count = get_cardinality(prop["constraints"])
-#             distribution = prop.get("distribution", {})
-
-#             dist_type = distribution.get("distribution")
-#             dist_params = {}
-
-            
-#             if dist_type == "categorical":
-#                 allowed_list = distribution.get("categories", ["ExampleValue"])
-#                 if isinstance(allowed_list, BNode):
-#                     allowed_list = parse_rdf_list(g, allowed_list)
-#                 probabilities = distribution.get("probabilities", [1.0])
-#                 if isinstance(probabilities, BNode):
-#                     probabilities = parse_rdf_list(g, probabilities)
-
-#                 dist_params = {
-#                     "allowed_list": allowed_list,
-#                     "probabilities": probabilities
-#                 }
-
-            
-#             elif dist_type == "numeric":
-#                 dist_params = {
-#                     "mean": distribution.get("mean", 10),
-#                     "std": distribution.get("std", 2),
-#                     "min": distribution.get("min", 0),
-#                     "max": distribution.get("max", 20)
-#                 }
-
-            
-#             if not dist_type:
-#                 if datatype in ["IRI", "http://www.w3.org/2001/XMLSchema#string"]:
-#                     dist_type = "categorical"
-#                     dist_params = {"allowed_list": ["ExampleValue"], "probabilities": [1.0]}
-#                 elif datatype in ["http://www.w3.org/2001/XMLSchema#integer", 
-#                                   "http://www.w3.org/2001/XMLSchema#decimal"]:
-#                     dist_type = "numeric"
-#                     dist_params = {"mean": 10, "std": 2, "min": 0, "max": 20}
-
-#             json_schema.append({
-#                 "shape": shape_iri,
-#                 "path": path,
-#                 "datatype": datatype,
-#                 "min_count": min_count,
-#                 "max_count": max_count,
-#                 "model_type": None,
-#                 "model_name": None,
-#                 "distribution_type": dist_type,
-#                 "distribution_params": dist_params
-#             })
-
-#     return {"message": "SHACL uploaded and schema extracted", "json_schema": json_schema}
 
 
 from rdflib import Graph, URIRef, RDF, BNode
